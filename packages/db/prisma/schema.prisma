@@ -1,0 +1,112 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+  output = "../generated"
+  runtime = "bun"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+id        String     @id @default(uuid())
+name      String
+email     String     @unique
+password  String
+createdAt DateTime   @default(now())
+projects  Project[]
+}
+
+
+model Project {
+id          String     @id @default(uuid())
+name        String
+description String?
+createdAt   DateTime   @default(now())
+updatedAt   DateTime   @updatedAt
+userId      String?
+user        User?      @relation(fields: [userId], references: [id])
+files       File[]
+runs        Run[]
+}
+
+
+model File {
+id          String   @id @default(uuid())
+name        String
+path        String 
+content     String   @db.Text
+language    String? 
+projectId   String
+project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+createdAt   DateTime @default(now())
+updatedAt   DateTime @updatedAt
+
+@@index([projectId])
+}
+
+
+model Run {
+id          String      @id @default(uuid())
+status      RunStatus   @default(PENDING)
+startedAt   DateTime?
+finishedAt  DateTime?
+projectId   String
+project     Project     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+sandbox     Sandbox?
+logs        Log[]
+error       String?     @db.Text
+createdAt   DateTime    @default(now())
+
+@@index([projectId])
+}
+
+enum RunStatus {
+PENDING
+RUNNING
+SUCCESS
+FAILED
+}
+
+
+model Log {
+id           String    @id @default(uuid())
+message      String    @db.Text
+type         LogType
+timestamp    DateTime  @default(now())
+runId        String
+run          Run       @relation(fields: [runId], references: [id], onDelete: Cascade)
+
+@@index([runId])
+}
+
+enum LogType {
+STDOUT
+STDERR
+SYSTEM
+}
+
+
+model Sandbox {
+id            String        @id @default(uuid())
+e2bId         String 
+status        SandboxStatus @default(CREATED)
+runId         String        @unique
+run           Run           @relation(fields: [runId], references: [id], onDelete: Cascade)
+createdAt     DateTime      @default(now())
+destroyedAt   DateTime?
+
+@@index([e2bId])
+}
+
+enum SandboxStatus {
+CREATED
+RUNNING
+STOPPED
+DESTROYED
+}
