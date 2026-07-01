@@ -1,6 +1,13 @@
 import jwt from "jsonwebtoken";
 import type { Request, Response, NextFunction } from "express";
 
+declare global {
+    namespace Express {
+      interface Request {
+        userId?: string;
+      }
+    }
+  }
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
 
@@ -17,7 +24,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
       return res.status(401).json({ error: "Unauthorized" });
     }else{
 
-      (req as any).userId = (decoded as any).userId;
+      req.userId = (decoded as any).userId;
     }
   });
 
