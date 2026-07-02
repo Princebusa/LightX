@@ -148,14 +148,14 @@ exports.Prisma.FileScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.RunScalarFieldEnum = {
+exports.Prisma.SandboxScalarFieldEnum = {
   id: 'id',
+  e2bId: 'e2bId',
   status: 'status',
-  startedAt: 'startedAt',
-  finishedAt: 'finishedAt',
+  previewUrl: 'previewUrl',
   projectId: 'projectId',
-  error: 'error',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  destroyedAt: 'destroyedAt'
 };
 
 exports.Prisma.LogScalarFieldEnum = {
@@ -163,16 +163,7 @@ exports.Prisma.LogScalarFieldEnum = {
   message: 'message',
   type: 'type',
   timestamp: 'timestamp',
-  runId: 'runId'
-};
-
-exports.Prisma.SandboxScalarFieldEnum = {
-  id: 'id',
-  e2bId: 'e2bId',
-  status: 'status',
-  runId: 'runId',
-  createdAt: 'createdAt',
-  destroyedAt: 'destroyedAt'
+  projectId: 'projectId'
 };
 
 exports.Prisma.SortOrder = {
@@ -189,11 +180,11 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-exports.RunStatus = exports.$Enums.RunStatus = {
-  PENDING: 'PENDING',
+exports.SandboxStatus = exports.$Enums.SandboxStatus = {
+  CREATED: 'CREATED',
   RUNNING: 'RUNNING',
-  SUCCESS: 'SUCCESS',
-  FAILED: 'FAILED'
+  STOPPED: 'STOPPED',
+  DESTROYED: 'DESTROYED'
 };
 
 exports.LogType = exports.$Enums.LogType = {
@@ -202,20 +193,12 @@ exports.LogType = exports.$Enums.LogType = {
   SYSTEM: 'SYSTEM'
 };
 
-exports.SandboxStatus = exports.$Enums.SandboxStatus = {
-  CREATED: 'CREATED',
-  RUNNING: 'RUNNING',
-  STOPPED: 'STOPPED',
-  DESTROYED: 'DESTROYED'
-};
-
 exports.Prisma.ModelName = {
   User: 'User',
   Project: 'Project',
   File: 'File',
-  Run: 'Run',
-  Log: 'Log',
-  Sandbox: 'Sandbox'
+  Sandbox: 'Sandbox',
+  Log: 'Log'
 };
 
 /**

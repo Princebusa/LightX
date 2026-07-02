@@ -29,33 +29,28 @@ export type Project = $Result.DefaultSelection<Prisma.$ProjectPayload>
  */
 export type File = $Result.DefaultSelection<Prisma.$FilePayload>
 /**
- * Model Run
+ * Model Sandbox
  * 
  */
-export type Run = $Result.DefaultSelection<Prisma.$RunPayload>
+export type Sandbox = $Result.DefaultSelection<Prisma.$SandboxPayload>
 /**
  * Model Log
  * 
  */
 export type Log = $Result.DefaultSelection<Prisma.$LogPayload>
-/**
- * Model Sandbox
- * 
- */
-export type Sandbox = $Result.DefaultSelection<Prisma.$SandboxPayload>
 
 /**
  * Enums
  */
 export namespace $Enums {
-  export const RunStatus: {
-  PENDING: 'PENDING',
+  export const SandboxStatus: {
+  CREATED: 'CREATED',
   RUNNING: 'RUNNING',
-  SUCCESS: 'SUCCESS',
-  FAILED: 'FAILED'
+  STOPPED: 'STOPPED',
+  DESTROYED: 'DESTROYED'
 };
 
-export type RunStatus = (typeof RunStatus)[keyof typeof RunStatus]
+export type SandboxStatus = (typeof SandboxStatus)[keyof typeof SandboxStatus]
 
 
 export const LogType: {
@@ -66,29 +61,15 @@ export const LogType: {
 
 export type LogType = (typeof LogType)[keyof typeof LogType]
 
-
-export const SandboxStatus: {
-  CREATED: 'CREATED',
-  RUNNING: 'RUNNING',
-  STOPPED: 'STOPPED',
-  DESTROYED: 'DESTROYED'
-};
-
-export type SandboxStatus = (typeof SandboxStatus)[keyof typeof SandboxStatus]
-
 }
-
-export type RunStatus = $Enums.RunStatus
-
-export const RunStatus: typeof $Enums.RunStatus
-
-export type LogType = $Enums.LogType
-
-export const LogType: typeof $Enums.LogType
 
 export type SandboxStatus = $Enums.SandboxStatus
 
 export const SandboxStatus: typeof $Enums.SandboxStatus
+
+export type LogType = $Enums.LogType
+
+export const LogType: typeof $Enums.LogType
 
 /**
  * ##  Prisma Client ʲˢ
@@ -242,14 +223,14 @@ export class PrismaClient<
   get file(): Prisma.FileDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.run`: Exposes CRUD operations for the **Run** model.
+   * `prisma.sandbox`: Exposes CRUD operations for the **Sandbox** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more Runs
-    * const runs = await prisma.run.findMany()
+    * // Fetch zero or more Sandboxes
+    * const sandboxes = await prisma.sandbox.findMany()
     * ```
     */
-  get run(): Prisma.RunDelegate<ExtArgs, ClientOptions>;
+  get sandbox(): Prisma.SandboxDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.log`: Exposes CRUD operations for the **Log** model.
@@ -260,16 +241,6 @@ export class PrismaClient<
     * ```
     */
   get log(): Prisma.LogDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.sandbox`: Exposes CRUD operations for the **Sandbox** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Sandboxes
-    * const sandboxes = await prisma.sandbox.findMany()
-    * ```
-    */
-  get sandbox(): Prisma.SandboxDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -707,9 +678,8 @@ export namespace Prisma {
     User: 'User',
     Project: 'Project',
     File: 'File',
-    Run: 'Run',
-    Log: 'Log',
-    Sandbox: 'Sandbox'
+    Sandbox: 'Sandbox',
+    Log: 'Log'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -725,7 +695,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "project" | "file" | "run" | "log" | "sandbox"
+      modelProps: "user" | "project" | "file" | "sandbox" | "log"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -951,77 +921,77 @@ export namespace Prisma {
           }
         }
       }
-      Run: {
-        payload: Prisma.$RunPayload<ExtArgs>
-        fields: Prisma.RunFieldRefs
+      Sandbox: {
+        payload: Prisma.$SandboxPayload<ExtArgs>
+        fields: Prisma.SandboxFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.RunFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RunPayload> | null
+            args: Prisma.SandboxFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SandboxPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.RunFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RunPayload>
+            args: Prisma.SandboxFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SandboxPayload>
           }
           findFirst: {
-            args: Prisma.RunFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RunPayload> | null
+            args: Prisma.SandboxFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SandboxPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.RunFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RunPayload>
+            args: Prisma.SandboxFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SandboxPayload>
           }
           findMany: {
-            args: Prisma.RunFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RunPayload>[]
+            args: Prisma.SandboxFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SandboxPayload>[]
           }
           create: {
-            args: Prisma.RunCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RunPayload>
+            args: Prisma.SandboxCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SandboxPayload>
           }
           createMany: {
-            args: Prisma.RunCreateManyArgs<ExtArgs>
+            args: Prisma.SandboxCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           createManyAndReturn: {
-            args: Prisma.RunCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RunPayload>[]
+            args: Prisma.SandboxCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SandboxPayload>[]
           }
           delete: {
-            args: Prisma.RunDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RunPayload>
+            args: Prisma.SandboxDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SandboxPayload>
           }
           update: {
-            args: Prisma.RunUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RunPayload>
+            args: Prisma.SandboxUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SandboxPayload>
           }
           deleteMany: {
-            args: Prisma.RunDeleteManyArgs<ExtArgs>
+            args: Prisma.SandboxDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.RunUpdateManyArgs<ExtArgs>
+            args: Prisma.SandboxUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateManyAndReturn: {
-            args: Prisma.RunUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RunPayload>[]
+            args: Prisma.SandboxUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SandboxPayload>[]
           }
           upsert: {
-            args: Prisma.RunUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RunPayload>
+            args: Prisma.SandboxUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SandboxPayload>
           }
           aggregate: {
-            args: Prisma.RunAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateRun>
+            args: Prisma.SandboxAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSandbox>
           }
           groupBy: {
-            args: Prisma.RunGroupByArgs<ExtArgs>
-            result: $Utils.Optional<RunGroupByOutputType>[]
+            args: Prisma.SandboxGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SandboxGroupByOutputType>[]
           }
           count: {
-            args: Prisma.RunCountArgs<ExtArgs>
-            result: $Utils.Optional<RunCountAggregateOutputType> | number
+            args: Prisma.SandboxCountArgs<ExtArgs>
+            result: $Utils.Optional<SandboxCountAggregateOutputType> | number
           }
         }
       }
@@ -1096,80 +1066,6 @@ export namespace Prisma {
           count: {
             args: Prisma.LogCountArgs<ExtArgs>
             result: $Utils.Optional<LogCountAggregateOutputType> | number
-          }
-        }
-      }
-      Sandbox: {
-        payload: Prisma.$SandboxPayload<ExtArgs>
-        fields: Prisma.SandboxFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.SandboxFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SandboxPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.SandboxFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SandboxPayload>
-          }
-          findFirst: {
-            args: Prisma.SandboxFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SandboxPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.SandboxFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SandboxPayload>
-          }
-          findMany: {
-            args: Prisma.SandboxFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SandboxPayload>[]
-          }
-          create: {
-            args: Prisma.SandboxCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SandboxPayload>
-          }
-          createMany: {
-            args: Prisma.SandboxCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.SandboxCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SandboxPayload>[]
-          }
-          delete: {
-            args: Prisma.SandboxDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SandboxPayload>
-          }
-          update: {
-            args: Prisma.SandboxUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SandboxPayload>
-          }
-          deleteMany: {
-            args: Prisma.SandboxDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.SandboxUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.SandboxUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SandboxPayload>[]
-          }
-          upsert: {
-            args: Prisma.SandboxUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SandboxPayload>
-          }
-          aggregate: {
-            args: Prisma.SandboxAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateSandbox>
-          }
-          groupBy: {
-            args: Prisma.SandboxGroupByArgs<ExtArgs>
-            result: $Utils.Optional<SandboxGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.SandboxCountArgs<ExtArgs>
-            result: $Utils.Optional<SandboxCountAggregateOutputType> | number
           }
         }
       }
@@ -1284,9 +1180,8 @@ export namespace Prisma {
     user?: UserOmit
     project?: ProjectOmit
     file?: FileOmit
-    run?: RunOmit
-    log?: LogOmit
     sandbox?: SandboxOmit
+    log?: LogOmit
   }
 
   /* Types for Logging */
@@ -1399,12 +1294,12 @@ export namespace Prisma {
 
   export type ProjectCountOutputType = {
     files: number
-    runs: number
+    logs: number
   }
 
   export type ProjectCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     files?: boolean | ProjectCountOutputTypeCountFilesArgs
-    runs?: boolean | ProjectCountOutputTypeCountRunsArgs
+    logs?: boolean | ProjectCountOutputTypeCountLogsArgs
   }
 
   // Custom InputTypes
@@ -1428,38 +1323,7 @@ export namespace Prisma {
   /**
    * ProjectCountOutputType without action
    */
-  export type ProjectCountOutputTypeCountRunsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: RunWhereInput
-  }
-
-
-  /**
-   * Count Type RunCountOutputType
-   */
-
-  export type RunCountOutputType = {
-    logs: number
-  }
-
-  export type RunCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    logs?: boolean | RunCountOutputTypeCountLogsArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * RunCountOutputType without action
-   */
-  export type RunCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RunCountOutputType
-     */
-    select?: RunCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * RunCountOutputType without action
-   */
-  export type RunCountOutputTypeCountLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProjectCountOutputTypeCountLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: LogWhereInput
   }
 
@@ -2717,7 +2581,8 @@ export namespace Prisma {
     userId?: boolean
     user?: boolean | Project$userArgs<ExtArgs>
     files?: boolean | Project$filesArgs<ExtArgs>
-    runs?: boolean | Project$runsArgs<ExtArgs>
+    sandbox?: boolean | Project$sandboxArgs<ExtArgs>
+    logs?: boolean | Project$logsArgs<ExtArgs>
     _count?: boolean | ProjectCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["project"]>
 
@@ -2754,7 +2619,8 @@ export namespace Prisma {
   export type ProjectInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | Project$userArgs<ExtArgs>
     files?: boolean | Project$filesArgs<ExtArgs>
-    runs?: boolean | Project$runsArgs<ExtArgs>
+    sandbox?: boolean | Project$sandboxArgs<ExtArgs>
+    logs?: boolean | Project$logsArgs<ExtArgs>
     _count?: boolean | ProjectCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProjectIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2769,7 +2635,8 @@ export namespace Prisma {
     objects: {
       user: Prisma.$UserPayload<ExtArgs> | null
       files: Prisma.$FilePayload<ExtArgs>[]
-      runs: Prisma.$RunPayload<ExtArgs>[]
+      sandbox: Prisma.$SandboxPayload<ExtArgs> | null
+      logs: Prisma.$LogPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3174,7 +3041,8 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends Project$userArgs<ExtArgs> = {}>(args?: Subset<T, Project$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     files<T extends Project$filesArgs<ExtArgs> = {}>(args?: Subset<T, Project$filesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    runs<T extends Project$runsArgs<ExtArgs> = {}>(args?: Subset<T, Project$runsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RunPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    sandbox<T extends Project$sandboxArgs<ExtArgs> = {}>(args?: Subset<T, Project$sandboxArgs<ExtArgs>>): Prisma__SandboxClient<$Result.GetResult<Prisma.$SandboxPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    logs<T extends Project$logsArgs<ExtArgs> = {}>(args?: Subset<T, Project$logsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3654,27 +3522,46 @@ export namespace Prisma {
   }
 
   /**
-   * Project.runs
+   * Project.sandbox
    */
-  export type Project$runsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Project$sandboxArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Run
+     * Select specific fields to fetch from the Sandbox
      */
-    select?: RunSelect<ExtArgs> | null
+    select?: SandboxSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Run
+     * Omit specific fields from the Sandbox
      */
-    omit?: RunOmit<ExtArgs> | null
+    omit?: SandboxOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: RunInclude<ExtArgs> | null
-    where?: RunWhereInput
-    orderBy?: RunOrderByWithRelationInput | RunOrderByWithRelationInput[]
-    cursor?: RunWhereUniqueInput
+    include?: SandboxInclude<ExtArgs> | null
+    where?: SandboxWhereInput
+  }
+
+  /**
+   * Project.logs
+   */
+  export type Project$logsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Log
+     */
+    select?: LogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Log
+     */
+    omit?: LogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LogInclude<ExtArgs> | null
+    where?: LogWhereInput
+    orderBy?: LogOrderByWithRelationInput | LogOrderByWithRelationInput[]
+    cursor?: LogWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: RunScalarFieldEnum | RunScalarFieldEnum[]
+    distinct?: LogScalarFieldEnum | LogScalarFieldEnum[]
   }
 
   /**
@@ -4799,2211 +4686,6 @@ export namespace Prisma {
 
 
   /**
-   * Model Run
-   */
-
-  export type AggregateRun = {
-    _count: RunCountAggregateOutputType | null
-    _min: RunMinAggregateOutputType | null
-    _max: RunMaxAggregateOutputType | null
-  }
-
-  export type RunMinAggregateOutputType = {
-    id: string | null
-    status: $Enums.RunStatus | null
-    startedAt: Date | null
-    finishedAt: Date | null
-    projectId: string | null
-    error: string | null
-    createdAt: Date | null
-  }
-
-  export type RunMaxAggregateOutputType = {
-    id: string | null
-    status: $Enums.RunStatus | null
-    startedAt: Date | null
-    finishedAt: Date | null
-    projectId: string | null
-    error: string | null
-    createdAt: Date | null
-  }
-
-  export type RunCountAggregateOutputType = {
-    id: number
-    status: number
-    startedAt: number
-    finishedAt: number
-    projectId: number
-    error: number
-    createdAt: number
-    _all: number
-  }
-
-
-  export type RunMinAggregateInputType = {
-    id?: true
-    status?: true
-    startedAt?: true
-    finishedAt?: true
-    projectId?: true
-    error?: true
-    createdAt?: true
-  }
-
-  export type RunMaxAggregateInputType = {
-    id?: true
-    status?: true
-    startedAt?: true
-    finishedAt?: true
-    projectId?: true
-    error?: true
-    createdAt?: true
-  }
-
-  export type RunCountAggregateInputType = {
-    id?: true
-    status?: true
-    startedAt?: true
-    finishedAt?: true
-    projectId?: true
-    error?: true
-    createdAt?: true
-    _all?: true
-  }
-
-  export type RunAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Run to aggregate.
-     */
-    where?: RunWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Runs to fetch.
-     */
-    orderBy?: RunOrderByWithRelationInput | RunOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: RunWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Runs from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Runs.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned Runs
-    **/
-    _count?: true | RunCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: RunMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: RunMaxAggregateInputType
-  }
-
-  export type GetRunAggregateType<T extends RunAggregateArgs> = {
-        [P in keyof T & keyof AggregateRun]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateRun[P]>
-      : GetScalarType<T[P], AggregateRun[P]>
-  }
-
-
-
-
-  export type RunGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: RunWhereInput
-    orderBy?: RunOrderByWithAggregationInput | RunOrderByWithAggregationInput[]
-    by: RunScalarFieldEnum[] | RunScalarFieldEnum
-    having?: RunScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: RunCountAggregateInputType | true
-    _min?: RunMinAggregateInputType
-    _max?: RunMaxAggregateInputType
-  }
-
-  export type RunGroupByOutputType = {
-    id: string
-    status: $Enums.RunStatus
-    startedAt: Date | null
-    finishedAt: Date | null
-    projectId: string
-    error: string | null
-    createdAt: Date
-    _count: RunCountAggregateOutputType | null
-    _min: RunMinAggregateOutputType | null
-    _max: RunMaxAggregateOutputType | null
-  }
-
-  type GetRunGroupByPayload<T extends RunGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<RunGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof RunGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], RunGroupByOutputType[P]>
-            : GetScalarType<T[P], RunGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type RunSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    status?: boolean
-    startedAt?: boolean
-    finishedAt?: boolean
-    projectId?: boolean
-    error?: boolean
-    createdAt?: boolean
-    project?: boolean | ProjectDefaultArgs<ExtArgs>
-    sandbox?: boolean | Run$sandboxArgs<ExtArgs>
-    logs?: boolean | Run$logsArgs<ExtArgs>
-    _count?: boolean | RunCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["run"]>
-
-  export type RunSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    status?: boolean
-    startedAt?: boolean
-    finishedAt?: boolean
-    projectId?: boolean
-    error?: boolean
-    createdAt?: boolean
-    project?: boolean | ProjectDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["run"]>
-
-  export type RunSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    status?: boolean
-    startedAt?: boolean
-    finishedAt?: boolean
-    projectId?: boolean
-    error?: boolean
-    createdAt?: boolean
-    project?: boolean | ProjectDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["run"]>
-
-  export type RunSelectScalar = {
-    id?: boolean
-    status?: boolean
-    startedAt?: boolean
-    finishedAt?: boolean
-    projectId?: boolean
-    error?: boolean
-    createdAt?: boolean
-  }
-
-  export type RunOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "status" | "startedAt" | "finishedAt" | "projectId" | "error" | "createdAt", ExtArgs["result"]["run"]>
-  export type RunInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    project?: boolean | ProjectDefaultArgs<ExtArgs>
-    sandbox?: boolean | Run$sandboxArgs<ExtArgs>
-    logs?: boolean | Run$logsArgs<ExtArgs>
-    _count?: boolean | RunCountOutputTypeDefaultArgs<ExtArgs>
-  }
-  export type RunIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    project?: boolean | ProjectDefaultArgs<ExtArgs>
-  }
-  export type RunIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    project?: boolean | ProjectDefaultArgs<ExtArgs>
-  }
-
-  export type $RunPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Run"
-    objects: {
-      project: Prisma.$ProjectPayload<ExtArgs>
-      sandbox: Prisma.$SandboxPayload<ExtArgs> | null
-      logs: Prisma.$LogPayload<ExtArgs>[]
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      status: $Enums.RunStatus
-      startedAt: Date | null
-      finishedAt: Date | null
-      projectId: string
-      error: string | null
-      createdAt: Date
-    }, ExtArgs["result"]["run"]>
-    composites: {}
-  }
-
-  type RunGetPayload<S extends boolean | null | undefined | RunDefaultArgs> = $Result.GetResult<Prisma.$RunPayload, S>
-
-  type RunCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<RunFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: RunCountAggregateInputType | true
-    }
-
-  export interface RunDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Run'], meta: { name: 'Run' } }
-    /**
-     * Find zero or one Run that matches the filter.
-     * @param {RunFindUniqueArgs} args - Arguments to find a Run
-     * @example
-     * // Get one Run
-     * const run = await prisma.run.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends RunFindUniqueArgs>(args: SelectSubset<T, RunFindUniqueArgs<ExtArgs>>): Prisma__RunClient<$Result.GetResult<Prisma.$RunPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one Run that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {RunFindUniqueOrThrowArgs} args - Arguments to find a Run
-     * @example
-     * // Get one Run
-     * const run = await prisma.run.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends RunFindUniqueOrThrowArgs>(args: SelectSubset<T, RunFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RunClient<$Result.GetResult<Prisma.$RunPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Run that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RunFindFirstArgs} args - Arguments to find a Run
-     * @example
-     * // Get one Run
-     * const run = await prisma.run.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends RunFindFirstArgs>(args?: SelectSubset<T, RunFindFirstArgs<ExtArgs>>): Prisma__RunClient<$Result.GetResult<Prisma.$RunPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Run that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RunFindFirstOrThrowArgs} args - Arguments to find a Run
-     * @example
-     * // Get one Run
-     * const run = await prisma.run.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends RunFindFirstOrThrowArgs>(args?: SelectSubset<T, RunFindFirstOrThrowArgs<ExtArgs>>): Prisma__RunClient<$Result.GetResult<Prisma.$RunPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Runs that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RunFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Runs
-     * const runs = await prisma.run.findMany()
-     * 
-     * // Get first 10 Runs
-     * const runs = await prisma.run.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const runWithIdOnly = await prisma.run.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends RunFindManyArgs>(args?: SelectSubset<T, RunFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RunPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a Run.
-     * @param {RunCreateArgs} args - Arguments to create a Run.
-     * @example
-     * // Create one Run
-     * const Run = await prisma.run.create({
-     *   data: {
-     *     // ... data to create a Run
-     *   }
-     * })
-     * 
-     */
-    create<T extends RunCreateArgs>(args: SelectSubset<T, RunCreateArgs<ExtArgs>>): Prisma__RunClient<$Result.GetResult<Prisma.$RunPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Runs.
-     * @param {RunCreateManyArgs} args - Arguments to create many Runs.
-     * @example
-     * // Create many Runs
-     * const run = await prisma.run.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends RunCreateManyArgs>(args?: SelectSubset<T, RunCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many Runs and returns the data saved in the database.
-     * @param {RunCreateManyAndReturnArgs} args - Arguments to create many Runs.
-     * @example
-     * // Create many Runs
-     * const run = await prisma.run.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many Runs and only return the `id`
-     * const runWithIdOnly = await prisma.run.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends RunCreateManyAndReturnArgs>(args?: SelectSubset<T, RunCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RunPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a Run.
-     * @param {RunDeleteArgs} args - Arguments to delete one Run.
-     * @example
-     * // Delete one Run
-     * const Run = await prisma.run.delete({
-     *   where: {
-     *     // ... filter to delete one Run
-     *   }
-     * })
-     * 
-     */
-    delete<T extends RunDeleteArgs>(args: SelectSubset<T, RunDeleteArgs<ExtArgs>>): Prisma__RunClient<$Result.GetResult<Prisma.$RunPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one Run.
-     * @param {RunUpdateArgs} args - Arguments to update one Run.
-     * @example
-     * // Update one Run
-     * const run = await prisma.run.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends RunUpdateArgs>(args: SelectSubset<T, RunUpdateArgs<ExtArgs>>): Prisma__RunClient<$Result.GetResult<Prisma.$RunPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Runs.
-     * @param {RunDeleteManyArgs} args - Arguments to filter Runs to delete.
-     * @example
-     * // Delete a few Runs
-     * const { count } = await prisma.run.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends RunDeleteManyArgs>(args?: SelectSubset<T, RunDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Runs.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RunUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Runs
-     * const run = await prisma.run.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends RunUpdateManyArgs>(args: SelectSubset<T, RunUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Runs and returns the data updated in the database.
-     * @param {RunUpdateManyAndReturnArgs} args - Arguments to update many Runs.
-     * @example
-     * // Update many Runs
-     * const run = await prisma.run.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more Runs and only return the `id`
-     * const runWithIdOnly = await prisma.run.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends RunUpdateManyAndReturnArgs>(args: SelectSubset<T, RunUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RunPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one Run.
-     * @param {RunUpsertArgs} args - Arguments to update or create a Run.
-     * @example
-     * // Update or create a Run
-     * const run = await prisma.run.upsert({
-     *   create: {
-     *     // ... data to create a Run
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Run we want to update
-     *   }
-     * })
-     */
-    upsert<T extends RunUpsertArgs>(args: SelectSubset<T, RunUpsertArgs<ExtArgs>>): Prisma__RunClient<$Result.GetResult<Prisma.$RunPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Runs.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RunCountArgs} args - Arguments to filter Runs to count.
-     * @example
-     * // Count the number of Runs
-     * const count = await prisma.run.count({
-     *   where: {
-     *     // ... the filter for the Runs we want to count
-     *   }
-     * })
-    **/
-    count<T extends RunCountArgs>(
-      args?: Subset<T, RunCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], RunCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Run.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RunAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends RunAggregateArgs>(args: Subset<T, RunAggregateArgs>): Prisma.PrismaPromise<GetRunAggregateType<T>>
-
-    /**
-     * Group by Run.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RunGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends RunGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: RunGroupByArgs['orderBy'] }
-        : { orderBy?: RunGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, RunGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRunGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the Run model
-   */
-  readonly fields: RunFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for Run.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__RunClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    project<T extends ProjectDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProjectDefaultArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    sandbox<T extends Run$sandboxArgs<ExtArgs> = {}>(args?: Subset<T, Run$sandboxArgs<ExtArgs>>): Prisma__SandboxClient<$Result.GetResult<Prisma.$SandboxPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    logs<T extends Run$logsArgs<ExtArgs> = {}>(args?: Subset<T, Run$logsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the Run model
-   */
-  interface RunFieldRefs {
-    readonly id: FieldRef<"Run", 'String'>
-    readonly status: FieldRef<"Run", 'RunStatus'>
-    readonly startedAt: FieldRef<"Run", 'DateTime'>
-    readonly finishedAt: FieldRef<"Run", 'DateTime'>
-    readonly projectId: FieldRef<"Run", 'String'>
-    readonly error: FieldRef<"Run", 'String'>
-    readonly createdAt: FieldRef<"Run", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * Run findUnique
-   */
-  export type RunFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Run
-     */
-    select?: RunSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Run
-     */
-    omit?: RunOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RunInclude<ExtArgs> | null
-    /**
-     * Filter, which Run to fetch.
-     */
-    where: RunWhereUniqueInput
-  }
-
-  /**
-   * Run findUniqueOrThrow
-   */
-  export type RunFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Run
-     */
-    select?: RunSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Run
-     */
-    omit?: RunOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RunInclude<ExtArgs> | null
-    /**
-     * Filter, which Run to fetch.
-     */
-    where: RunWhereUniqueInput
-  }
-
-  /**
-   * Run findFirst
-   */
-  export type RunFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Run
-     */
-    select?: RunSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Run
-     */
-    omit?: RunOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RunInclude<ExtArgs> | null
-    /**
-     * Filter, which Run to fetch.
-     */
-    where?: RunWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Runs to fetch.
-     */
-    orderBy?: RunOrderByWithRelationInput | RunOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Runs.
-     */
-    cursor?: RunWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Runs from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Runs.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Runs.
-     */
-    distinct?: RunScalarFieldEnum | RunScalarFieldEnum[]
-  }
-
-  /**
-   * Run findFirstOrThrow
-   */
-  export type RunFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Run
-     */
-    select?: RunSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Run
-     */
-    omit?: RunOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RunInclude<ExtArgs> | null
-    /**
-     * Filter, which Run to fetch.
-     */
-    where?: RunWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Runs to fetch.
-     */
-    orderBy?: RunOrderByWithRelationInput | RunOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Runs.
-     */
-    cursor?: RunWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Runs from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Runs.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Runs.
-     */
-    distinct?: RunScalarFieldEnum | RunScalarFieldEnum[]
-  }
-
-  /**
-   * Run findMany
-   */
-  export type RunFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Run
-     */
-    select?: RunSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Run
-     */
-    omit?: RunOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RunInclude<ExtArgs> | null
-    /**
-     * Filter, which Runs to fetch.
-     */
-    where?: RunWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Runs to fetch.
-     */
-    orderBy?: RunOrderByWithRelationInput | RunOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing Runs.
-     */
-    cursor?: RunWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Runs from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Runs.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Runs.
-     */
-    distinct?: RunScalarFieldEnum | RunScalarFieldEnum[]
-  }
-
-  /**
-   * Run create
-   */
-  export type RunCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Run
-     */
-    select?: RunSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Run
-     */
-    omit?: RunOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RunInclude<ExtArgs> | null
-    /**
-     * The data needed to create a Run.
-     */
-    data: XOR<RunCreateInput, RunUncheckedCreateInput>
-  }
-
-  /**
-   * Run createMany
-   */
-  export type RunCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many Runs.
-     */
-    data: RunCreateManyInput | RunCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * Run createManyAndReturn
-   */
-  export type RunCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Run
-     */
-    select?: RunSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Run
-     */
-    omit?: RunOmit<ExtArgs> | null
-    /**
-     * The data used to create many Runs.
-     */
-    data: RunCreateManyInput | RunCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RunIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * Run update
-   */
-  export type RunUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Run
-     */
-    select?: RunSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Run
-     */
-    omit?: RunOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RunInclude<ExtArgs> | null
-    /**
-     * The data needed to update a Run.
-     */
-    data: XOR<RunUpdateInput, RunUncheckedUpdateInput>
-    /**
-     * Choose, which Run to update.
-     */
-    where: RunWhereUniqueInput
-  }
-
-  /**
-   * Run updateMany
-   */
-  export type RunUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update Runs.
-     */
-    data: XOR<RunUpdateManyMutationInput, RunUncheckedUpdateManyInput>
-    /**
-     * Filter which Runs to update
-     */
-    where?: RunWhereInput
-    /**
-     * Limit how many Runs to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * Run updateManyAndReturn
-   */
-  export type RunUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Run
-     */
-    select?: RunSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Run
-     */
-    omit?: RunOmit<ExtArgs> | null
-    /**
-     * The data used to update Runs.
-     */
-    data: XOR<RunUpdateManyMutationInput, RunUncheckedUpdateManyInput>
-    /**
-     * Filter which Runs to update
-     */
-    where?: RunWhereInput
-    /**
-     * Limit how many Runs to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RunIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * Run upsert
-   */
-  export type RunUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Run
-     */
-    select?: RunSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Run
-     */
-    omit?: RunOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RunInclude<ExtArgs> | null
-    /**
-     * The filter to search for the Run to update in case it exists.
-     */
-    where: RunWhereUniqueInput
-    /**
-     * In case the Run found by the `where` argument doesn't exist, create a new Run with this data.
-     */
-    create: XOR<RunCreateInput, RunUncheckedCreateInput>
-    /**
-     * In case the Run was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<RunUpdateInput, RunUncheckedUpdateInput>
-  }
-
-  /**
-   * Run delete
-   */
-  export type RunDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Run
-     */
-    select?: RunSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Run
-     */
-    omit?: RunOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RunInclude<ExtArgs> | null
-    /**
-     * Filter which Run to delete.
-     */
-    where: RunWhereUniqueInput
-  }
-
-  /**
-   * Run deleteMany
-   */
-  export type RunDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Runs to delete
-     */
-    where?: RunWhereInput
-    /**
-     * Limit how many Runs to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * Run.sandbox
-   */
-  export type Run$sandboxArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Sandbox
-     */
-    select?: SandboxSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Sandbox
-     */
-    omit?: SandboxOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SandboxInclude<ExtArgs> | null
-    where?: SandboxWhereInput
-  }
-
-  /**
-   * Run.logs
-   */
-  export type Run$logsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Log
-     */
-    select?: LogSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Log
-     */
-    omit?: LogOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LogInclude<ExtArgs> | null
-    where?: LogWhereInput
-    orderBy?: LogOrderByWithRelationInput | LogOrderByWithRelationInput[]
-    cursor?: LogWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: LogScalarFieldEnum | LogScalarFieldEnum[]
-  }
-
-  /**
-   * Run without action
-   */
-  export type RunDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Run
-     */
-    select?: RunSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Run
-     */
-    omit?: RunOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RunInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model Log
-   */
-
-  export type AggregateLog = {
-    _count: LogCountAggregateOutputType | null
-    _min: LogMinAggregateOutputType | null
-    _max: LogMaxAggregateOutputType | null
-  }
-
-  export type LogMinAggregateOutputType = {
-    id: string | null
-    message: string | null
-    type: $Enums.LogType | null
-    timestamp: Date | null
-    runId: string | null
-  }
-
-  export type LogMaxAggregateOutputType = {
-    id: string | null
-    message: string | null
-    type: $Enums.LogType | null
-    timestamp: Date | null
-    runId: string | null
-  }
-
-  export type LogCountAggregateOutputType = {
-    id: number
-    message: number
-    type: number
-    timestamp: number
-    runId: number
-    _all: number
-  }
-
-
-  export type LogMinAggregateInputType = {
-    id?: true
-    message?: true
-    type?: true
-    timestamp?: true
-    runId?: true
-  }
-
-  export type LogMaxAggregateInputType = {
-    id?: true
-    message?: true
-    type?: true
-    timestamp?: true
-    runId?: true
-  }
-
-  export type LogCountAggregateInputType = {
-    id?: true
-    message?: true
-    type?: true
-    timestamp?: true
-    runId?: true
-    _all?: true
-  }
-
-  export type LogAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Log to aggregate.
-     */
-    where?: LogWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Logs to fetch.
-     */
-    orderBy?: LogOrderByWithRelationInput | LogOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: LogWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Logs from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Logs.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned Logs
-    **/
-    _count?: true | LogCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: LogMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: LogMaxAggregateInputType
-  }
-
-  export type GetLogAggregateType<T extends LogAggregateArgs> = {
-        [P in keyof T & keyof AggregateLog]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateLog[P]>
-      : GetScalarType<T[P], AggregateLog[P]>
-  }
-
-
-
-
-  export type LogGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: LogWhereInput
-    orderBy?: LogOrderByWithAggregationInput | LogOrderByWithAggregationInput[]
-    by: LogScalarFieldEnum[] | LogScalarFieldEnum
-    having?: LogScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: LogCountAggregateInputType | true
-    _min?: LogMinAggregateInputType
-    _max?: LogMaxAggregateInputType
-  }
-
-  export type LogGroupByOutputType = {
-    id: string
-    message: string
-    type: $Enums.LogType
-    timestamp: Date
-    runId: string
-    _count: LogCountAggregateOutputType | null
-    _min: LogMinAggregateOutputType | null
-    _max: LogMaxAggregateOutputType | null
-  }
-
-  type GetLogGroupByPayload<T extends LogGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<LogGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof LogGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], LogGroupByOutputType[P]>
-            : GetScalarType<T[P], LogGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type LogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    message?: boolean
-    type?: boolean
-    timestamp?: boolean
-    runId?: boolean
-    run?: boolean | RunDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["log"]>
-
-  export type LogSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    message?: boolean
-    type?: boolean
-    timestamp?: boolean
-    runId?: boolean
-    run?: boolean | RunDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["log"]>
-
-  export type LogSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    message?: boolean
-    type?: boolean
-    timestamp?: boolean
-    runId?: boolean
-    run?: boolean | RunDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["log"]>
-
-  export type LogSelectScalar = {
-    id?: boolean
-    message?: boolean
-    type?: boolean
-    timestamp?: boolean
-    runId?: boolean
-  }
-
-  export type LogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "message" | "type" | "timestamp" | "runId", ExtArgs["result"]["log"]>
-  export type LogInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    run?: boolean | RunDefaultArgs<ExtArgs>
-  }
-  export type LogIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    run?: boolean | RunDefaultArgs<ExtArgs>
-  }
-  export type LogIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    run?: boolean | RunDefaultArgs<ExtArgs>
-  }
-
-  export type $LogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Log"
-    objects: {
-      run: Prisma.$RunPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      message: string
-      type: $Enums.LogType
-      timestamp: Date
-      runId: string
-    }, ExtArgs["result"]["log"]>
-    composites: {}
-  }
-
-  type LogGetPayload<S extends boolean | null | undefined | LogDefaultArgs> = $Result.GetResult<Prisma.$LogPayload, S>
-
-  type LogCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<LogFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: LogCountAggregateInputType | true
-    }
-
-  export interface LogDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Log'], meta: { name: 'Log' } }
-    /**
-     * Find zero or one Log that matches the filter.
-     * @param {LogFindUniqueArgs} args - Arguments to find a Log
-     * @example
-     * // Get one Log
-     * const log = await prisma.log.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends LogFindUniqueArgs>(args: SelectSubset<T, LogFindUniqueArgs<ExtArgs>>): Prisma__LogClient<$Result.GetResult<Prisma.$LogPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one Log that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {LogFindUniqueOrThrowArgs} args - Arguments to find a Log
-     * @example
-     * // Get one Log
-     * const log = await prisma.log.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends LogFindUniqueOrThrowArgs>(args: SelectSubset<T, LogFindUniqueOrThrowArgs<ExtArgs>>): Prisma__LogClient<$Result.GetResult<Prisma.$LogPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Log that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LogFindFirstArgs} args - Arguments to find a Log
-     * @example
-     * // Get one Log
-     * const log = await prisma.log.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends LogFindFirstArgs>(args?: SelectSubset<T, LogFindFirstArgs<ExtArgs>>): Prisma__LogClient<$Result.GetResult<Prisma.$LogPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Log that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LogFindFirstOrThrowArgs} args - Arguments to find a Log
-     * @example
-     * // Get one Log
-     * const log = await prisma.log.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends LogFindFirstOrThrowArgs>(args?: SelectSubset<T, LogFindFirstOrThrowArgs<ExtArgs>>): Prisma__LogClient<$Result.GetResult<Prisma.$LogPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Logs that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LogFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Logs
-     * const logs = await prisma.log.findMany()
-     * 
-     * // Get first 10 Logs
-     * const logs = await prisma.log.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const logWithIdOnly = await prisma.log.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends LogFindManyArgs>(args?: SelectSubset<T, LogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a Log.
-     * @param {LogCreateArgs} args - Arguments to create a Log.
-     * @example
-     * // Create one Log
-     * const Log = await prisma.log.create({
-     *   data: {
-     *     // ... data to create a Log
-     *   }
-     * })
-     * 
-     */
-    create<T extends LogCreateArgs>(args: SelectSubset<T, LogCreateArgs<ExtArgs>>): Prisma__LogClient<$Result.GetResult<Prisma.$LogPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Logs.
-     * @param {LogCreateManyArgs} args - Arguments to create many Logs.
-     * @example
-     * // Create many Logs
-     * const log = await prisma.log.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends LogCreateManyArgs>(args?: SelectSubset<T, LogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many Logs and returns the data saved in the database.
-     * @param {LogCreateManyAndReturnArgs} args - Arguments to create many Logs.
-     * @example
-     * // Create many Logs
-     * const log = await prisma.log.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many Logs and only return the `id`
-     * const logWithIdOnly = await prisma.log.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends LogCreateManyAndReturnArgs>(args?: SelectSubset<T, LogCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LogPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a Log.
-     * @param {LogDeleteArgs} args - Arguments to delete one Log.
-     * @example
-     * // Delete one Log
-     * const Log = await prisma.log.delete({
-     *   where: {
-     *     // ... filter to delete one Log
-     *   }
-     * })
-     * 
-     */
-    delete<T extends LogDeleteArgs>(args: SelectSubset<T, LogDeleteArgs<ExtArgs>>): Prisma__LogClient<$Result.GetResult<Prisma.$LogPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one Log.
-     * @param {LogUpdateArgs} args - Arguments to update one Log.
-     * @example
-     * // Update one Log
-     * const log = await prisma.log.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends LogUpdateArgs>(args: SelectSubset<T, LogUpdateArgs<ExtArgs>>): Prisma__LogClient<$Result.GetResult<Prisma.$LogPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Logs.
-     * @param {LogDeleteManyArgs} args - Arguments to filter Logs to delete.
-     * @example
-     * // Delete a few Logs
-     * const { count } = await prisma.log.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends LogDeleteManyArgs>(args?: SelectSubset<T, LogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Logs.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LogUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Logs
-     * const log = await prisma.log.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends LogUpdateManyArgs>(args: SelectSubset<T, LogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Logs and returns the data updated in the database.
-     * @param {LogUpdateManyAndReturnArgs} args - Arguments to update many Logs.
-     * @example
-     * // Update many Logs
-     * const log = await prisma.log.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more Logs and only return the `id`
-     * const logWithIdOnly = await prisma.log.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends LogUpdateManyAndReturnArgs>(args: SelectSubset<T, LogUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LogPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one Log.
-     * @param {LogUpsertArgs} args - Arguments to update or create a Log.
-     * @example
-     * // Update or create a Log
-     * const log = await prisma.log.upsert({
-     *   create: {
-     *     // ... data to create a Log
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Log we want to update
-     *   }
-     * })
-     */
-    upsert<T extends LogUpsertArgs>(args: SelectSubset<T, LogUpsertArgs<ExtArgs>>): Prisma__LogClient<$Result.GetResult<Prisma.$LogPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Logs.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LogCountArgs} args - Arguments to filter Logs to count.
-     * @example
-     * // Count the number of Logs
-     * const count = await prisma.log.count({
-     *   where: {
-     *     // ... the filter for the Logs we want to count
-     *   }
-     * })
-    **/
-    count<T extends LogCountArgs>(
-      args?: Subset<T, LogCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], LogCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Log.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LogAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends LogAggregateArgs>(args: Subset<T, LogAggregateArgs>): Prisma.PrismaPromise<GetLogAggregateType<T>>
-
-    /**
-     * Group by Log.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LogGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends LogGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: LogGroupByArgs['orderBy'] }
-        : { orderBy?: LogGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, LogGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLogGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the Log model
-   */
-  readonly fields: LogFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for Log.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__LogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    run<T extends RunDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RunDefaultArgs<ExtArgs>>): Prisma__RunClient<$Result.GetResult<Prisma.$RunPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the Log model
-   */
-  interface LogFieldRefs {
-    readonly id: FieldRef<"Log", 'String'>
-    readonly message: FieldRef<"Log", 'String'>
-    readonly type: FieldRef<"Log", 'LogType'>
-    readonly timestamp: FieldRef<"Log", 'DateTime'>
-    readonly runId: FieldRef<"Log", 'String'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * Log findUnique
-   */
-  export type LogFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Log
-     */
-    select?: LogSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Log
-     */
-    omit?: LogOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LogInclude<ExtArgs> | null
-    /**
-     * Filter, which Log to fetch.
-     */
-    where: LogWhereUniqueInput
-  }
-
-  /**
-   * Log findUniqueOrThrow
-   */
-  export type LogFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Log
-     */
-    select?: LogSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Log
-     */
-    omit?: LogOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LogInclude<ExtArgs> | null
-    /**
-     * Filter, which Log to fetch.
-     */
-    where: LogWhereUniqueInput
-  }
-
-  /**
-   * Log findFirst
-   */
-  export type LogFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Log
-     */
-    select?: LogSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Log
-     */
-    omit?: LogOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LogInclude<ExtArgs> | null
-    /**
-     * Filter, which Log to fetch.
-     */
-    where?: LogWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Logs to fetch.
-     */
-    orderBy?: LogOrderByWithRelationInput | LogOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Logs.
-     */
-    cursor?: LogWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Logs from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Logs.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Logs.
-     */
-    distinct?: LogScalarFieldEnum | LogScalarFieldEnum[]
-  }
-
-  /**
-   * Log findFirstOrThrow
-   */
-  export type LogFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Log
-     */
-    select?: LogSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Log
-     */
-    omit?: LogOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LogInclude<ExtArgs> | null
-    /**
-     * Filter, which Log to fetch.
-     */
-    where?: LogWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Logs to fetch.
-     */
-    orderBy?: LogOrderByWithRelationInput | LogOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Logs.
-     */
-    cursor?: LogWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Logs from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Logs.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Logs.
-     */
-    distinct?: LogScalarFieldEnum | LogScalarFieldEnum[]
-  }
-
-  /**
-   * Log findMany
-   */
-  export type LogFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Log
-     */
-    select?: LogSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Log
-     */
-    omit?: LogOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LogInclude<ExtArgs> | null
-    /**
-     * Filter, which Logs to fetch.
-     */
-    where?: LogWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Logs to fetch.
-     */
-    orderBy?: LogOrderByWithRelationInput | LogOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing Logs.
-     */
-    cursor?: LogWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Logs from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Logs.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Logs.
-     */
-    distinct?: LogScalarFieldEnum | LogScalarFieldEnum[]
-  }
-
-  /**
-   * Log create
-   */
-  export type LogCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Log
-     */
-    select?: LogSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Log
-     */
-    omit?: LogOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LogInclude<ExtArgs> | null
-    /**
-     * The data needed to create a Log.
-     */
-    data: XOR<LogCreateInput, LogUncheckedCreateInput>
-  }
-
-  /**
-   * Log createMany
-   */
-  export type LogCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many Logs.
-     */
-    data: LogCreateManyInput | LogCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * Log createManyAndReturn
-   */
-  export type LogCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Log
-     */
-    select?: LogSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Log
-     */
-    omit?: LogOmit<ExtArgs> | null
-    /**
-     * The data used to create many Logs.
-     */
-    data: LogCreateManyInput | LogCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LogIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * Log update
-   */
-  export type LogUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Log
-     */
-    select?: LogSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Log
-     */
-    omit?: LogOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LogInclude<ExtArgs> | null
-    /**
-     * The data needed to update a Log.
-     */
-    data: XOR<LogUpdateInput, LogUncheckedUpdateInput>
-    /**
-     * Choose, which Log to update.
-     */
-    where: LogWhereUniqueInput
-  }
-
-  /**
-   * Log updateMany
-   */
-  export type LogUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update Logs.
-     */
-    data: XOR<LogUpdateManyMutationInput, LogUncheckedUpdateManyInput>
-    /**
-     * Filter which Logs to update
-     */
-    where?: LogWhereInput
-    /**
-     * Limit how many Logs to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * Log updateManyAndReturn
-   */
-  export type LogUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Log
-     */
-    select?: LogSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Log
-     */
-    omit?: LogOmit<ExtArgs> | null
-    /**
-     * The data used to update Logs.
-     */
-    data: XOR<LogUpdateManyMutationInput, LogUncheckedUpdateManyInput>
-    /**
-     * Filter which Logs to update
-     */
-    where?: LogWhereInput
-    /**
-     * Limit how many Logs to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LogIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * Log upsert
-   */
-  export type LogUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Log
-     */
-    select?: LogSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Log
-     */
-    omit?: LogOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LogInclude<ExtArgs> | null
-    /**
-     * The filter to search for the Log to update in case it exists.
-     */
-    where: LogWhereUniqueInput
-    /**
-     * In case the Log found by the `where` argument doesn't exist, create a new Log with this data.
-     */
-    create: XOR<LogCreateInput, LogUncheckedCreateInput>
-    /**
-     * In case the Log was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<LogUpdateInput, LogUncheckedUpdateInput>
-  }
-
-  /**
-   * Log delete
-   */
-  export type LogDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Log
-     */
-    select?: LogSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Log
-     */
-    omit?: LogOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LogInclude<ExtArgs> | null
-    /**
-     * Filter which Log to delete.
-     */
-    where: LogWhereUniqueInput
-  }
-
-  /**
-   * Log deleteMany
-   */
-  export type LogDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Logs to delete
-     */
-    where?: LogWhereInput
-    /**
-     * Limit how many Logs to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * Log without action
-   */
-  export type LogDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Log
-     */
-    select?: LogSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Log
-     */
-    omit?: LogOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LogInclude<ExtArgs> | null
-  }
-
-
-  /**
    * Model Sandbox
    */
 
@@ -7017,7 +4699,8 @@ export namespace Prisma {
     id: string | null
     e2bId: string | null
     status: $Enums.SandboxStatus | null
-    runId: string | null
+    previewUrl: string | null
+    projectId: string | null
     createdAt: Date | null
     destroyedAt: Date | null
   }
@@ -7026,7 +4709,8 @@ export namespace Prisma {
     id: string | null
     e2bId: string | null
     status: $Enums.SandboxStatus | null
-    runId: string | null
+    previewUrl: string | null
+    projectId: string | null
     createdAt: Date | null
     destroyedAt: Date | null
   }
@@ -7035,7 +4719,8 @@ export namespace Prisma {
     id: number
     e2bId: number
     status: number
-    runId: number
+    previewUrl: number
+    projectId: number
     createdAt: number
     destroyedAt: number
     _all: number
@@ -7046,7 +4731,8 @@ export namespace Prisma {
     id?: true
     e2bId?: true
     status?: true
-    runId?: true
+    previewUrl?: true
+    projectId?: true
     createdAt?: true
     destroyedAt?: true
   }
@@ -7055,7 +4741,8 @@ export namespace Prisma {
     id?: true
     e2bId?: true
     status?: true
-    runId?: true
+    previewUrl?: true
+    projectId?: true
     createdAt?: true
     destroyedAt?: true
   }
@@ -7064,7 +4751,8 @@ export namespace Prisma {
     id?: true
     e2bId?: true
     status?: true
-    runId?: true
+    previewUrl?: true
+    projectId?: true
     createdAt?: true
     destroyedAt?: true
     _all?: true
@@ -7146,7 +4834,8 @@ export namespace Prisma {
     id: string
     e2bId: string
     status: $Enums.SandboxStatus
-    runId: string
+    previewUrl: string | null
+    projectId: string
     createdAt: Date
     destroyedAt: Date | null
     _count: SandboxCountAggregateOutputType | null
@@ -7172,62 +4861,67 @@ export namespace Prisma {
     id?: boolean
     e2bId?: boolean
     status?: boolean
-    runId?: boolean
+    previewUrl?: boolean
+    projectId?: boolean
     createdAt?: boolean
     destroyedAt?: boolean
-    run?: boolean | RunDefaultArgs<ExtArgs>
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["sandbox"]>
 
   export type SandboxSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     e2bId?: boolean
     status?: boolean
-    runId?: boolean
+    previewUrl?: boolean
+    projectId?: boolean
     createdAt?: boolean
     destroyedAt?: boolean
-    run?: boolean | RunDefaultArgs<ExtArgs>
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["sandbox"]>
 
   export type SandboxSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     e2bId?: boolean
     status?: boolean
-    runId?: boolean
+    previewUrl?: boolean
+    projectId?: boolean
     createdAt?: boolean
     destroyedAt?: boolean
-    run?: boolean | RunDefaultArgs<ExtArgs>
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["sandbox"]>
 
   export type SandboxSelectScalar = {
     id?: boolean
     e2bId?: boolean
     status?: boolean
-    runId?: boolean
+    previewUrl?: boolean
+    projectId?: boolean
     createdAt?: boolean
     destroyedAt?: boolean
   }
 
-  export type SandboxOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "e2bId" | "status" | "runId" | "createdAt" | "destroyedAt", ExtArgs["result"]["sandbox"]>
+  export type SandboxOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "e2bId" | "status" | "previewUrl" | "projectId" | "createdAt" | "destroyedAt", ExtArgs["result"]["sandbox"]>
   export type SandboxInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    run?: boolean | RunDefaultArgs<ExtArgs>
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
   }
   export type SandboxIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    run?: boolean | RunDefaultArgs<ExtArgs>
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
   }
   export type SandboxIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    run?: boolean | RunDefaultArgs<ExtArgs>
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
   }
 
   export type $SandboxPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Sandbox"
     objects: {
-      run: Prisma.$RunPayload<ExtArgs>
+      project: Prisma.$ProjectPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       e2bId: string
       status: $Enums.SandboxStatus
-      runId: string
+      previewUrl: string | null
+      projectId: string
       createdAt: Date
       destroyedAt: Date | null
     }, ExtArgs["result"]["sandbox"]>
@@ -7624,7 +5318,7 @@ export namespace Prisma {
    */
   export interface Prisma__SandboxClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    run<T extends RunDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RunDefaultArgs<ExtArgs>>): Prisma__RunClient<$Result.GetResult<Prisma.$RunPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    project<T extends ProjectDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProjectDefaultArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7657,7 +5351,8 @@ export namespace Prisma {
     readonly id: FieldRef<"Sandbox", 'String'>
     readonly e2bId: FieldRef<"Sandbox", 'String'>
     readonly status: FieldRef<"Sandbox", 'SandboxStatus'>
-    readonly runId: FieldRef<"Sandbox", 'String'>
+    readonly previewUrl: FieldRef<"Sandbox", 'String'>
+    readonly projectId: FieldRef<"Sandbox", 'String'>
     readonly createdAt: FieldRef<"Sandbox", 'DateTime'>
     readonly destroyedAt: FieldRef<"Sandbox", 'DateTime'>
   }
@@ -8080,6 +5775,1069 @@ export namespace Prisma {
 
 
   /**
+   * Model Log
+   */
+
+  export type AggregateLog = {
+    _count: LogCountAggregateOutputType | null
+    _min: LogMinAggregateOutputType | null
+    _max: LogMaxAggregateOutputType | null
+  }
+
+  export type LogMinAggregateOutputType = {
+    id: string | null
+    message: string | null
+    type: $Enums.LogType | null
+    timestamp: Date | null
+    projectId: string | null
+  }
+
+  export type LogMaxAggregateOutputType = {
+    id: string | null
+    message: string | null
+    type: $Enums.LogType | null
+    timestamp: Date | null
+    projectId: string | null
+  }
+
+  export type LogCountAggregateOutputType = {
+    id: number
+    message: number
+    type: number
+    timestamp: number
+    projectId: number
+    _all: number
+  }
+
+
+  export type LogMinAggregateInputType = {
+    id?: true
+    message?: true
+    type?: true
+    timestamp?: true
+    projectId?: true
+  }
+
+  export type LogMaxAggregateInputType = {
+    id?: true
+    message?: true
+    type?: true
+    timestamp?: true
+    projectId?: true
+  }
+
+  export type LogCountAggregateInputType = {
+    id?: true
+    message?: true
+    type?: true
+    timestamp?: true
+    projectId?: true
+    _all?: true
+  }
+
+  export type LogAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Log to aggregate.
+     */
+    where?: LogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Logs to fetch.
+     */
+    orderBy?: LogOrderByWithRelationInput | LogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: LogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Logs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Logs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Logs
+    **/
+    _count?: true | LogCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: LogMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: LogMaxAggregateInputType
+  }
+
+  export type GetLogAggregateType<T extends LogAggregateArgs> = {
+        [P in keyof T & keyof AggregateLog]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateLog[P]>
+      : GetScalarType<T[P], AggregateLog[P]>
+  }
+
+
+
+
+  export type LogGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LogWhereInput
+    orderBy?: LogOrderByWithAggregationInput | LogOrderByWithAggregationInput[]
+    by: LogScalarFieldEnum[] | LogScalarFieldEnum
+    having?: LogScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: LogCountAggregateInputType | true
+    _min?: LogMinAggregateInputType
+    _max?: LogMaxAggregateInputType
+  }
+
+  export type LogGroupByOutputType = {
+    id: string
+    message: string
+    type: $Enums.LogType
+    timestamp: Date
+    projectId: string
+    _count: LogCountAggregateOutputType | null
+    _min: LogMinAggregateOutputType | null
+    _max: LogMaxAggregateOutputType | null
+  }
+
+  type GetLogGroupByPayload<T extends LogGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<LogGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof LogGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], LogGroupByOutputType[P]>
+            : GetScalarType<T[P], LogGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type LogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    message?: boolean
+    type?: boolean
+    timestamp?: boolean
+    projectId?: boolean
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["log"]>
+
+  export type LogSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    message?: boolean
+    type?: boolean
+    timestamp?: boolean
+    projectId?: boolean
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["log"]>
+
+  export type LogSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    message?: boolean
+    type?: boolean
+    timestamp?: boolean
+    projectId?: boolean
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["log"]>
+
+  export type LogSelectScalar = {
+    id?: boolean
+    message?: boolean
+    type?: boolean
+    timestamp?: boolean
+    projectId?: boolean
+  }
+
+  export type LogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "message" | "type" | "timestamp" | "projectId", ExtArgs["result"]["log"]>
+  export type LogInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }
+  export type LogIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }
+  export type LogIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }
+
+  export type $LogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Log"
+    objects: {
+      project: Prisma.$ProjectPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      message: string
+      type: $Enums.LogType
+      timestamp: Date
+      projectId: string
+    }, ExtArgs["result"]["log"]>
+    composites: {}
+  }
+
+  type LogGetPayload<S extends boolean | null | undefined | LogDefaultArgs> = $Result.GetResult<Prisma.$LogPayload, S>
+
+  type LogCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<LogFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: LogCountAggregateInputType | true
+    }
+
+  export interface LogDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Log'], meta: { name: 'Log' } }
+    /**
+     * Find zero or one Log that matches the filter.
+     * @param {LogFindUniqueArgs} args - Arguments to find a Log
+     * @example
+     * // Get one Log
+     * const log = await prisma.log.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends LogFindUniqueArgs>(args: SelectSubset<T, LogFindUniqueArgs<ExtArgs>>): Prisma__LogClient<$Result.GetResult<Prisma.$LogPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Log that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {LogFindUniqueOrThrowArgs} args - Arguments to find a Log
+     * @example
+     * // Get one Log
+     * const log = await prisma.log.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends LogFindUniqueOrThrowArgs>(args: SelectSubset<T, LogFindUniqueOrThrowArgs<ExtArgs>>): Prisma__LogClient<$Result.GetResult<Prisma.$LogPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Log that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LogFindFirstArgs} args - Arguments to find a Log
+     * @example
+     * // Get one Log
+     * const log = await prisma.log.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends LogFindFirstArgs>(args?: SelectSubset<T, LogFindFirstArgs<ExtArgs>>): Prisma__LogClient<$Result.GetResult<Prisma.$LogPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Log that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LogFindFirstOrThrowArgs} args - Arguments to find a Log
+     * @example
+     * // Get one Log
+     * const log = await prisma.log.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends LogFindFirstOrThrowArgs>(args?: SelectSubset<T, LogFindFirstOrThrowArgs<ExtArgs>>): Prisma__LogClient<$Result.GetResult<Prisma.$LogPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Logs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LogFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Logs
+     * const logs = await prisma.log.findMany()
+     * 
+     * // Get first 10 Logs
+     * const logs = await prisma.log.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const logWithIdOnly = await prisma.log.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends LogFindManyArgs>(args?: SelectSubset<T, LogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Log.
+     * @param {LogCreateArgs} args - Arguments to create a Log.
+     * @example
+     * // Create one Log
+     * const Log = await prisma.log.create({
+     *   data: {
+     *     // ... data to create a Log
+     *   }
+     * })
+     * 
+     */
+    create<T extends LogCreateArgs>(args: SelectSubset<T, LogCreateArgs<ExtArgs>>): Prisma__LogClient<$Result.GetResult<Prisma.$LogPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Logs.
+     * @param {LogCreateManyArgs} args - Arguments to create many Logs.
+     * @example
+     * // Create many Logs
+     * const log = await prisma.log.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends LogCreateManyArgs>(args?: SelectSubset<T, LogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Logs and returns the data saved in the database.
+     * @param {LogCreateManyAndReturnArgs} args - Arguments to create many Logs.
+     * @example
+     * // Create many Logs
+     * const log = await prisma.log.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Logs and only return the `id`
+     * const logWithIdOnly = await prisma.log.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends LogCreateManyAndReturnArgs>(args?: SelectSubset<T, LogCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LogPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Log.
+     * @param {LogDeleteArgs} args - Arguments to delete one Log.
+     * @example
+     * // Delete one Log
+     * const Log = await prisma.log.delete({
+     *   where: {
+     *     // ... filter to delete one Log
+     *   }
+     * })
+     * 
+     */
+    delete<T extends LogDeleteArgs>(args: SelectSubset<T, LogDeleteArgs<ExtArgs>>): Prisma__LogClient<$Result.GetResult<Prisma.$LogPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Log.
+     * @param {LogUpdateArgs} args - Arguments to update one Log.
+     * @example
+     * // Update one Log
+     * const log = await prisma.log.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends LogUpdateArgs>(args: SelectSubset<T, LogUpdateArgs<ExtArgs>>): Prisma__LogClient<$Result.GetResult<Prisma.$LogPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Logs.
+     * @param {LogDeleteManyArgs} args - Arguments to filter Logs to delete.
+     * @example
+     * // Delete a few Logs
+     * const { count } = await prisma.log.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends LogDeleteManyArgs>(args?: SelectSubset<T, LogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Logs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LogUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Logs
+     * const log = await prisma.log.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends LogUpdateManyArgs>(args: SelectSubset<T, LogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Logs and returns the data updated in the database.
+     * @param {LogUpdateManyAndReturnArgs} args - Arguments to update many Logs.
+     * @example
+     * // Update many Logs
+     * const log = await prisma.log.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Logs and only return the `id`
+     * const logWithIdOnly = await prisma.log.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends LogUpdateManyAndReturnArgs>(args: SelectSubset<T, LogUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LogPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Log.
+     * @param {LogUpsertArgs} args - Arguments to update or create a Log.
+     * @example
+     * // Update or create a Log
+     * const log = await prisma.log.upsert({
+     *   create: {
+     *     // ... data to create a Log
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Log we want to update
+     *   }
+     * })
+     */
+    upsert<T extends LogUpsertArgs>(args: SelectSubset<T, LogUpsertArgs<ExtArgs>>): Prisma__LogClient<$Result.GetResult<Prisma.$LogPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Logs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LogCountArgs} args - Arguments to filter Logs to count.
+     * @example
+     * // Count the number of Logs
+     * const count = await prisma.log.count({
+     *   where: {
+     *     // ... the filter for the Logs we want to count
+     *   }
+     * })
+    **/
+    count<T extends LogCountArgs>(
+      args?: Subset<T, LogCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], LogCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Log.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LogAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends LogAggregateArgs>(args: Subset<T, LogAggregateArgs>): Prisma.PrismaPromise<GetLogAggregateType<T>>
+
+    /**
+     * Group by Log.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LogGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends LogGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: LogGroupByArgs['orderBy'] }
+        : { orderBy?: LogGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, LogGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLogGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Log model
+   */
+  readonly fields: LogFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Log.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__LogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    project<T extends ProjectDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProjectDefaultArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Log model
+   */
+  interface LogFieldRefs {
+    readonly id: FieldRef<"Log", 'String'>
+    readonly message: FieldRef<"Log", 'String'>
+    readonly type: FieldRef<"Log", 'LogType'>
+    readonly timestamp: FieldRef<"Log", 'DateTime'>
+    readonly projectId: FieldRef<"Log", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Log findUnique
+   */
+  export type LogFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Log
+     */
+    select?: LogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Log
+     */
+    omit?: LogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LogInclude<ExtArgs> | null
+    /**
+     * Filter, which Log to fetch.
+     */
+    where: LogWhereUniqueInput
+  }
+
+  /**
+   * Log findUniqueOrThrow
+   */
+  export type LogFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Log
+     */
+    select?: LogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Log
+     */
+    omit?: LogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LogInclude<ExtArgs> | null
+    /**
+     * Filter, which Log to fetch.
+     */
+    where: LogWhereUniqueInput
+  }
+
+  /**
+   * Log findFirst
+   */
+  export type LogFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Log
+     */
+    select?: LogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Log
+     */
+    omit?: LogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LogInclude<ExtArgs> | null
+    /**
+     * Filter, which Log to fetch.
+     */
+    where?: LogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Logs to fetch.
+     */
+    orderBy?: LogOrderByWithRelationInput | LogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Logs.
+     */
+    cursor?: LogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Logs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Logs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Logs.
+     */
+    distinct?: LogScalarFieldEnum | LogScalarFieldEnum[]
+  }
+
+  /**
+   * Log findFirstOrThrow
+   */
+  export type LogFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Log
+     */
+    select?: LogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Log
+     */
+    omit?: LogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LogInclude<ExtArgs> | null
+    /**
+     * Filter, which Log to fetch.
+     */
+    where?: LogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Logs to fetch.
+     */
+    orderBy?: LogOrderByWithRelationInput | LogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Logs.
+     */
+    cursor?: LogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Logs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Logs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Logs.
+     */
+    distinct?: LogScalarFieldEnum | LogScalarFieldEnum[]
+  }
+
+  /**
+   * Log findMany
+   */
+  export type LogFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Log
+     */
+    select?: LogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Log
+     */
+    omit?: LogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LogInclude<ExtArgs> | null
+    /**
+     * Filter, which Logs to fetch.
+     */
+    where?: LogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Logs to fetch.
+     */
+    orderBy?: LogOrderByWithRelationInput | LogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Logs.
+     */
+    cursor?: LogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Logs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Logs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Logs.
+     */
+    distinct?: LogScalarFieldEnum | LogScalarFieldEnum[]
+  }
+
+  /**
+   * Log create
+   */
+  export type LogCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Log
+     */
+    select?: LogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Log
+     */
+    omit?: LogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LogInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Log.
+     */
+    data: XOR<LogCreateInput, LogUncheckedCreateInput>
+  }
+
+  /**
+   * Log createMany
+   */
+  export type LogCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Logs.
+     */
+    data: LogCreateManyInput | LogCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Log createManyAndReturn
+   */
+  export type LogCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Log
+     */
+    select?: LogSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Log
+     */
+    omit?: LogOmit<ExtArgs> | null
+    /**
+     * The data used to create many Logs.
+     */
+    data: LogCreateManyInput | LogCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LogIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Log update
+   */
+  export type LogUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Log
+     */
+    select?: LogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Log
+     */
+    omit?: LogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LogInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Log.
+     */
+    data: XOR<LogUpdateInput, LogUncheckedUpdateInput>
+    /**
+     * Choose, which Log to update.
+     */
+    where: LogWhereUniqueInput
+  }
+
+  /**
+   * Log updateMany
+   */
+  export type LogUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Logs.
+     */
+    data: XOR<LogUpdateManyMutationInput, LogUncheckedUpdateManyInput>
+    /**
+     * Filter which Logs to update
+     */
+    where?: LogWhereInput
+    /**
+     * Limit how many Logs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Log updateManyAndReturn
+   */
+  export type LogUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Log
+     */
+    select?: LogSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Log
+     */
+    omit?: LogOmit<ExtArgs> | null
+    /**
+     * The data used to update Logs.
+     */
+    data: XOR<LogUpdateManyMutationInput, LogUncheckedUpdateManyInput>
+    /**
+     * Filter which Logs to update
+     */
+    where?: LogWhereInput
+    /**
+     * Limit how many Logs to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LogIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Log upsert
+   */
+  export type LogUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Log
+     */
+    select?: LogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Log
+     */
+    omit?: LogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LogInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Log to update in case it exists.
+     */
+    where: LogWhereUniqueInput
+    /**
+     * In case the Log found by the `where` argument doesn't exist, create a new Log with this data.
+     */
+    create: XOR<LogCreateInput, LogUncheckedCreateInput>
+    /**
+     * In case the Log was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<LogUpdateInput, LogUncheckedUpdateInput>
+  }
+
+  /**
+   * Log delete
+   */
+  export type LogDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Log
+     */
+    select?: LogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Log
+     */
+    omit?: LogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LogInclude<ExtArgs> | null
+    /**
+     * Filter which Log to delete.
+     */
+    where: LogWhereUniqueInput
+  }
+
+  /**
+   * Log deleteMany
+   */
+  export type LogDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Logs to delete
+     */
+    where?: LogWhereInput
+    /**
+     * Limit how many Logs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Log without action
+   */
+  export type LogDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Log
+     */
+    select?: LogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Log
+     */
+    omit?: LogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LogInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -8130,17 +6888,17 @@ export namespace Prisma {
   export type FileScalarFieldEnum = (typeof FileScalarFieldEnum)[keyof typeof FileScalarFieldEnum]
 
 
-  export const RunScalarFieldEnum: {
+  export const SandboxScalarFieldEnum: {
     id: 'id',
+    e2bId: 'e2bId',
     status: 'status',
-    startedAt: 'startedAt',
-    finishedAt: 'finishedAt',
+    previewUrl: 'previewUrl',
     projectId: 'projectId',
-    error: 'error',
-    createdAt: 'createdAt'
+    createdAt: 'createdAt',
+    destroyedAt: 'destroyedAt'
   };
 
-  export type RunScalarFieldEnum = (typeof RunScalarFieldEnum)[keyof typeof RunScalarFieldEnum]
+  export type SandboxScalarFieldEnum = (typeof SandboxScalarFieldEnum)[keyof typeof SandboxScalarFieldEnum]
 
 
   export const LogScalarFieldEnum: {
@@ -8148,22 +6906,10 @@ export namespace Prisma {
     message: 'message',
     type: 'type',
     timestamp: 'timestamp',
-    runId: 'runId'
+    projectId: 'projectId'
   };
 
   export type LogScalarFieldEnum = (typeof LogScalarFieldEnum)[keyof typeof LogScalarFieldEnum]
-
-
-  export const SandboxScalarFieldEnum: {
-    id: 'id',
-    e2bId: 'e2bId',
-    status: 'status',
-    runId: 'runId',
-    createdAt: 'createdAt',
-    destroyedAt: 'destroyedAt'
-  };
-
-  export type SandboxScalarFieldEnum = (typeof SandboxScalarFieldEnum)[keyof typeof SandboxScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -8224,16 +6970,16 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'RunStatus'
+   * Reference to a field of type 'SandboxStatus'
    */
-  export type EnumRunStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RunStatus'>
+  export type EnumSandboxStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SandboxStatus'>
     
 
 
   /**
-   * Reference to a field of type 'RunStatus[]'
+   * Reference to a field of type 'SandboxStatus[]'
    */
-  export type ListEnumRunStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RunStatus[]'>
+  export type ListEnumSandboxStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SandboxStatus[]'>
     
 
 
@@ -8248,20 +6994,6 @@ export namespace Prisma {
    * Reference to a field of type 'LogType[]'
    */
   export type ListEnumLogTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LogType[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'SandboxStatus'
-   */
-  export type EnumSandboxStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SandboxStatus'>
-    
-
-
-  /**
-   * Reference to a field of type 'SandboxStatus[]'
-   */
-  export type ListEnumSandboxStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SandboxStatus[]'>
     
 
 
@@ -8349,7 +7081,8 @@ export namespace Prisma {
     userId?: StringNullableFilter<"Project"> | string | null
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     files?: FileListRelationFilter
-    runs?: RunListRelationFilter
+    sandbox?: XOR<SandboxNullableScalarRelationFilter, SandboxWhereInput> | null
+    logs?: LogListRelationFilter
   }
 
   export type ProjectOrderByWithRelationInput = {
@@ -8361,7 +7094,8 @@ export namespace Prisma {
     userId?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
     files?: FileOrderByRelationAggregateInput
-    runs?: RunOrderByRelationAggregateInput
+    sandbox?: SandboxOrderByWithRelationInput
+    logs?: LogOrderByRelationAggregateInput
   }
 
   export type ProjectWhereUniqueInput = Prisma.AtLeast<{
@@ -8376,7 +7110,8 @@ export namespace Prisma {
     userId?: StringNullableFilter<"Project"> | string | null
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     files?: FileListRelationFilter
-    runs?: RunListRelationFilter
+    sandbox?: XOR<SandboxNullableScalarRelationFilter, SandboxWhereInput> | null
+    logs?: LogListRelationFilter
   }, "id">
 
   export type ProjectOrderByWithAggregationInput = {
@@ -8432,6 +7167,7 @@ export namespace Prisma {
 
   export type FileWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    projectId_path?: FileProjectIdPathCompoundUniqueInput
     AND?: FileWhereInput | FileWhereInput[]
     OR?: FileWhereInput[]
     NOT?: FileWhereInput | FileWhereInput[]
@@ -8443,7 +7179,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"File"> | Date | string
     updatedAt?: DateTimeFilter<"File"> | Date | string
     project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
-  }, "id">
+  }, "id" | "projectId_path">
 
   export type FileOrderByWithAggregationInput = {
     id?: SortOrder
@@ -8473,132 +7209,6 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"File"> | Date | string
   }
 
-  export type RunWhereInput = {
-    AND?: RunWhereInput | RunWhereInput[]
-    OR?: RunWhereInput[]
-    NOT?: RunWhereInput | RunWhereInput[]
-    id?: StringFilter<"Run"> | string
-    status?: EnumRunStatusFilter<"Run"> | $Enums.RunStatus
-    startedAt?: DateTimeNullableFilter<"Run"> | Date | string | null
-    finishedAt?: DateTimeNullableFilter<"Run"> | Date | string | null
-    projectId?: StringFilter<"Run"> | string
-    error?: StringNullableFilter<"Run"> | string | null
-    createdAt?: DateTimeFilter<"Run"> | Date | string
-    project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
-    sandbox?: XOR<SandboxNullableScalarRelationFilter, SandboxWhereInput> | null
-    logs?: LogListRelationFilter
-  }
-
-  export type RunOrderByWithRelationInput = {
-    id?: SortOrder
-    status?: SortOrder
-    startedAt?: SortOrderInput | SortOrder
-    finishedAt?: SortOrderInput | SortOrder
-    projectId?: SortOrder
-    error?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    project?: ProjectOrderByWithRelationInput
-    sandbox?: SandboxOrderByWithRelationInput
-    logs?: LogOrderByRelationAggregateInput
-  }
-
-  export type RunWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: RunWhereInput | RunWhereInput[]
-    OR?: RunWhereInput[]
-    NOT?: RunWhereInput | RunWhereInput[]
-    status?: EnumRunStatusFilter<"Run"> | $Enums.RunStatus
-    startedAt?: DateTimeNullableFilter<"Run"> | Date | string | null
-    finishedAt?: DateTimeNullableFilter<"Run"> | Date | string | null
-    projectId?: StringFilter<"Run"> | string
-    error?: StringNullableFilter<"Run"> | string | null
-    createdAt?: DateTimeFilter<"Run"> | Date | string
-    project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
-    sandbox?: XOR<SandboxNullableScalarRelationFilter, SandboxWhereInput> | null
-    logs?: LogListRelationFilter
-  }, "id">
-
-  export type RunOrderByWithAggregationInput = {
-    id?: SortOrder
-    status?: SortOrder
-    startedAt?: SortOrderInput | SortOrder
-    finishedAt?: SortOrderInput | SortOrder
-    projectId?: SortOrder
-    error?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    _count?: RunCountOrderByAggregateInput
-    _max?: RunMaxOrderByAggregateInput
-    _min?: RunMinOrderByAggregateInput
-  }
-
-  export type RunScalarWhereWithAggregatesInput = {
-    AND?: RunScalarWhereWithAggregatesInput | RunScalarWhereWithAggregatesInput[]
-    OR?: RunScalarWhereWithAggregatesInput[]
-    NOT?: RunScalarWhereWithAggregatesInput | RunScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"Run"> | string
-    status?: EnumRunStatusWithAggregatesFilter<"Run"> | $Enums.RunStatus
-    startedAt?: DateTimeNullableWithAggregatesFilter<"Run"> | Date | string | null
-    finishedAt?: DateTimeNullableWithAggregatesFilter<"Run"> | Date | string | null
-    projectId?: StringWithAggregatesFilter<"Run"> | string
-    error?: StringNullableWithAggregatesFilter<"Run"> | string | null
-    createdAt?: DateTimeWithAggregatesFilter<"Run"> | Date | string
-  }
-
-  export type LogWhereInput = {
-    AND?: LogWhereInput | LogWhereInput[]
-    OR?: LogWhereInput[]
-    NOT?: LogWhereInput | LogWhereInput[]
-    id?: StringFilter<"Log"> | string
-    message?: StringFilter<"Log"> | string
-    type?: EnumLogTypeFilter<"Log"> | $Enums.LogType
-    timestamp?: DateTimeFilter<"Log"> | Date | string
-    runId?: StringFilter<"Log"> | string
-    run?: XOR<RunScalarRelationFilter, RunWhereInput>
-  }
-
-  export type LogOrderByWithRelationInput = {
-    id?: SortOrder
-    message?: SortOrder
-    type?: SortOrder
-    timestamp?: SortOrder
-    runId?: SortOrder
-    run?: RunOrderByWithRelationInput
-  }
-
-  export type LogWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: LogWhereInput | LogWhereInput[]
-    OR?: LogWhereInput[]
-    NOT?: LogWhereInput | LogWhereInput[]
-    message?: StringFilter<"Log"> | string
-    type?: EnumLogTypeFilter<"Log"> | $Enums.LogType
-    timestamp?: DateTimeFilter<"Log"> | Date | string
-    runId?: StringFilter<"Log"> | string
-    run?: XOR<RunScalarRelationFilter, RunWhereInput>
-  }, "id">
-
-  export type LogOrderByWithAggregationInput = {
-    id?: SortOrder
-    message?: SortOrder
-    type?: SortOrder
-    timestamp?: SortOrder
-    runId?: SortOrder
-    _count?: LogCountOrderByAggregateInput
-    _max?: LogMaxOrderByAggregateInput
-    _min?: LogMinOrderByAggregateInput
-  }
-
-  export type LogScalarWhereWithAggregatesInput = {
-    AND?: LogScalarWhereWithAggregatesInput | LogScalarWhereWithAggregatesInput[]
-    OR?: LogScalarWhereWithAggregatesInput[]
-    NOT?: LogScalarWhereWithAggregatesInput | LogScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"Log"> | string
-    message?: StringWithAggregatesFilter<"Log"> | string
-    type?: EnumLogTypeWithAggregatesFilter<"Log"> | $Enums.LogType
-    timestamp?: DateTimeWithAggregatesFilter<"Log"> | Date | string
-    runId?: StringWithAggregatesFilter<"Log"> | string
-  }
-
   export type SandboxWhereInput = {
     AND?: SandboxWhereInput | SandboxWhereInput[]
     OR?: SandboxWhereInput[]
@@ -8606,40 +7216,44 @@ export namespace Prisma {
     id?: StringFilter<"Sandbox"> | string
     e2bId?: StringFilter<"Sandbox"> | string
     status?: EnumSandboxStatusFilter<"Sandbox"> | $Enums.SandboxStatus
-    runId?: StringFilter<"Sandbox"> | string
+    previewUrl?: StringNullableFilter<"Sandbox"> | string | null
+    projectId?: StringFilter<"Sandbox"> | string
     createdAt?: DateTimeFilter<"Sandbox"> | Date | string
     destroyedAt?: DateTimeNullableFilter<"Sandbox"> | Date | string | null
-    run?: XOR<RunScalarRelationFilter, RunWhereInput>
+    project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
   }
 
   export type SandboxOrderByWithRelationInput = {
     id?: SortOrder
     e2bId?: SortOrder
     status?: SortOrder
-    runId?: SortOrder
+    previewUrl?: SortOrderInput | SortOrder
+    projectId?: SortOrder
     createdAt?: SortOrder
     destroyedAt?: SortOrderInput | SortOrder
-    run?: RunOrderByWithRelationInput
+    project?: ProjectOrderByWithRelationInput
   }
 
   export type SandboxWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    runId?: string
+    projectId?: string
     AND?: SandboxWhereInput | SandboxWhereInput[]
     OR?: SandboxWhereInput[]
     NOT?: SandboxWhereInput | SandboxWhereInput[]
     e2bId?: StringFilter<"Sandbox"> | string
     status?: EnumSandboxStatusFilter<"Sandbox"> | $Enums.SandboxStatus
+    previewUrl?: StringNullableFilter<"Sandbox"> | string | null
     createdAt?: DateTimeFilter<"Sandbox"> | Date | string
     destroyedAt?: DateTimeNullableFilter<"Sandbox"> | Date | string | null
-    run?: XOR<RunScalarRelationFilter, RunWhereInput>
-  }, "id" | "runId">
+    project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
+  }, "id" | "projectId">
 
   export type SandboxOrderByWithAggregationInput = {
     id?: SortOrder
     e2bId?: SortOrder
     status?: SortOrder
-    runId?: SortOrder
+    previewUrl?: SortOrderInput | SortOrder
+    projectId?: SortOrder
     createdAt?: SortOrder
     destroyedAt?: SortOrderInput | SortOrder
     _count?: SandboxCountOrderByAggregateInput
@@ -8654,9 +7268,65 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Sandbox"> | string
     e2bId?: StringWithAggregatesFilter<"Sandbox"> | string
     status?: EnumSandboxStatusWithAggregatesFilter<"Sandbox"> | $Enums.SandboxStatus
-    runId?: StringWithAggregatesFilter<"Sandbox"> | string
+    previewUrl?: StringNullableWithAggregatesFilter<"Sandbox"> | string | null
+    projectId?: StringWithAggregatesFilter<"Sandbox"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Sandbox"> | Date | string
     destroyedAt?: DateTimeNullableWithAggregatesFilter<"Sandbox"> | Date | string | null
+  }
+
+  export type LogWhereInput = {
+    AND?: LogWhereInput | LogWhereInput[]
+    OR?: LogWhereInput[]
+    NOT?: LogWhereInput | LogWhereInput[]
+    id?: StringFilter<"Log"> | string
+    message?: StringFilter<"Log"> | string
+    type?: EnumLogTypeFilter<"Log"> | $Enums.LogType
+    timestamp?: DateTimeFilter<"Log"> | Date | string
+    projectId?: StringFilter<"Log"> | string
+    project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
+  }
+
+  export type LogOrderByWithRelationInput = {
+    id?: SortOrder
+    message?: SortOrder
+    type?: SortOrder
+    timestamp?: SortOrder
+    projectId?: SortOrder
+    project?: ProjectOrderByWithRelationInput
+  }
+
+  export type LogWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: LogWhereInput | LogWhereInput[]
+    OR?: LogWhereInput[]
+    NOT?: LogWhereInput | LogWhereInput[]
+    message?: StringFilter<"Log"> | string
+    type?: EnumLogTypeFilter<"Log"> | $Enums.LogType
+    timestamp?: DateTimeFilter<"Log"> | Date | string
+    projectId?: StringFilter<"Log"> | string
+    project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
+  }, "id">
+
+  export type LogOrderByWithAggregationInput = {
+    id?: SortOrder
+    message?: SortOrder
+    type?: SortOrder
+    timestamp?: SortOrder
+    projectId?: SortOrder
+    _count?: LogCountOrderByAggregateInput
+    _max?: LogMaxOrderByAggregateInput
+    _min?: LogMinOrderByAggregateInput
+  }
+
+  export type LogScalarWhereWithAggregatesInput = {
+    AND?: LogScalarWhereWithAggregatesInput | LogScalarWhereWithAggregatesInput[]
+    OR?: LogScalarWhereWithAggregatesInput[]
+    NOT?: LogScalarWhereWithAggregatesInput | LogScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Log"> | string
+    message?: StringWithAggregatesFilter<"Log"> | string
+    type?: EnumLogTypeWithAggregatesFilter<"Log"> | $Enums.LogType
+    timestamp?: DateTimeWithAggregatesFilter<"Log"> | Date | string
+    projectId?: StringWithAggregatesFilter<"Log"> | string
   }
 
   export type UserCreateInput = {
@@ -8727,7 +7397,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutProjectsInput
     files?: FileCreateNestedManyWithoutProjectInput
-    runs?: RunCreateNestedManyWithoutProjectInput
+    sandbox?: SandboxCreateNestedOneWithoutProjectInput
+    logs?: LogCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateInput = {
@@ -8738,7 +7409,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId?: string | null
     files?: FileUncheckedCreateNestedManyWithoutProjectInput
-    runs?: RunUncheckedCreateNestedManyWithoutProjectInput
+    sandbox?: SandboxUncheckedCreateNestedOneWithoutProjectInput
+    logs?: LogUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUpdateInput = {
@@ -8749,7 +7421,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutProjectsNestedInput
     files?: FileUpdateManyWithoutProjectNestedInput
-    runs?: RunUpdateManyWithoutProjectNestedInput
+    sandbox?: SandboxUpdateOneWithoutProjectNestedInput
+    logs?: LogUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateInput = {
@@ -8760,7 +7433,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     files?: FileUncheckedUpdateManyWithoutProjectNestedInput
-    runs?: RunUncheckedUpdateManyWithoutProjectNestedInput
+    sandbox?: SandboxUncheckedUpdateOneWithoutProjectNestedInput
+    logs?: LogUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectCreateManyInput = {
@@ -8865,81 +7539,73 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type RunCreateInput = {
+  export type SandboxCreateInput = {
     id?: string
-    status?: $Enums.RunStatus
-    startedAt?: Date | string | null
-    finishedAt?: Date | string | null
-    error?: string | null
+    e2bId: string
+    status?: $Enums.SandboxStatus
+    previewUrl?: string | null
     createdAt?: Date | string
-    project: ProjectCreateNestedOneWithoutRunsInput
-    sandbox?: SandboxCreateNestedOneWithoutRunInput
-    logs?: LogCreateNestedManyWithoutRunInput
+    destroyedAt?: Date | string | null
+    project: ProjectCreateNestedOneWithoutSandboxInput
   }
 
-  export type RunUncheckedCreateInput = {
+  export type SandboxUncheckedCreateInput = {
     id?: string
-    status?: $Enums.RunStatus
-    startedAt?: Date | string | null
-    finishedAt?: Date | string | null
+    e2bId: string
+    status?: $Enums.SandboxStatus
+    previewUrl?: string | null
     projectId: string
-    error?: string | null
     createdAt?: Date | string
-    sandbox?: SandboxUncheckedCreateNestedOneWithoutRunInput
-    logs?: LogUncheckedCreateNestedManyWithoutRunInput
+    destroyedAt?: Date | string | null
   }
 
-  export type RunUpdateInput = {
+  export type SandboxUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    status?: EnumRunStatusFieldUpdateOperationsInput | $Enums.RunStatus
-    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    error?: NullableStringFieldUpdateOperationsInput | string | null
+    e2bId?: StringFieldUpdateOperationsInput | string
+    status?: EnumSandboxStatusFieldUpdateOperationsInput | $Enums.SandboxStatus
+    previewUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    project?: ProjectUpdateOneRequiredWithoutRunsNestedInput
-    sandbox?: SandboxUpdateOneWithoutRunNestedInput
-    logs?: LogUpdateManyWithoutRunNestedInput
+    destroyedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    project?: ProjectUpdateOneRequiredWithoutSandboxNestedInput
   }
 
-  export type RunUncheckedUpdateInput = {
+  export type SandboxUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    status?: EnumRunStatusFieldUpdateOperationsInput | $Enums.RunStatus
-    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    e2bId?: StringFieldUpdateOperationsInput | string
+    status?: EnumSandboxStatusFieldUpdateOperationsInput | $Enums.SandboxStatus
+    previewUrl?: NullableStringFieldUpdateOperationsInput | string | null
     projectId?: StringFieldUpdateOperationsInput | string
-    error?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    sandbox?: SandboxUncheckedUpdateOneWithoutRunNestedInput
-    logs?: LogUncheckedUpdateManyWithoutRunNestedInput
+    destroyedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type RunCreateManyInput = {
+  export type SandboxCreateManyInput = {
     id?: string
-    status?: $Enums.RunStatus
-    startedAt?: Date | string | null
-    finishedAt?: Date | string | null
+    e2bId: string
+    status?: $Enums.SandboxStatus
+    previewUrl?: string | null
     projectId: string
-    error?: string | null
     createdAt?: Date | string
+    destroyedAt?: Date | string | null
   }
 
-  export type RunUpdateManyMutationInput = {
+  export type SandboxUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    status?: EnumRunStatusFieldUpdateOperationsInput | $Enums.RunStatus
-    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    error?: NullableStringFieldUpdateOperationsInput | string | null
+    e2bId?: StringFieldUpdateOperationsInput | string
+    status?: EnumSandboxStatusFieldUpdateOperationsInput | $Enums.SandboxStatus
+    previewUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    destroyedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type RunUncheckedUpdateManyInput = {
+  export type SandboxUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    status?: EnumRunStatusFieldUpdateOperationsInput | $Enums.RunStatus
-    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    e2bId?: StringFieldUpdateOperationsInput | string
+    status?: EnumSandboxStatusFieldUpdateOperationsInput | $Enums.SandboxStatus
+    previewUrl?: NullableStringFieldUpdateOperationsInput | string | null
     projectId?: StringFieldUpdateOperationsInput | string
-    error?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    destroyedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type LogCreateInput = {
@@ -8947,7 +7613,7 @@ export namespace Prisma {
     message: string
     type: $Enums.LogType
     timestamp?: Date | string
-    run: RunCreateNestedOneWithoutLogsInput
+    project: ProjectCreateNestedOneWithoutLogsInput
   }
 
   export type LogUncheckedCreateInput = {
@@ -8955,7 +7621,7 @@ export namespace Prisma {
     message: string
     type: $Enums.LogType
     timestamp?: Date | string
-    runId: string
+    projectId: string
   }
 
   export type LogUpdateInput = {
@@ -8963,7 +7629,7 @@ export namespace Prisma {
     message?: StringFieldUpdateOperationsInput | string
     type?: EnumLogTypeFieldUpdateOperationsInput | $Enums.LogType
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
-    run?: RunUpdateOneRequiredWithoutLogsNestedInput
+    project?: ProjectUpdateOneRequiredWithoutLogsNestedInput
   }
 
   export type LogUncheckedUpdateInput = {
@@ -8971,7 +7637,7 @@ export namespace Prisma {
     message?: StringFieldUpdateOperationsInput | string
     type?: EnumLogTypeFieldUpdateOperationsInput | $Enums.LogType
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
-    runId?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
   }
 
   export type LogCreateManyInput = {
@@ -8979,7 +7645,7 @@ export namespace Prisma {
     message: string
     type: $Enums.LogType
     timestamp?: Date | string
-    runId: string
+    projectId: string
   }
 
   export type LogUpdateManyMutationInput = {
@@ -8994,69 +7660,7 @@ export namespace Prisma {
     message?: StringFieldUpdateOperationsInput | string
     type?: EnumLogTypeFieldUpdateOperationsInput | $Enums.LogType
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
-    runId?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type SandboxCreateInput = {
-    id?: string
-    e2bId: string
-    status?: $Enums.SandboxStatus
-    createdAt?: Date | string
-    destroyedAt?: Date | string | null
-    run: RunCreateNestedOneWithoutSandboxInput
-  }
-
-  export type SandboxUncheckedCreateInput = {
-    id?: string
-    e2bId: string
-    status?: $Enums.SandboxStatus
-    runId: string
-    createdAt?: Date | string
-    destroyedAt?: Date | string | null
-  }
-
-  export type SandboxUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    e2bId?: StringFieldUpdateOperationsInput | string
-    status?: EnumSandboxStatusFieldUpdateOperationsInput | $Enums.SandboxStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    destroyedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    run?: RunUpdateOneRequiredWithoutSandboxNestedInput
-  }
-
-  export type SandboxUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    e2bId?: StringFieldUpdateOperationsInput | string
-    status?: EnumSandboxStatusFieldUpdateOperationsInput | $Enums.SandboxStatus
-    runId?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    destroyedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type SandboxCreateManyInput = {
-    id?: string
-    e2bId: string
-    status?: $Enums.SandboxStatus
-    runId: string
-    createdAt?: Date | string
-    destroyedAt?: Date | string | null
-  }
-
-  export type SandboxUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    e2bId?: StringFieldUpdateOperationsInput | string
-    status?: EnumSandboxStatusFieldUpdateOperationsInput | $Enums.SandboxStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    destroyedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type SandboxUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    e2bId?: StringFieldUpdateOperationsInput | string
-    status?: EnumSandboxStatusFieldUpdateOperationsInput | $Enums.SandboxStatus
-    runId?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    destroyedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    projectId?: StringFieldUpdateOperationsInput | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -9177,10 +7781,15 @@ export namespace Prisma {
     none?: FileWhereInput
   }
 
-  export type RunListRelationFilter = {
-    every?: RunWhereInput
-    some?: RunWhereInput
-    none?: RunWhereInput
+  export type SandboxNullableScalarRelationFilter = {
+    is?: SandboxWhereInput | null
+    isNot?: SandboxWhereInput | null
+  }
+
+  export type LogListRelationFilter = {
+    every?: LogWhereInput
+    some?: LogWhereInput
+    none?: LogWhereInput
   }
 
   export type SortOrderInput = {
@@ -9192,7 +7801,7 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type RunOrderByRelationAggregateInput = {
+  export type LogOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -9246,6 +7855,11 @@ export namespace Prisma {
     isNot?: ProjectWhereInput
   }
 
+  export type FileProjectIdPathCompoundUniqueInput = {
+    projectId: string
+    path: string
+  }
+
   export type FileCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
@@ -9279,11 +7893,11 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type EnumRunStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.RunStatus | EnumRunStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.RunStatus[] | ListEnumRunStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.RunStatus[] | ListEnumRunStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumRunStatusFilter<$PrismaModel> | $Enums.RunStatus
+  export type EnumSandboxStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.SandboxStatus | EnumSandboxStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SandboxStatus[] | ListEnumSandboxStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SandboxStatus[] | ListEnumSandboxStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSandboxStatusFilter<$PrismaModel> | $Enums.SandboxStatus
   }
 
   export type DateTimeNullableFilter<$PrismaModel = never> = {
@@ -9297,59 +7911,44 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
-  export type SandboxNullableScalarRelationFilter = {
-    is?: SandboxWhereInput | null
-    isNot?: SandboxWhereInput | null
-  }
-
-  export type LogListRelationFilter = {
-    every?: LogWhereInput
-    some?: LogWhereInput
-    none?: LogWhereInput
-  }
-
-  export type LogOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type RunCountOrderByAggregateInput = {
+  export type SandboxCountOrderByAggregateInput = {
     id?: SortOrder
+    e2bId?: SortOrder
     status?: SortOrder
-    startedAt?: SortOrder
-    finishedAt?: SortOrder
+    previewUrl?: SortOrder
     projectId?: SortOrder
-    error?: SortOrder
     createdAt?: SortOrder
+    destroyedAt?: SortOrder
   }
 
-  export type RunMaxOrderByAggregateInput = {
+  export type SandboxMaxOrderByAggregateInput = {
     id?: SortOrder
+    e2bId?: SortOrder
     status?: SortOrder
-    startedAt?: SortOrder
-    finishedAt?: SortOrder
+    previewUrl?: SortOrder
     projectId?: SortOrder
-    error?: SortOrder
     createdAt?: SortOrder
+    destroyedAt?: SortOrder
   }
 
-  export type RunMinOrderByAggregateInput = {
+  export type SandboxMinOrderByAggregateInput = {
     id?: SortOrder
+    e2bId?: SortOrder
     status?: SortOrder
-    startedAt?: SortOrder
-    finishedAt?: SortOrder
+    previewUrl?: SortOrder
     projectId?: SortOrder
-    error?: SortOrder
     createdAt?: SortOrder
+    destroyedAt?: SortOrder
   }
 
-  export type EnumRunStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.RunStatus | EnumRunStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.RunStatus[] | ListEnumRunStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.RunStatus[] | ListEnumRunStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumRunStatusWithAggregatesFilter<$PrismaModel> | $Enums.RunStatus
+  export type EnumSandboxStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SandboxStatus | EnumSandboxStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SandboxStatus[] | ListEnumSandboxStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SandboxStatus[] | ListEnumSandboxStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSandboxStatusWithAggregatesFilter<$PrismaModel> | $Enums.SandboxStatus
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumRunStatusFilter<$PrismaModel>
-    _max?: NestedEnumRunStatusFilter<$PrismaModel>
+    _min?: NestedEnumSandboxStatusFilter<$PrismaModel>
+    _max?: NestedEnumSandboxStatusFilter<$PrismaModel>
   }
 
   export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -9373,17 +7972,12 @@ export namespace Prisma {
     not?: NestedEnumLogTypeFilter<$PrismaModel> | $Enums.LogType
   }
 
-  export type RunScalarRelationFilter = {
-    is?: RunWhereInput
-    isNot?: RunWhereInput
-  }
-
   export type LogCountOrderByAggregateInput = {
     id?: SortOrder
     message?: SortOrder
     type?: SortOrder
     timestamp?: SortOrder
-    runId?: SortOrder
+    projectId?: SortOrder
   }
 
   export type LogMaxOrderByAggregateInput = {
@@ -9391,7 +7985,7 @@ export namespace Prisma {
     message?: SortOrder
     type?: SortOrder
     timestamp?: SortOrder
-    runId?: SortOrder
+    projectId?: SortOrder
   }
 
   export type LogMinOrderByAggregateInput = {
@@ -9399,7 +7993,7 @@ export namespace Prisma {
     message?: SortOrder
     type?: SortOrder
     timestamp?: SortOrder
-    runId?: SortOrder
+    projectId?: SortOrder
   }
 
   export type EnumLogTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -9410,50 +8004,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumLogTypeFilter<$PrismaModel>
     _max?: NestedEnumLogTypeFilter<$PrismaModel>
-  }
-
-  export type EnumSandboxStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.SandboxStatus | EnumSandboxStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.SandboxStatus[] | ListEnumSandboxStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SandboxStatus[] | ListEnumSandboxStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumSandboxStatusFilter<$PrismaModel> | $Enums.SandboxStatus
-  }
-
-  export type SandboxCountOrderByAggregateInput = {
-    id?: SortOrder
-    e2bId?: SortOrder
-    status?: SortOrder
-    runId?: SortOrder
-    createdAt?: SortOrder
-    destroyedAt?: SortOrder
-  }
-
-  export type SandboxMaxOrderByAggregateInput = {
-    id?: SortOrder
-    e2bId?: SortOrder
-    status?: SortOrder
-    runId?: SortOrder
-    createdAt?: SortOrder
-    destroyedAt?: SortOrder
-  }
-
-  export type SandboxMinOrderByAggregateInput = {
-    id?: SortOrder
-    e2bId?: SortOrder
-    status?: SortOrder
-    runId?: SortOrder
-    createdAt?: SortOrder
-    destroyedAt?: SortOrder
-  }
-
-  export type EnumSandboxStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.SandboxStatus | EnumSandboxStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.SandboxStatus[] | ListEnumSandboxStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SandboxStatus[] | ListEnumSandboxStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumSandboxStatusWithAggregatesFilter<$PrismaModel> | $Enums.SandboxStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumSandboxStatusFilter<$PrismaModel>
-    _max?: NestedEnumSandboxStatusFilter<$PrismaModel>
   }
 
   export type ProjectCreateNestedManyWithoutUserInput = {
@@ -9519,11 +8069,17 @@ export namespace Prisma {
     connect?: FileWhereUniqueInput | FileWhereUniqueInput[]
   }
 
-  export type RunCreateNestedManyWithoutProjectInput = {
-    create?: XOR<RunCreateWithoutProjectInput, RunUncheckedCreateWithoutProjectInput> | RunCreateWithoutProjectInput[] | RunUncheckedCreateWithoutProjectInput[]
-    connectOrCreate?: RunCreateOrConnectWithoutProjectInput | RunCreateOrConnectWithoutProjectInput[]
-    createMany?: RunCreateManyProjectInputEnvelope
-    connect?: RunWhereUniqueInput | RunWhereUniqueInput[]
+  export type SandboxCreateNestedOneWithoutProjectInput = {
+    create?: XOR<SandboxCreateWithoutProjectInput, SandboxUncheckedCreateWithoutProjectInput>
+    connectOrCreate?: SandboxCreateOrConnectWithoutProjectInput
+    connect?: SandboxWhereUniqueInput
+  }
+
+  export type LogCreateNestedManyWithoutProjectInput = {
+    create?: XOR<LogCreateWithoutProjectInput, LogUncheckedCreateWithoutProjectInput> | LogCreateWithoutProjectInput[] | LogUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: LogCreateOrConnectWithoutProjectInput | LogCreateOrConnectWithoutProjectInput[]
+    createMany?: LogCreateManyProjectInputEnvelope
+    connect?: LogWhereUniqueInput | LogWhereUniqueInput[]
   }
 
   export type FileUncheckedCreateNestedManyWithoutProjectInput = {
@@ -9533,11 +8089,17 @@ export namespace Prisma {
     connect?: FileWhereUniqueInput | FileWhereUniqueInput[]
   }
 
-  export type RunUncheckedCreateNestedManyWithoutProjectInput = {
-    create?: XOR<RunCreateWithoutProjectInput, RunUncheckedCreateWithoutProjectInput> | RunCreateWithoutProjectInput[] | RunUncheckedCreateWithoutProjectInput[]
-    connectOrCreate?: RunCreateOrConnectWithoutProjectInput | RunCreateOrConnectWithoutProjectInput[]
-    createMany?: RunCreateManyProjectInputEnvelope
-    connect?: RunWhereUniqueInput | RunWhereUniqueInput[]
+  export type SandboxUncheckedCreateNestedOneWithoutProjectInput = {
+    create?: XOR<SandboxCreateWithoutProjectInput, SandboxUncheckedCreateWithoutProjectInput>
+    connectOrCreate?: SandboxCreateOrConnectWithoutProjectInput
+    connect?: SandboxWhereUniqueInput
+  }
+
+  export type LogUncheckedCreateNestedManyWithoutProjectInput = {
+    create?: XOR<LogCreateWithoutProjectInput, LogUncheckedCreateWithoutProjectInput> | LogCreateWithoutProjectInput[] | LogUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: LogCreateOrConnectWithoutProjectInput | LogCreateOrConnectWithoutProjectInput[]
+    createMany?: LogCreateManyProjectInputEnvelope
+    connect?: LogWhereUniqueInput | LogWhereUniqueInput[]
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
@@ -9568,18 +8130,28 @@ export namespace Prisma {
     deleteMany?: FileScalarWhereInput | FileScalarWhereInput[]
   }
 
-  export type RunUpdateManyWithoutProjectNestedInput = {
-    create?: XOR<RunCreateWithoutProjectInput, RunUncheckedCreateWithoutProjectInput> | RunCreateWithoutProjectInput[] | RunUncheckedCreateWithoutProjectInput[]
-    connectOrCreate?: RunCreateOrConnectWithoutProjectInput | RunCreateOrConnectWithoutProjectInput[]
-    upsert?: RunUpsertWithWhereUniqueWithoutProjectInput | RunUpsertWithWhereUniqueWithoutProjectInput[]
-    createMany?: RunCreateManyProjectInputEnvelope
-    set?: RunWhereUniqueInput | RunWhereUniqueInput[]
-    disconnect?: RunWhereUniqueInput | RunWhereUniqueInput[]
-    delete?: RunWhereUniqueInput | RunWhereUniqueInput[]
-    connect?: RunWhereUniqueInput | RunWhereUniqueInput[]
-    update?: RunUpdateWithWhereUniqueWithoutProjectInput | RunUpdateWithWhereUniqueWithoutProjectInput[]
-    updateMany?: RunUpdateManyWithWhereWithoutProjectInput | RunUpdateManyWithWhereWithoutProjectInput[]
-    deleteMany?: RunScalarWhereInput | RunScalarWhereInput[]
+  export type SandboxUpdateOneWithoutProjectNestedInput = {
+    create?: XOR<SandboxCreateWithoutProjectInput, SandboxUncheckedCreateWithoutProjectInput>
+    connectOrCreate?: SandboxCreateOrConnectWithoutProjectInput
+    upsert?: SandboxUpsertWithoutProjectInput
+    disconnect?: SandboxWhereInput | boolean
+    delete?: SandboxWhereInput | boolean
+    connect?: SandboxWhereUniqueInput
+    update?: XOR<XOR<SandboxUpdateToOneWithWhereWithoutProjectInput, SandboxUpdateWithoutProjectInput>, SandboxUncheckedUpdateWithoutProjectInput>
+  }
+
+  export type LogUpdateManyWithoutProjectNestedInput = {
+    create?: XOR<LogCreateWithoutProjectInput, LogUncheckedCreateWithoutProjectInput> | LogCreateWithoutProjectInput[] | LogUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: LogCreateOrConnectWithoutProjectInput | LogCreateOrConnectWithoutProjectInput[]
+    upsert?: LogUpsertWithWhereUniqueWithoutProjectInput | LogUpsertWithWhereUniqueWithoutProjectInput[]
+    createMany?: LogCreateManyProjectInputEnvelope
+    set?: LogWhereUniqueInput | LogWhereUniqueInput[]
+    disconnect?: LogWhereUniqueInput | LogWhereUniqueInput[]
+    delete?: LogWhereUniqueInput | LogWhereUniqueInput[]
+    connect?: LogWhereUniqueInput | LogWhereUniqueInput[]
+    update?: LogUpdateWithWhereUniqueWithoutProjectInput | LogUpdateWithWhereUniqueWithoutProjectInput[]
+    updateMany?: LogUpdateManyWithWhereWithoutProjectInput | LogUpdateManyWithWhereWithoutProjectInput[]
+    deleteMany?: LogScalarWhereInput | LogScalarWhereInput[]
   }
 
   export type FileUncheckedUpdateManyWithoutProjectNestedInput = {
@@ -9596,18 +8168,28 @@ export namespace Prisma {
     deleteMany?: FileScalarWhereInput | FileScalarWhereInput[]
   }
 
-  export type RunUncheckedUpdateManyWithoutProjectNestedInput = {
-    create?: XOR<RunCreateWithoutProjectInput, RunUncheckedCreateWithoutProjectInput> | RunCreateWithoutProjectInput[] | RunUncheckedCreateWithoutProjectInput[]
-    connectOrCreate?: RunCreateOrConnectWithoutProjectInput | RunCreateOrConnectWithoutProjectInput[]
-    upsert?: RunUpsertWithWhereUniqueWithoutProjectInput | RunUpsertWithWhereUniqueWithoutProjectInput[]
-    createMany?: RunCreateManyProjectInputEnvelope
-    set?: RunWhereUniqueInput | RunWhereUniqueInput[]
-    disconnect?: RunWhereUniqueInput | RunWhereUniqueInput[]
-    delete?: RunWhereUniqueInput | RunWhereUniqueInput[]
-    connect?: RunWhereUniqueInput | RunWhereUniqueInput[]
-    update?: RunUpdateWithWhereUniqueWithoutProjectInput | RunUpdateWithWhereUniqueWithoutProjectInput[]
-    updateMany?: RunUpdateManyWithWhereWithoutProjectInput | RunUpdateManyWithWhereWithoutProjectInput[]
-    deleteMany?: RunScalarWhereInput | RunScalarWhereInput[]
+  export type SandboxUncheckedUpdateOneWithoutProjectNestedInput = {
+    create?: XOR<SandboxCreateWithoutProjectInput, SandboxUncheckedCreateWithoutProjectInput>
+    connectOrCreate?: SandboxCreateOrConnectWithoutProjectInput
+    upsert?: SandboxUpsertWithoutProjectInput
+    disconnect?: SandboxWhereInput | boolean
+    delete?: SandboxWhereInput | boolean
+    connect?: SandboxWhereUniqueInput
+    update?: XOR<XOR<SandboxUpdateToOneWithWhereWithoutProjectInput, SandboxUpdateWithoutProjectInput>, SandboxUncheckedUpdateWithoutProjectInput>
+  }
+
+  export type LogUncheckedUpdateManyWithoutProjectNestedInput = {
+    create?: XOR<LogCreateWithoutProjectInput, LogUncheckedCreateWithoutProjectInput> | LogCreateWithoutProjectInput[] | LogUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: LogCreateOrConnectWithoutProjectInput | LogCreateOrConnectWithoutProjectInput[]
+    upsert?: LogUpsertWithWhereUniqueWithoutProjectInput | LogUpsertWithWhereUniqueWithoutProjectInput[]
+    createMany?: LogCreateManyProjectInputEnvelope
+    set?: LogWhereUniqueInput | LogWhereUniqueInput[]
+    disconnect?: LogWhereUniqueInput | LogWhereUniqueInput[]
+    delete?: LogWhereUniqueInput | LogWhereUniqueInput[]
+    connect?: LogWhereUniqueInput | LogWhereUniqueInput[]
+    update?: LogUpdateWithWhereUniqueWithoutProjectInput | LogUpdateWithWhereUniqueWithoutProjectInput[]
+    updateMany?: LogUpdateManyWithWhereWithoutProjectInput | LogUpdateManyWithWhereWithoutProjectInput[]
+    deleteMany?: LogScalarWhereInput | LogScalarWhereInput[]
   }
 
   export type ProjectCreateNestedOneWithoutFilesInput = {
@@ -9624,136 +8206,44 @@ export namespace Prisma {
     update?: XOR<XOR<ProjectUpdateToOneWithWhereWithoutFilesInput, ProjectUpdateWithoutFilesInput>, ProjectUncheckedUpdateWithoutFilesInput>
   }
 
-  export type ProjectCreateNestedOneWithoutRunsInput = {
-    create?: XOR<ProjectCreateWithoutRunsInput, ProjectUncheckedCreateWithoutRunsInput>
-    connectOrCreate?: ProjectCreateOrConnectWithoutRunsInput
+  export type ProjectCreateNestedOneWithoutSandboxInput = {
+    create?: XOR<ProjectCreateWithoutSandboxInput, ProjectUncheckedCreateWithoutSandboxInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutSandboxInput
     connect?: ProjectWhereUniqueInput
-  }
-
-  export type SandboxCreateNestedOneWithoutRunInput = {
-    create?: XOR<SandboxCreateWithoutRunInput, SandboxUncheckedCreateWithoutRunInput>
-    connectOrCreate?: SandboxCreateOrConnectWithoutRunInput
-    connect?: SandboxWhereUniqueInput
-  }
-
-  export type LogCreateNestedManyWithoutRunInput = {
-    create?: XOR<LogCreateWithoutRunInput, LogUncheckedCreateWithoutRunInput> | LogCreateWithoutRunInput[] | LogUncheckedCreateWithoutRunInput[]
-    connectOrCreate?: LogCreateOrConnectWithoutRunInput | LogCreateOrConnectWithoutRunInput[]
-    createMany?: LogCreateManyRunInputEnvelope
-    connect?: LogWhereUniqueInput | LogWhereUniqueInput[]
-  }
-
-  export type SandboxUncheckedCreateNestedOneWithoutRunInput = {
-    create?: XOR<SandboxCreateWithoutRunInput, SandboxUncheckedCreateWithoutRunInput>
-    connectOrCreate?: SandboxCreateOrConnectWithoutRunInput
-    connect?: SandboxWhereUniqueInput
-  }
-
-  export type LogUncheckedCreateNestedManyWithoutRunInput = {
-    create?: XOR<LogCreateWithoutRunInput, LogUncheckedCreateWithoutRunInput> | LogCreateWithoutRunInput[] | LogUncheckedCreateWithoutRunInput[]
-    connectOrCreate?: LogCreateOrConnectWithoutRunInput | LogCreateOrConnectWithoutRunInput[]
-    createMany?: LogCreateManyRunInputEnvelope
-    connect?: LogWhereUniqueInput | LogWhereUniqueInput[]
-  }
-
-  export type EnumRunStatusFieldUpdateOperationsInput = {
-    set?: $Enums.RunStatus
-  }
-
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
-  }
-
-  export type ProjectUpdateOneRequiredWithoutRunsNestedInput = {
-    create?: XOR<ProjectCreateWithoutRunsInput, ProjectUncheckedCreateWithoutRunsInput>
-    connectOrCreate?: ProjectCreateOrConnectWithoutRunsInput
-    upsert?: ProjectUpsertWithoutRunsInput
-    connect?: ProjectWhereUniqueInput
-    update?: XOR<XOR<ProjectUpdateToOneWithWhereWithoutRunsInput, ProjectUpdateWithoutRunsInput>, ProjectUncheckedUpdateWithoutRunsInput>
-  }
-
-  export type SandboxUpdateOneWithoutRunNestedInput = {
-    create?: XOR<SandboxCreateWithoutRunInput, SandboxUncheckedCreateWithoutRunInput>
-    connectOrCreate?: SandboxCreateOrConnectWithoutRunInput
-    upsert?: SandboxUpsertWithoutRunInput
-    disconnect?: SandboxWhereInput | boolean
-    delete?: SandboxWhereInput | boolean
-    connect?: SandboxWhereUniqueInput
-    update?: XOR<XOR<SandboxUpdateToOneWithWhereWithoutRunInput, SandboxUpdateWithoutRunInput>, SandboxUncheckedUpdateWithoutRunInput>
-  }
-
-  export type LogUpdateManyWithoutRunNestedInput = {
-    create?: XOR<LogCreateWithoutRunInput, LogUncheckedCreateWithoutRunInput> | LogCreateWithoutRunInput[] | LogUncheckedCreateWithoutRunInput[]
-    connectOrCreate?: LogCreateOrConnectWithoutRunInput | LogCreateOrConnectWithoutRunInput[]
-    upsert?: LogUpsertWithWhereUniqueWithoutRunInput | LogUpsertWithWhereUniqueWithoutRunInput[]
-    createMany?: LogCreateManyRunInputEnvelope
-    set?: LogWhereUniqueInput | LogWhereUniqueInput[]
-    disconnect?: LogWhereUniqueInput | LogWhereUniqueInput[]
-    delete?: LogWhereUniqueInput | LogWhereUniqueInput[]
-    connect?: LogWhereUniqueInput | LogWhereUniqueInput[]
-    update?: LogUpdateWithWhereUniqueWithoutRunInput | LogUpdateWithWhereUniqueWithoutRunInput[]
-    updateMany?: LogUpdateManyWithWhereWithoutRunInput | LogUpdateManyWithWhereWithoutRunInput[]
-    deleteMany?: LogScalarWhereInput | LogScalarWhereInput[]
-  }
-
-  export type SandboxUncheckedUpdateOneWithoutRunNestedInput = {
-    create?: XOR<SandboxCreateWithoutRunInput, SandboxUncheckedCreateWithoutRunInput>
-    connectOrCreate?: SandboxCreateOrConnectWithoutRunInput
-    upsert?: SandboxUpsertWithoutRunInput
-    disconnect?: SandboxWhereInput | boolean
-    delete?: SandboxWhereInput | boolean
-    connect?: SandboxWhereUniqueInput
-    update?: XOR<XOR<SandboxUpdateToOneWithWhereWithoutRunInput, SandboxUpdateWithoutRunInput>, SandboxUncheckedUpdateWithoutRunInput>
-  }
-
-  export type LogUncheckedUpdateManyWithoutRunNestedInput = {
-    create?: XOR<LogCreateWithoutRunInput, LogUncheckedCreateWithoutRunInput> | LogCreateWithoutRunInput[] | LogUncheckedCreateWithoutRunInput[]
-    connectOrCreate?: LogCreateOrConnectWithoutRunInput | LogCreateOrConnectWithoutRunInput[]
-    upsert?: LogUpsertWithWhereUniqueWithoutRunInput | LogUpsertWithWhereUniqueWithoutRunInput[]
-    createMany?: LogCreateManyRunInputEnvelope
-    set?: LogWhereUniqueInput | LogWhereUniqueInput[]
-    disconnect?: LogWhereUniqueInput | LogWhereUniqueInput[]
-    delete?: LogWhereUniqueInput | LogWhereUniqueInput[]
-    connect?: LogWhereUniqueInput | LogWhereUniqueInput[]
-    update?: LogUpdateWithWhereUniqueWithoutRunInput | LogUpdateWithWhereUniqueWithoutRunInput[]
-    updateMany?: LogUpdateManyWithWhereWithoutRunInput | LogUpdateManyWithWhereWithoutRunInput[]
-    deleteMany?: LogScalarWhereInput | LogScalarWhereInput[]
-  }
-
-  export type RunCreateNestedOneWithoutLogsInput = {
-    create?: XOR<RunCreateWithoutLogsInput, RunUncheckedCreateWithoutLogsInput>
-    connectOrCreate?: RunCreateOrConnectWithoutLogsInput
-    connect?: RunWhereUniqueInput
-  }
-
-  export type EnumLogTypeFieldUpdateOperationsInput = {
-    set?: $Enums.LogType
-  }
-
-  export type RunUpdateOneRequiredWithoutLogsNestedInput = {
-    create?: XOR<RunCreateWithoutLogsInput, RunUncheckedCreateWithoutLogsInput>
-    connectOrCreate?: RunCreateOrConnectWithoutLogsInput
-    upsert?: RunUpsertWithoutLogsInput
-    connect?: RunWhereUniqueInput
-    update?: XOR<XOR<RunUpdateToOneWithWhereWithoutLogsInput, RunUpdateWithoutLogsInput>, RunUncheckedUpdateWithoutLogsInput>
-  }
-
-  export type RunCreateNestedOneWithoutSandboxInput = {
-    create?: XOR<RunCreateWithoutSandboxInput, RunUncheckedCreateWithoutSandboxInput>
-    connectOrCreate?: RunCreateOrConnectWithoutSandboxInput
-    connect?: RunWhereUniqueInput
   }
 
   export type EnumSandboxStatusFieldUpdateOperationsInput = {
     set?: $Enums.SandboxStatus
   }
 
-  export type RunUpdateOneRequiredWithoutSandboxNestedInput = {
-    create?: XOR<RunCreateWithoutSandboxInput, RunUncheckedCreateWithoutSandboxInput>
-    connectOrCreate?: RunCreateOrConnectWithoutSandboxInput
-    upsert?: RunUpsertWithoutSandboxInput
-    connect?: RunWhereUniqueInput
-    update?: XOR<XOR<RunUpdateToOneWithWhereWithoutSandboxInput, RunUpdateWithoutSandboxInput>, RunUncheckedUpdateWithoutSandboxInput>
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
+  export type ProjectUpdateOneRequiredWithoutSandboxNestedInput = {
+    create?: XOR<ProjectCreateWithoutSandboxInput, ProjectUncheckedCreateWithoutSandboxInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutSandboxInput
+    upsert?: ProjectUpsertWithoutSandboxInput
+    connect?: ProjectWhereUniqueInput
+    update?: XOR<XOR<ProjectUpdateToOneWithWhereWithoutSandboxInput, ProjectUpdateWithoutSandboxInput>, ProjectUncheckedUpdateWithoutSandboxInput>
+  }
+
+  export type ProjectCreateNestedOneWithoutLogsInput = {
+    create?: XOR<ProjectCreateWithoutLogsInput, ProjectUncheckedCreateWithoutLogsInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutLogsInput
+    connect?: ProjectWhereUniqueInput
+  }
+
+  export type EnumLogTypeFieldUpdateOperationsInput = {
+    set?: $Enums.LogType
+  }
+
+  export type ProjectUpdateOneRequiredWithoutLogsNestedInput = {
+    create?: XOR<ProjectCreateWithoutLogsInput, ProjectUncheckedCreateWithoutLogsInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutLogsInput
+    upsert?: ProjectUpsertWithoutLogsInput
+    connect?: ProjectWhereUniqueInput
+    update?: XOR<XOR<ProjectUpdateToOneWithWhereWithoutLogsInput, ProjectUpdateWithoutLogsInput>, ProjectUncheckedUpdateWithoutLogsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -9865,11 +8355,11 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
-  export type NestedEnumRunStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.RunStatus | EnumRunStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.RunStatus[] | ListEnumRunStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.RunStatus[] | ListEnumRunStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumRunStatusFilter<$PrismaModel> | $Enums.RunStatus
+  export type NestedEnumSandboxStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.SandboxStatus | EnumSandboxStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SandboxStatus[] | ListEnumSandboxStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SandboxStatus[] | ListEnumSandboxStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSandboxStatusFilter<$PrismaModel> | $Enums.SandboxStatus
   }
 
   export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
@@ -9883,14 +8373,14 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
-  export type NestedEnumRunStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.RunStatus | EnumRunStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.RunStatus[] | ListEnumRunStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.RunStatus[] | ListEnumRunStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumRunStatusWithAggregatesFilter<$PrismaModel> | $Enums.RunStatus
+  export type NestedEnumSandboxStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SandboxStatus | EnumSandboxStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SandboxStatus[] | ListEnumSandboxStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SandboxStatus[] | ListEnumSandboxStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSandboxStatusWithAggregatesFilter<$PrismaModel> | $Enums.SandboxStatus
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumRunStatusFilter<$PrismaModel>
-    _max?: NestedEnumRunStatusFilter<$PrismaModel>
+    _min?: NestedEnumSandboxStatusFilter<$PrismaModel>
+    _max?: NestedEnumSandboxStatusFilter<$PrismaModel>
   }
 
   export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -9924,23 +8414,6 @@ export namespace Prisma {
     _max?: NestedEnumLogTypeFilter<$PrismaModel>
   }
 
-  export type NestedEnumSandboxStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.SandboxStatus | EnumSandboxStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.SandboxStatus[] | ListEnumSandboxStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SandboxStatus[] | ListEnumSandboxStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumSandboxStatusFilter<$PrismaModel> | $Enums.SandboxStatus
-  }
-
-  export type NestedEnumSandboxStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.SandboxStatus | EnumSandboxStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.SandboxStatus[] | ListEnumSandboxStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SandboxStatus[] | ListEnumSandboxStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumSandboxStatusWithAggregatesFilter<$PrismaModel> | $Enums.SandboxStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumSandboxStatusFilter<$PrismaModel>
-    _max?: NestedEnumSandboxStatusFilter<$PrismaModel>
-  }
-
   export type ProjectCreateWithoutUserInput = {
     id?: string
     name: string
@@ -9948,7 +8421,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     files?: FileCreateNestedManyWithoutProjectInput
-    runs?: RunCreateNestedManyWithoutProjectInput
+    sandbox?: SandboxCreateNestedOneWithoutProjectInput
+    logs?: LogCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateWithoutUserInput = {
@@ -9958,7 +8432,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     files?: FileUncheckedCreateNestedManyWithoutProjectInput
-    runs?: RunUncheckedCreateNestedManyWithoutProjectInput
+    sandbox?: SandboxUncheckedCreateNestedOneWithoutProjectInput
+    logs?: LogUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutUserInput = {
@@ -10050,35 +8525,50 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type RunCreateWithoutProjectInput = {
+  export type SandboxCreateWithoutProjectInput = {
     id?: string
-    status?: $Enums.RunStatus
-    startedAt?: Date | string | null
-    finishedAt?: Date | string | null
-    error?: string | null
+    e2bId: string
+    status?: $Enums.SandboxStatus
+    previewUrl?: string | null
     createdAt?: Date | string
-    sandbox?: SandboxCreateNestedOneWithoutRunInput
-    logs?: LogCreateNestedManyWithoutRunInput
+    destroyedAt?: Date | string | null
   }
 
-  export type RunUncheckedCreateWithoutProjectInput = {
+  export type SandboxUncheckedCreateWithoutProjectInput = {
     id?: string
-    status?: $Enums.RunStatus
-    startedAt?: Date | string | null
-    finishedAt?: Date | string | null
-    error?: string | null
+    e2bId: string
+    status?: $Enums.SandboxStatus
+    previewUrl?: string | null
     createdAt?: Date | string
-    sandbox?: SandboxUncheckedCreateNestedOneWithoutRunInput
-    logs?: LogUncheckedCreateNestedManyWithoutRunInput
+    destroyedAt?: Date | string | null
   }
 
-  export type RunCreateOrConnectWithoutProjectInput = {
-    where: RunWhereUniqueInput
-    create: XOR<RunCreateWithoutProjectInput, RunUncheckedCreateWithoutProjectInput>
+  export type SandboxCreateOrConnectWithoutProjectInput = {
+    where: SandboxWhereUniqueInput
+    create: XOR<SandboxCreateWithoutProjectInput, SandboxUncheckedCreateWithoutProjectInput>
   }
 
-  export type RunCreateManyProjectInputEnvelope = {
-    data: RunCreateManyProjectInput | RunCreateManyProjectInput[]
+  export type LogCreateWithoutProjectInput = {
+    id?: string
+    message: string
+    type: $Enums.LogType
+    timestamp?: Date | string
+  }
+
+  export type LogUncheckedCreateWithoutProjectInput = {
+    id?: string
+    message: string
+    type: $Enums.LogType
+    timestamp?: Date | string
+  }
+
+  export type LogCreateOrConnectWithoutProjectInput = {
+    where: LogWhereUniqueInput
+    create: XOR<LogCreateWithoutProjectInput, LogUncheckedCreateWithoutProjectInput>
+  }
+
+  export type LogCreateManyProjectInputEnvelope = {
+    data: LogCreateManyProjectInput | LogCreateManyProjectInput[]
     skipDuplicates?: boolean
   }
 
@@ -10139,33 +8629,60 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"File"> | Date | string
   }
 
-  export type RunUpsertWithWhereUniqueWithoutProjectInput = {
-    where: RunWhereUniqueInput
-    update: XOR<RunUpdateWithoutProjectInput, RunUncheckedUpdateWithoutProjectInput>
-    create: XOR<RunCreateWithoutProjectInput, RunUncheckedCreateWithoutProjectInput>
+  export type SandboxUpsertWithoutProjectInput = {
+    update: XOR<SandboxUpdateWithoutProjectInput, SandboxUncheckedUpdateWithoutProjectInput>
+    create: XOR<SandboxCreateWithoutProjectInput, SandboxUncheckedCreateWithoutProjectInput>
+    where?: SandboxWhereInput
   }
 
-  export type RunUpdateWithWhereUniqueWithoutProjectInput = {
-    where: RunWhereUniqueInput
-    data: XOR<RunUpdateWithoutProjectInput, RunUncheckedUpdateWithoutProjectInput>
+  export type SandboxUpdateToOneWithWhereWithoutProjectInput = {
+    where?: SandboxWhereInput
+    data: XOR<SandboxUpdateWithoutProjectInput, SandboxUncheckedUpdateWithoutProjectInput>
   }
 
-  export type RunUpdateManyWithWhereWithoutProjectInput = {
-    where: RunScalarWhereInput
-    data: XOR<RunUpdateManyMutationInput, RunUncheckedUpdateManyWithoutProjectInput>
+  export type SandboxUpdateWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    e2bId?: StringFieldUpdateOperationsInput | string
+    status?: EnumSandboxStatusFieldUpdateOperationsInput | $Enums.SandboxStatus
+    previewUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    destroyedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type RunScalarWhereInput = {
-    AND?: RunScalarWhereInput | RunScalarWhereInput[]
-    OR?: RunScalarWhereInput[]
-    NOT?: RunScalarWhereInput | RunScalarWhereInput[]
-    id?: StringFilter<"Run"> | string
-    status?: EnumRunStatusFilter<"Run"> | $Enums.RunStatus
-    startedAt?: DateTimeNullableFilter<"Run"> | Date | string | null
-    finishedAt?: DateTimeNullableFilter<"Run"> | Date | string | null
-    projectId?: StringFilter<"Run"> | string
-    error?: StringNullableFilter<"Run"> | string | null
-    createdAt?: DateTimeFilter<"Run"> | Date | string
+  export type SandboxUncheckedUpdateWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    e2bId?: StringFieldUpdateOperationsInput | string
+    status?: EnumSandboxStatusFieldUpdateOperationsInput | $Enums.SandboxStatus
+    previewUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    destroyedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type LogUpsertWithWhereUniqueWithoutProjectInput = {
+    where: LogWhereUniqueInput
+    update: XOR<LogUpdateWithoutProjectInput, LogUncheckedUpdateWithoutProjectInput>
+    create: XOR<LogCreateWithoutProjectInput, LogUncheckedCreateWithoutProjectInput>
+  }
+
+  export type LogUpdateWithWhereUniqueWithoutProjectInput = {
+    where: LogWhereUniqueInput
+    data: XOR<LogUpdateWithoutProjectInput, LogUncheckedUpdateWithoutProjectInput>
+  }
+
+  export type LogUpdateManyWithWhereWithoutProjectInput = {
+    where: LogScalarWhereInput
+    data: XOR<LogUpdateManyMutationInput, LogUncheckedUpdateManyWithoutProjectInput>
+  }
+
+  export type LogScalarWhereInput = {
+    AND?: LogScalarWhereInput | LogScalarWhereInput[]
+    OR?: LogScalarWhereInput[]
+    NOT?: LogScalarWhereInput | LogScalarWhereInput[]
+    id?: StringFilter<"Log"> | string
+    message?: StringFilter<"Log"> | string
+    type?: EnumLogTypeFilter<"Log"> | $Enums.LogType
+    timestamp?: DateTimeFilter<"Log"> | Date | string
+    projectId?: StringFilter<"Log"> | string
   }
 
   export type ProjectCreateWithoutFilesInput = {
@@ -10175,7 +8692,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutProjectsInput
-    runs?: RunCreateNestedManyWithoutProjectInput
+    sandbox?: SandboxCreateNestedOneWithoutProjectInput
+    logs?: LogCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateWithoutFilesInput = {
@@ -10185,7 +8703,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId?: string | null
-    runs?: RunUncheckedCreateNestedManyWithoutProjectInput
+    sandbox?: SandboxUncheckedCreateNestedOneWithoutProjectInput
+    logs?: LogUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutFilesInput = {
@@ -10211,7 +8730,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutProjectsNestedInput
-    runs?: RunUpdateManyWithoutProjectNestedInput
+    sandbox?: SandboxUpdateOneWithoutProjectNestedInput
+    logs?: LogUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateWithoutFilesInput = {
@@ -10221,10 +8741,11 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
-    runs?: RunUncheckedUpdateManyWithoutProjectNestedInput
+    sandbox?: SandboxUncheckedUpdateOneWithoutProjectNestedInput
+    logs?: LogUncheckedUpdateManyWithoutProjectNestedInput
   }
 
-  export type ProjectCreateWithoutRunsInput = {
+  export type ProjectCreateWithoutSandboxInput = {
     id?: string
     name: string
     description?: string | null
@@ -10232,9 +8753,10 @@ export namespace Prisma {
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutProjectsInput
     files?: FileCreateNestedManyWithoutProjectInput
+    logs?: LogCreateNestedManyWithoutProjectInput
   }
 
-  export type ProjectUncheckedCreateWithoutRunsInput = {
+  export type ProjectUncheckedCreateWithoutSandboxInput = {
     id?: string
     name: string
     description?: string | null
@@ -10242,70 +8764,26 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId?: string | null
     files?: FileUncheckedCreateNestedManyWithoutProjectInput
+    logs?: LogUncheckedCreateNestedManyWithoutProjectInput
   }
 
-  export type ProjectCreateOrConnectWithoutRunsInput = {
+  export type ProjectCreateOrConnectWithoutSandboxInput = {
     where: ProjectWhereUniqueInput
-    create: XOR<ProjectCreateWithoutRunsInput, ProjectUncheckedCreateWithoutRunsInput>
+    create: XOR<ProjectCreateWithoutSandboxInput, ProjectUncheckedCreateWithoutSandboxInput>
   }
 
-  export type SandboxCreateWithoutRunInput = {
-    id?: string
-    e2bId: string
-    status?: $Enums.SandboxStatus
-    createdAt?: Date | string
-    destroyedAt?: Date | string | null
-  }
-
-  export type SandboxUncheckedCreateWithoutRunInput = {
-    id?: string
-    e2bId: string
-    status?: $Enums.SandboxStatus
-    createdAt?: Date | string
-    destroyedAt?: Date | string | null
-  }
-
-  export type SandboxCreateOrConnectWithoutRunInput = {
-    where: SandboxWhereUniqueInput
-    create: XOR<SandboxCreateWithoutRunInput, SandboxUncheckedCreateWithoutRunInput>
-  }
-
-  export type LogCreateWithoutRunInput = {
-    id?: string
-    message: string
-    type: $Enums.LogType
-    timestamp?: Date | string
-  }
-
-  export type LogUncheckedCreateWithoutRunInput = {
-    id?: string
-    message: string
-    type: $Enums.LogType
-    timestamp?: Date | string
-  }
-
-  export type LogCreateOrConnectWithoutRunInput = {
-    where: LogWhereUniqueInput
-    create: XOR<LogCreateWithoutRunInput, LogUncheckedCreateWithoutRunInput>
-  }
-
-  export type LogCreateManyRunInputEnvelope = {
-    data: LogCreateManyRunInput | LogCreateManyRunInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type ProjectUpsertWithoutRunsInput = {
-    update: XOR<ProjectUpdateWithoutRunsInput, ProjectUncheckedUpdateWithoutRunsInput>
-    create: XOR<ProjectCreateWithoutRunsInput, ProjectUncheckedCreateWithoutRunsInput>
+  export type ProjectUpsertWithoutSandboxInput = {
+    update: XOR<ProjectUpdateWithoutSandboxInput, ProjectUncheckedUpdateWithoutSandboxInput>
+    create: XOR<ProjectCreateWithoutSandboxInput, ProjectUncheckedCreateWithoutSandboxInput>
     where?: ProjectWhereInput
   }
 
-  export type ProjectUpdateToOneWithWhereWithoutRunsInput = {
+  export type ProjectUpdateToOneWithWhereWithoutSandboxInput = {
     where?: ProjectWhereInput
-    data: XOR<ProjectUpdateWithoutRunsInput, ProjectUncheckedUpdateWithoutRunsInput>
+    data: XOR<ProjectUpdateWithoutSandboxInput, ProjectUncheckedUpdateWithoutSandboxInput>
   }
 
-  export type ProjectUpdateWithoutRunsInput = {
+  export type ProjectUpdateWithoutSandboxInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10313,9 +8791,10 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutProjectsNestedInput
     files?: FileUpdateManyWithoutProjectNestedInput
+    logs?: LogUpdateManyWithoutProjectNestedInput
   }
 
-  export type ProjectUncheckedUpdateWithoutRunsInput = {
+  export type ProjectUncheckedUpdateWithoutSandboxInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10323,180 +8802,67 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     files?: FileUncheckedUpdateManyWithoutProjectNestedInput
+    logs?: LogUncheckedUpdateManyWithoutProjectNestedInput
   }
 
-  export type SandboxUpsertWithoutRunInput = {
-    update: XOR<SandboxUpdateWithoutRunInput, SandboxUncheckedUpdateWithoutRunInput>
-    create: XOR<SandboxCreateWithoutRunInput, SandboxUncheckedCreateWithoutRunInput>
-    where?: SandboxWhereInput
-  }
-
-  export type SandboxUpdateToOneWithWhereWithoutRunInput = {
-    where?: SandboxWhereInput
-    data: XOR<SandboxUpdateWithoutRunInput, SandboxUncheckedUpdateWithoutRunInput>
-  }
-
-  export type SandboxUpdateWithoutRunInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    e2bId?: StringFieldUpdateOperationsInput | string
-    status?: EnumSandboxStatusFieldUpdateOperationsInput | $Enums.SandboxStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    destroyedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type SandboxUncheckedUpdateWithoutRunInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    e2bId?: StringFieldUpdateOperationsInput | string
-    status?: EnumSandboxStatusFieldUpdateOperationsInput | $Enums.SandboxStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    destroyedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type LogUpsertWithWhereUniqueWithoutRunInput = {
-    where: LogWhereUniqueInput
-    update: XOR<LogUpdateWithoutRunInput, LogUncheckedUpdateWithoutRunInput>
-    create: XOR<LogCreateWithoutRunInput, LogUncheckedCreateWithoutRunInput>
-  }
-
-  export type LogUpdateWithWhereUniqueWithoutRunInput = {
-    where: LogWhereUniqueInput
-    data: XOR<LogUpdateWithoutRunInput, LogUncheckedUpdateWithoutRunInput>
-  }
-
-  export type LogUpdateManyWithWhereWithoutRunInput = {
-    where: LogScalarWhereInput
-    data: XOR<LogUpdateManyMutationInput, LogUncheckedUpdateManyWithoutRunInput>
-  }
-
-  export type LogScalarWhereInput = {
-    AND?: LogScalarWhereInput | LogScalarWhereInput[]
-    OR?: LogScalarWhereInput[]
-    NOT?: LogScalarWhereInput | LogScalarWhereInput[]
-    id?: StringFilter<"Log"> | string
-    message?: StringFilter<"Log"> | string
-    type?: EnumLogTypeFilter<"Log"> | $Enums.LogType
-    timestamp?: DateTimeFilter<"Log"> | Date | string
-    runId?: StringFilter<"Log"> | string
-  }
-
-  export type RunCreateWithoutLogsInput = {
+  export type ProjectCreateWithoutLogsInput = {
     id?: string
-    status?: $Enums.RunStatus
-    startedAt?: Date | string | null
-    finishedAt?: Date | string | null
-    error?: string | null
+    name: string
+    description?: string | null
     createdAt?: Date | string
-    project: ProjectCreateNestedOneWithoutRunsInput
-    sandbox?: SandboxCreateNestedOneWithoutRunInput
+    updatedAt?: Date | string
+    user?: UserCreateNestedOneWithoutProjectsInput
+    files?: FileCreateNestedManyWithoutProjectInput
+    sandbox?: SandboxCreateNestedOneWithoutProjectInput
   }
 
-  export type RunUncheckedCreateWithoutLogsInput = {
+  export type ProjectUncheckedCreateWithoutLogsInput = {
     id?: string
-    status?: $Enums.RunStatus
-    startedAt?: Date | string | null
-    finishedAt?: Date | string | null
-    projectId: string
-    error?: string | null
+    name: string
+    description?: string | null
     createdAt?: Date | string
-    sandbox?: SandboxUncheckedCreateNestedOneWithoutRunInput
+    updatedAt?: Date | string
+    userId?: string | null
+    files?: FileUncheckedCreateNestedManyWithoutProjectInput
+    sandbox?: SandboxUncheckedCreateNestedOneWithoutProjectInput
   }
 
-  export type RunCreateOrConnectWithoutLogsInput = {
-    where: RunWhereUniqueInput
-    create: XOR<RunCreateWithoutLogsInput, RunUncheckedCreateWithoutLogsInput>
+  export type ProjectCreateOrConnectWithoutLogsInput = {
+    where: ProjectWhereUniqueInput
+    create: XOR<ProjectCreateWithoutLogsInput, ProjectUncheckedCreateWithoutLogsInput>
   }
 
-  export type RunUpsertWithoutLogsInput = {
-    update: XOR<RunUpdateWithoutLogsInput, RunUncheckedUpdateWithoutLogsInput>
-    create: XOR<RunCreateWithoutLogsInput, RunUncheckedCreateWithoutLogsInput>
-    where?: RunWhereInput
+  export type ProjectUpsertWithoutLogsInput = {
+    update: XOR<ProjectUpdateWithoutLogsInput, ProjectUncheckedUpdateWithoutLogsInput>
+    create: XOR<ProjectCreateWithoutLogsInput, ProjectUncheckedCreateWithoutLogsInput>
+    where?: ProjectWhereInput
   }
 
-  export type RunUpdateToOneWithWhereWithoutLogsInput = {
-    where?: RunWhereInput
-    data: XOR<RunUpdateWithoutLogsInput, RunUncheckedUpdateWithoutLogsInput>
+  export type ProjectUpdateToOneWithWhereWithoutLogsInput = {
+    where?: ProjectWhereInput
+    data: XOR<ProjectUpdateWithoutLogsInput, ProjectUncheckedUpdateWithoutLogsInput>
   }
 
-  export type RunUpdateWithoutLogsInput = {
+  export type ProjectUpdateWithoutLogsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    status?: EnumRunStatusFieldUpdateOperationsInput | $Enums.RunStatus
-    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    error?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    project?: ProjectUpdateOneRequiredWithoutRunsNestedInput
-    sandbox?: SandboxUpdateOneWithoutRunNestedInput
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutProjectsNestedInput
+    files?: FileUpdateManyWithoutProjectNestedInput
+    sandbox?: SandboxUpdateOneWithoutProjectNestedInput
   }
 
-  export type RunUncheckedUpdateWithoutLogsInput = {
+  export type ProjectUncheckedUpdateWithoutLogsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    status?: EnumRunStatusFieldUpdateOperationsInput | $Enums.RunStatus
-    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    projectId?: StringFieldUpdateOperationsInput | string
-    error?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    sandbox?: SandboxUncheckedUpdateOneWithoutRunNestedInput
-  }
-
-  export type RunCreateWithoutSandboxInput = {
-    id?: string
-    status?: $Enums.RunStatus
-    startedAt?: Date | string | null
-    finishedAt?: Date | string | null
-    error?: string | null
-    createdAt?: Date | string
-    project: ProjectCreateNestedOneWithoutRunsInput
-    logs?: LogCreateNestedManyWithoutRunInput
-  }
-
-  export type RunUncheckedCreateWithoutSandboxInput = {
-    id?: string
-    status?: $Enums.RunStatus
-    startedAt?: Date | string | null
-    finishedAt?: Date | string | null
-    projectId: string
-    error?: string | null
-    createdAt?: Date | string
-    logs?: LogUncheckedCreateNestedManyWithoutRunInput
-  }
-
-  export type RunCreateOrConnectWithoutSandboxInput = {
-    where: RunWhereUniqueInput
-    create: XOR<RunCreateWithoutSandboxInput, RunUncheckedCreateWithoutSandboxInput>
-  }
-
-  export type RunUpsertWithoutSandboxInput = {
-    update: XOR<RunUpdateWithoutSandboxInput, RunUncheckedUpdateWithoutSandboxInput>
-    create: XOR<RunCreateWithoutSandboxInput, RunUncheckedCreateWithoutSandboxInput>
-    where?: RunWhereInput
-  }
-
-  export type RunUpdateToOneWithWhereWithoutSandboxInput = {
-    where?: RunWhereInput
-    data: XOR<RunUpdateWithoutSandboxInput, RunUncheckedUpdateWithoutSandboxInput>
-  }
-
-  export type RunUpdateWithoutSandboxInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    status?: EnumRunStatusFieldUpdateOperationsInput | $Enums.RunStatus
-    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    error?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    project?: ProjectUpdateOneRequiredWithoutRunsNestedInput
-    logs?: LogUpdateManyWithoutRunNestedInput
-  }
-
-  export type RunUncheckedUpdateWithoutSandboxInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    status?: EnumRunStatusFieldUpdateOperationsInput | $Enums.RunStatus
-    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    projectId?: StringFieldUpdateOperationsInput | string
-    error?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    logs?: LogUncheckedUpdateManyWithoutRunNestedInput
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    files?: FileUncheckedUpdateManyWithoutProjectNestedInput
+    sandbox?: SandboxUncheckedUpdateOneWithoutProjectNestedInput
   }
 
   export type ProjectCreateManyUserInput = {
@@ -10514,7 +8880,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     files?: FileUpdateManyWithoutProjectNestedInput
-    runs?: RunUpdateManyWithoutProjectNestedInput
+    sandbox?: SandboxUpdateOneWithoutProjectNestedInput
+    logs?: LogUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateWithoutUserInput = {
@@ -10524,7 +8891,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     files?: FileUncheckedUpdateManyWithoutProjectNestedInput
-    runs?: RunUncheckedUpdateManyWithoutProjectNestedInput
+    sandbox?: SandboxUncheckedUpdateOneWithoutProjectNestedInput
+    logs?: LogUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateManyWithoutUserInput = {
@@ -10545,13 +8913,11 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type RunCreateManyProjectInput = {
+  export type LogCreateManyProjectInput = {
     id?: string
-    status?: $Enums.RunStatus
-    startedAt?: Date | string | null
-    finishedAt?: Date | string | null
-    error?: string | null
-    createdAt?: Date | string
+    message: string
+    type: $Enums.LogType
+    timestamp?: Date | string
   }
 
   export type FileUpdateWithoutProjectInput = {
@@ -10584,59 +8950,21 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type RunUpdateWithoutProjectInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    status?: EnumRunStatusFieldUpdateOperationsInput | $Enums.RunStatus
-    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    error?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    sandbox?: SandboxUpdateOneWithoutRunNestedInput
-    logs?: LogUpdateManyWithoutRunNestedInput
-  }
-
-  export type RunUncheckedUpdateWithoutProjectInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    status?: EnumRunStatusFieldUpdateOperationsInput | $Enums.RunStatus
-    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    error?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    sandbox?: SandboxUncheckedUpdateOneWithoutRunNestedInput
-    logs?: LogUncheckedUpdateManyWithoutRunNestedInput
-  }
-
-  export type RunUncheckedUpdateManyWithoutProjectInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    status?: EnumRunStatusFieldUpdateOperationsInput | $Enums.RunStatus
-    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    error?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type LogCreateManyRunInput = {
-    id?: string
-    message: string
-    type: $Enums.LogType
-    timestamp?: Date | string
-  }
-
-  export type LogUpdateWithoutRunInput = {
+  export type LogUpdateWithoutProjectInput = {
     id?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
     type?: EnumLogTypeFieldUpdateOperationsInput | $Enums.LogType
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type LogUncheckedUpdateWithoutRunInput = {
+  export type LogUncheckedUpdateWithoutProjectInput = {
     id?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
     type?: EnumLogTypeFieldUpdateOperationsInput | $Enums.LogType
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type LogUncheckedUpdateManyWithoutRunInput = {
+  export type LogUncheckedUpdateManyWithoutProjectInput = {
     id?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
     type?: EnumLogTypeFieldUpdateOperationsInput | $Enums.LogType
