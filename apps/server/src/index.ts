@@ -31,8 +31,21 @@ app.use(
   },
 );
 
-const port = process.env.PORT || 3001;
+const port = Number(process.env.PORT) || 3001;
 
-app.listen(port, () => {
+const server = app.listen(port);
+
+server.on("listening", () => {
   console.log(`Server running on port ${port}`);
+});
+
+server.on("error", (err: NodeJS.ErrnoException) => {
+  if (err.code === "EADDRINUSE") {
+    console.error(
+      `Port ${port} is already in use. Stop the other process or set a different PORT in .env`,
+    );
+  } else {
+    console.error("Server failed to start:", err.message);
+  }
+  process.exit(1);
 });

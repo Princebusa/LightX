@@ -2,10 +2,11 @@ import type { Request, Response } from "express";
 import { ChatSchema } from "comman/types";
 import { getOwnedProject } from "../utils/project";
 import { asyncHandler } from "../utils/asyncHandler";
-import { generateProjectFiles } from "../services/llm.service";
-import { upsertProjectFiles } from "../services/files.service";
-import { syncProjectPreview } from "../services/sandbox.service";
-import { client } from "db/client";
+import { createTools } from "../tools";
+import { systemPrompt } from "../System_prompt";
+import { getOrCreateProjectSandbox } from "../services/sandbox.service";
+import { agentLoop } from "../agent/loop";
+import type { GroqChatMessage } from "../agent/providers/groq";
 
 export const chat = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -22,48 +23,28 @@ export const chat = asyncHandler(async (req: Request, res: Response) => {
   }
 
   const { message } = parseResult.data;
+  const sandbox = await getOrCreateProjectSandbox(project.id);
 
-  await client.log.create({
-    data: {
-      projectId: id as string,
-      type: "SYSTEM",
-      message: `User: ${message}`,
-    },
+   const toolsImpl = createTools(sandbox.e2b);
+
+  
+
+    const messages: GroqChatMessage[] = [
+    { role: "system", content: systemPrompt },
+    { role: "user", content: message },
+  ];
+
+  const result = await agentLoop({
+    messages,
+    toolsImpl,
   });
 
-  const { message: assistantMessage, files } =
-    await generateProjectFiles(message);
 
-  await upsertProjectFiles(id as string, files);
 
-  await client.log.create({
-    data: {
-      projectId: id as string,
-      type: "SYSTEM",
-      message: `Assistant: ${assistantMessage}`,
-    },
-  });
+ 
 
-  let preview = null;
 
-  try {
-    preview = await syncProjectPreview(id as string);
-  } catch (error) {
-    const errMsg =
-      error instanceof Error ? error.message : "Preview sync failed";
-    await client.log.create({
-      data: {
-        projectId: id as string,
-        type: "STDERR",
-        message: errMsg,
-      },
-    });
-  }
 
-  return res.status(200).json({
-    message: assistantMessage,
-    fileCount: files.length,
-    previewUrl: preview?.previewUrl ?? null,
-    sandboxStatus: preview?.sandbox.status ?? null,
-  });
+
+ res.status(200).json({ result });
 });

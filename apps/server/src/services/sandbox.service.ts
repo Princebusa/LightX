@@ -1,6 +1,7 @@
 import { Sandbox } from "@e2b/code-interpreter";
 import { client } from "db/client";
-import { getProjectFiles } from "./files.service";
+import { initReactProject } from "../utils/boilerplat";
+import { createTools } from "../tools";
 
 const PREVIEW_PORT = 5173;
 
@@ -24,6 +25,7 @@ export async function getOrCreateProjectSandbox(projectId: string) {
   if (existing && existing.status !== "DESTROYED") {
     try {
       const e2b = await connectE2bSandbox(existing.e2bId);
+      await initReactProject(createTools(e2b));
       return { record: existing, e2b };
     } catch {
       await client.sandbox.update({
@@ -34,6 +36,8 @@ export async function getOrCreateProjectSandbox(projectId: string) {
   }
 
   const e2b = await Sandbox.create({ apiKey: getE2bApiKey() });
+  const toolsImpl = createTools(e2b);
+  await initReactProject(toolsImpl);
 
   const record = await client.sandbox.upsert({
     where: { projectId },
@@ -74,9 +78,14 @@ async function ensureDevServer(e2b: Sandbox) {
     return;
   }
 
-  await e2b.commands.run("npm install", { cwd: "/home/user" });
-  await e2b.commands.run("nohup npm run dev > /tmp/vite.log 2>&1 &", {
+  await e2b.commands.run("cd app && npm install", {
     cwd: "/home/user",
+    timeoutMs: 0,
+  });
+  await e2b.commands.run("cd app && nohup npm run dev > /tmp/vite.log 2>&1 &", {
+    cwd: "/home/user",
+    background: true,
+    timeoutMs: 0,
   });
 
   for (let attempt = 0; attempt < 30; attempt++) {
@@ -92,45 +101,7 @@ async function ensureDevServer(e2b: Sandbox) {
   throw new Error("Dev server failed to start in sandbox");
 }
 
-export async function syncProjectPreview(projectId: string) {
-  const files = await getProjectFiles(projectId);
 
-  if (files.length === 0) {
-    throw new Error("No files to preview. Send a chat message first.");
-  }
-
-  const { record, e2b } = await getOrCreateProjectSandbox(projectId);
-
-  await writeFilesToSandbox(
-    e2b,
-    files.map((file) => ({ path: file.path, content: file.content })),
-  );
-
-  await ensureDevServer(e2b);
-
-  const previewUrl = `https://${e2b.getHost(PREVIEW_PORT)}`;
-
-  const updated = await client.sandbox.update({
-    where: { id: record.id },
-    data: {
-      status: "RUNNING",
-      previewUrl,
-    },
-  });
-
-  await client.log.create({
-    data: {
-      projectId,
-      type: "SYSTEM",
-      message: `Preview ready at ${previewUrl}`,
-    },
-  });
-
-  return {
-    sandbox: updated,
-    previewUrl,
-  };
-}
 
 export async function getProjectPreview(projectId: string) {
   const sandbox = await client.sandbox.findUnique({
