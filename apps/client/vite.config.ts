@@ -11,4 +11,17 @@ export default defineConfig({
       "@": path.resolve(__dirname, "."),
     },
   },
+  server: {
+    proxy: {
+      // Forward API calls to the Express backend in dev.
+      "/auth": {
+        target: "http://localhost:3001",
+        changeOrigin: true,
+      },
+      "/projects": {
+        target: "http://localhost:3001",
+        changeOrigin: true,
+      },
+    },
+  },
 });

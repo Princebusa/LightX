@@ -1,6 +1,9 @@
 import { formatApiError } from "./errors";
 
-const API_BASE = import.meta.env.VITE_API_URL ?? "/api";
+const API_BASE = (import.meta.env.VITE_API_URL ?? "")
+  .toString()
+  .replace(/\/$/, "");
+
 const TOKEN_KEY = "lightx-token";
 
 export { API_BASE };

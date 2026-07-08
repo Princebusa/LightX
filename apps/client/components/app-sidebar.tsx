@@ -25,6 +25,7 @@ import {
   import { ThemeToggle } from "@/components/theme-toggle"
   import { Button } from "@/components/ui/button"
   import { LogOut } from "lucide-react"
+  import { logout } from "@/lib/auth"
   
   const platformItems = [
     { title: "Dashboard", url: "/dashboard", icon: Home },
@@ -39,6 +40,7 @@ import {
   ]
   
   export function AppSidebar() {
+    const navigate = useNavigate();
 
     return (
       <Sidebar>
@@ -136,6 +138,10 @@ import {
               size="icon-sm"
              
               aria-label="Sign out"
+              onClick={() => {
+                logout();
+                navigate("/login");
+              }}
             >
               <LogOut className="size-4" />
             </Button>
