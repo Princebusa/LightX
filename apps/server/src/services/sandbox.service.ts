@@ -25,7 +25,7 @@ export async function getOrCreateProjectSandbox(projectId: string) {
   if (existing && existing.status !== "DESTROYED") {
     try {
       const e2b = await connectE2bSandbox(existing.e2bId);
-      await initReactProject(createTools(e2b));
+     
       return { record: existing, e2b };
     } catch {
       await client.sandbox.update({
@@ -36,6 +36,7 @@ export async function getOrCreateProjectSandbox(projectId: string) {
   }
 
   const e2b = await Sandbox.create({ apiKey: getE2bApiKey() });
+
   const toolsImpl = createTools(e2b);
   await initReactProject(toolsImpl);
 
@@ -67,6 +68,22 @@ async function writeFilesToSandbox(
       : `/home/user/${file.path.replace(/^\.\//, "")}`;
     await e2b.files.write(fullPath, file.content);
   }
+}
+
+export async function startProjectPreview(projectId: string, e2b: Sandbox) {
+  await ensureDevServer(e2b);
+
+  const previewUrl = `https://${e2b.getHost(PREVIEW_PORT)}`;
+
+  await client.sandbox.update({
+    where: { projectId },
+    data: {
+      status: 'RUNNING',
+      previewUrl,
+    },
+  });
+
+  return previewUrl;
 }
 
 async function ensureDevServer(e2b: Sandbox) {

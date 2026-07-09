@@ -5,7 +5,7 @@ import {
   updateProject,
   deleteProject,
 } from "../controllers/project.controller";
-import { chat } from "../controllers/chat.controller";
+import { chat, getMessages } from "../controllers/chat.controller";
 import {
   startPreview,
   getPreview,
@@ -22,6 +22,7 @@ router.get("/:id", authMiddleware, getProjectById);
 router.patch("/:id", authMiddleware, updateProject);
 router.delete("/:id", authMiddleware, deleteProject);
 
+router.get("/:id/messages", authMiddleware, getMessages);
 router.post("/:id/chat", authMiddleware, chat);
 router.post("/:id/preview", authMiddleware, startPreview);
 router.get("/:id/preview", authMiddleware, getPreview);

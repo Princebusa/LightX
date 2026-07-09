@@ -3,40 +3,96 @@ import { APP_DIR, SANDBOX_ROOT } from '../tools';
 
 const INIT_TIMEOUT_MS = 0;
 
-export async function initReactProject(tools: SandboxTools) {
-  try {
-    const pkg = await tools.read_file({ path: `${APP_DIR}/package.json` });
-    if (pkg.includes('"vite"')) {
-      return 'React project already initialized';
-    }
-  } catch {
-    // not initialized yet
-  }
-
-  await tools.run_command({
-    cmd: `rm -rf app`,
-    cwd: SANDBOX_ROOT,
-    timeoutMs: INIT_TIMEOUT_MS,
+async function scaffoldReactApp(tools: SandboxTools) {
+  await tools.write_file({
+    path: `${APP_DIR}/package.json`,
+    content: JSON.stringify(
+      {
+        name: 'app',
+        private: true,
+        version: '0.0.0',
+        type: 'module',
+        scripts: {
+          dev: 'vite',
+          build: 'vite build',
+          preview: 'vite preview',
+        },
+        dependencies: {
+          react: '^19.0.0',
+          'react-dom': '^19.0.0',
+        },
+        devDependencies: {
+          '@vitejs/plugin-react': '^4.3.4',
+          vite: '^6.0.0',
+          tailwindcss: '^3.4.17',
+          postcss: '^8.4.49',
+          autoprefixer: '^10.4.20',
+        },
+      },
+      null,
+      2,
+    ),
   });
 
-  await tools.run_command({
-    cmd: 'npm create vite@latest app -- --template react --no-interactive --no-immediate',
-    cwd: SANDBOX_ROOT,
-    timeoutMs: INIT_TIMEOUT_MS,
+  await tools.write_file({
+    path: `${APP_DIR}/vite.config.js`,
+    content: `import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    host: '0.0.0.0',
+    port: 5173,
+  },
+});
+`,
   });
 
-  await tools.read_file({ path: `${APP_DIR}/package.json` });
-
-  await tools.run_command({
-    cmd: 'cd app && npm install',
-    cwd: SANDBOX_ROOT,
-    timeoutMs: INIT_TIMEOUT_MS,
+  await tools.write_file({
+    path: `${APP_DIR}/index.html`,
+    content: `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LightX App</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
+`,
   });
 
-  await tools.run_command({
-    cmd: 'cd app && npm install -D tailwindcss@3 postcss autoprefixer',
-    cwd: SANDBOX_ROOT,
-    timeoutMs: INIT_TIMEOUT_MS,
+  await tools.write_file({
+    path: `${APP_DIR}/src/main.jsx`,
+    content: `import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import App from './App.jsx';
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+);
+`,
+  });
+
+  await tools.write_file({
+    path: `${APP_DIR}/src/App.jsx`,
+    content: `export default function App() {
+  return (
+    <main className="flex min-h-screen items-center justify-center bg-slate-950 text-white">
+      <div className="text-center">
+        <h1 className="text-4xl font-bold">LightX</h1>
+        <p className="mt-2 text-slate-300">Your app is ready to build.</p>
+      </div>
+    </main>
+  );
+}
+`,
   });
 
   await tools.write_file({
@@ -67,6 +123,31 @@ export default {
 @tailwind components;
 @tailwind utilities;
 `,
+  });
+}
+
+export async function initReactProject(tools: SandboxTools) {
+  try {
+    const pkg = await tools.read_file({ path: `${APP_DIR}/package.json` });
+    if (pkg.includes('"vite"')) {
+      return 'React project already initialized';
+    }
+  } catch {
+    // not initialized yet
+  }
+
+  await tools.run_command({
+    cmd: 'rm -rf app',
+    cwd: SANDBOX_ROOT,
+    timeoutMs: INIT_TIMEOUT_MS,
+  });
+
+  await scaffoldReactApp(tools);
+
+  await tools.run_command({
+    cmd: 'npm install',
+    cwd: APP_DIR,
+    timeoutMs: INIT_TIMEOUT_MS,
   });
 
   return 'React project initialized';

@@ -2,6 +2,12 @@ import { toolsConfig } from './toolConfig';
 import { groqChat, type GroqChatMessage } from './providers/groq';
 import type { SandboxTools } from '../tools';
 
+export type AgentStreamEvent =
+  | { type: 'agent_thinking'; data: { message: string } }
+  | { type: 'agent_complete'; data: { message: string } }
+  | { type: 'preview_ready'; data: { previewUrl: string } }
+  | { type: 'error'; data: { message: string } };
+
 function parseToolArgs(raw: string, toolName: string): Record<string, string> {
   try {
     const parsed = JSON.parse(raw) as Record<string, string>;
@@ -24,22 +30,35 @@ export async function agentLoop({
   messages,
   toolsImpl,
   maxSteps = 20,
+  onEvent,
 }: {
   messages: GroqChatMessage[];
   toolsImpl: SandboxTools;
   maxSteps?: number;
+  onEvent?: (event: AgentStreamEvent) => void;
 }) {
   for (let step = 0; step < maxSteps; step++) {
+    onEvent?.({
+      type: 'agent_thinking',
+      data: { message: `Thinking (step ${step + 1})...` },
+    });
+
     const msg = await groqChat({ messages, tools: toolsConfig });
 
     messages.push(msg);
 
     if (msg.tool_calls?.length) {
       for (const toolCall of msg.tool_calls) {
-        const name = toolCall.function.name as keyof SandboxTools;
-        const args = parseToolArgs(toolCall.function.arguments, toolCall.function.name);
+        const name = toolCall.function.name;
 
-        const result = await toolsImpl[name](args as never);
+        onEvent?.({
+          type: 'agent_thinking',
+          data: { message: `Running ${name}...` },
+        });
+
+        const args = parseToolArgs(toolCall.function.arguments, name);
+
+        const result = await toolsImpl[name as keyof SandboxTools](args as never);
 
         messages.push({
           role: 'tool',
@@ -52,8 +71,20 @@ export async function agentLoop({
       continue;
     }
 
-    return msg.content;
+    const finalMessage = msg.content ?? 'Done.';
+    onEvent?.({
+      type: 'agent_complete',
+      data: { message: finalMessage },
+    });
+
+    return finalMessage;
   }
 
-  return 'Max steps reached';
+  const fallback = 'Max steps reached';
+  onEvent?.({
+    type: 'agent_complete',
+    data: { message: fallback },
+  });
+
+  return fallback;
 }
