@@ -13,9 +13,10 @@
     "build": "bunx tsc",
     "start": "bun run src/index.ts",
     "start:prod": "bun dist/index.js",
-    "dev": "bun run src/index.ts"
+    "dev": "bun run dist/index.js"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1083.0",
     "@e2b/code-interpreter": "^2.6.1",
     "@types/bcrypt": "^6.0.0",
     "@types/cors": "^2.8.19",

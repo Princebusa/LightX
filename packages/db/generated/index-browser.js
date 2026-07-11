@@ -137,22 +137,13 @@ exports.Prisma.ProjectScalarFieldEnum = {
   userId: 'userId'
 };
 
-exports.Prisma.FileScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  path: 'path',
-  content: 'content',
-  language: 'language',
-  projectId: 'projectId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
 exports.Prisma.SandboxScalarFieldEnum = {
   id: 'id',
   e2bId: 'e2bId',
   status: 'status',
   previewUrl: 'previewUrl',
+  s3ArchiveKey: 's3ArchiveKey',
+  archivedAt: 'archivedAt',
   projectId: 'projectId',
   createdAt: 'createdAt',
   destroyedAt: 'destroyedAt'
@@ -184,6 +175,7 @@ exports.SandboxStatus = exports.$Enums.SandboxStatus = {
   CREATED: 'CREATED',
   RUNNING: 'RUNNING',
   STOPPED: 'STOPPED',
+  ARCHIVED: 'ARCHIVED',
   DESTROYED: 'DESTROYED'
 };
 
@@ -196,7 +188,6 @@ exports.LogType = exports.$Enums.LogType = {
 exports.Prisma.ModelName = {
   User: 'User',
   Project: 'Project',
-  File: 'File',
   Sandbox: 'Sandbox',
   Log: 'Log'
 };

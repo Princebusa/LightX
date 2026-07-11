@@ -1,9 +1,28 @@
 import { Sandbox } from "@e2b/code-interpreter";
 import { client } from "db/client";
-import { initReactProject } from "../utils/boilerplat";
+import { initReactProject, ensureSandboxViteAllowedHosts } from "../utils/boilerplat";
 import { createTools } from "../tools";
+import {
+  maybeArchiveSandbox,
+  restoreSandboxFromS3,
+} from "./archive.service";
 
 const PREVIEW_PORT = 5173;
+/** E2B default is 5m; keep alive for the project session (Hobby max = 1h). */
+const SANDBOX_TIMEOUT_MS = Number(
+  process.env.SANDBOX_TTL_MS ?? 3_600_000,
+);
+
+type SandboxRecord = NonNullable<
+  Awaited<ReturnType<typeof client.sandbox.findUnique>>
+>;
+
+type ProjectSandbox = {
+  record: SandboxRecord;
+  e2b: Sandbox;
+};
+
+const sandboxLocks = new Map<string, Promise<ProjectSandbox>>();
 
 function getE2bApiKey() {
   const apiKey = process.env.E2B_API_KEY;
@@ -14,31 +33,33 @@ function getE2bApiKey() {
 }
 
 async function connectE2bSandbox(e2bId: string) {
-  return Sandbox.connect(e2bId, { apiKey: getE2bApiKey() });
+  // timeoutMs on connect renews the TTL so follow-up messages reuse this sandbox
+  return Sandbox.connect(e2bId, {
+    apiKey: getE2bApiKey(),
+    timeoutMs: SANDBOX_TIMEOUT_MS,
+  });
 }
 
-export async function getOrCreateProjectSandbox(projectId: string) {
-  const existing = await client.sandbox.findUnique({
+async function createProjectSandbox(projectId: string): Promise<ProjectSandbox> {
+  const previous = await client.sandbox.findUnique({
     where: { projectId },
   });
 
-  if (existing && existing.status !== "DESTROYED") {
-    try {
-      const e2b = await connectE2bSandbox(existing.e2bId);
-     
-      return { record: existing, e2b };
-    } catch {
-      await client.sandbox.update({
-        where: { id: existing.id },
-        data: { status: "DESTROYED", destroyedAt: new Date() },
-      });
-    }
-  }
-
-  const e2b = await Sandbox.create({ apiKey: getE2bApiKey() });
-
+  const e2b = await Sandbox.create({
+    apiKey: getE2bApiKey(),
+    timeoutMs: SANDBOX_TIMEOUT_MS,
+  });
   const toolsImpl = createTools(e2b);
-  await initReactProject(toolsImpl);
+
+  if (previous?.s3ArchiveKey) {
+    try {
+      await restoreSandboxFromS3(e2b, previous.s3ArchiveKey);
+    } catch {
+      await initReactProject(toolsImpl);
+    }
+  } else {
+    await initReactProject(toolsImpl);
+  }
 
   const record = await client.sandbox.upsert({
     where: { projectId },
@@ -52,22 +73,57 @@ export async function getOrCreateProjectSandbox(projectId: string) {
       status: "CREATED",
       previewUrl: null,
       destroyedAt: null,
+      archivedAt: null,
     },
   });
 
   return { record, e2b };
 }
 
-async function writeFilesToSandbox(
-  e2b: Sandbox,
-  files: { path: string; content: string }[],
-) {
-  for (const file of files) {
-    const fullPath = file.path.startsWith("/")
-      ? file.path
-      : `/home/user/${file.path.replace(/^\.\//, "")}`;
-    await e2b.files.write(fullPath, file.content);
+async function resolveProjectSandbox(projectId: string): Promise<ProjectSandbox> {
+  const existing = await client.sandbox.findUnique({
+    where: { projectId },
+  });
+
+  if (existing && existing.status !== "DESTROYED") {
+    try {
+      const e2b = await connectE2bSandbox(existing.e2bId);
+
+      void maybeArchiveSandbox(
+        {
+          id: existing.id,
+          projectId: existing.projectId,
+          createdAt: existing.createdAt,
+          s3ArchiveKey: existing.s3ArchiveKey,
+          archivedAt: existing.archivedAt,
+        },
+        e2b,
+      ).catch(() => undefined);
+
+      return { record: existing, e2b };
+    } catch {
+      await client.sandbox.update({
+        where: { id: existing.id },
+        data: { status: "DESTROYED", destroyedAt: new Date() },
+      });
+    }
   }
+
+  return createProjectSandbox(projectId);
+}
+
+export async function getOrCreateProjectSandbox(projectId: string) {
+  const inflight = sandboxLocks.get(projectId);
+  if (inflight) {
+    return inflight;
+  }
+
+  const promise = resolveProjectSandbox(projectId).finally(() => {
+    sandboxLocks.delete(projectId);
+  });
+
+  sandboxLocks.set(projectId, promise);
+  return promise;
 }
 
 export async function startProjectPreview(projectId: string, e2b: Sandbox) {
@@ -87,11 +143,23 @@ export async function startProjectPreview(projectId: string, e2b: Sandbox) {
 }
 
 async function ensureDevServer(e2b: Sandbox) {
+  const tools = createTools(e2b);
+  const viteConfigPatched = await ensureSandboxViteAllowedHosts(tools);
+
   const check = await e2b.commands.run(
   `curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:${PREVIEW_PORT} || echo "down"`,
   );
 
-  if (check.stdout.trim() === "200") {
+  if (check.stdout.trim() === "200" && !viteConfigPatched) {
+    return;
+  }
+
+  if (viteConfigPatched) {
+    await e2b.commands.run('pkill -f "vite" || true', {
+      cwd: "/home/user",
+      timeoutMs: 10_000,
+    });
+  } else if (check.stdout.trim() === "200") {
     return;
   }
 
@@ -117,8 +185,6 @@ async function ensureDevServer(e2b: Sandbox) {
 
   throw new Error("Dev server failed to start in sandbox");
 }
-
-
 
 export async function getProjectPreview(projectId: string) {
   const sandbox = await client.sandbox.findUnique({

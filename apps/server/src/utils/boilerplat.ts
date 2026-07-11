@@ -3,6 +3,45 @@ import { APP_DIR, SANDBOX_ROOT } from '../tools';
 
 const INIT_TIMEOUT_MS = 0;
 
+const SANDBOX_VITE_CONFIG = `import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    host: '0.0.0.0',
+    port: 5173,
+    allowedHosts: true,
+  },
+});
+`;
+
+export async function ensureSandboxViteAllowedHosts(tools: SandboxTools) {
+  const configPath = `${APP_DIR}/vite.config.js`;
+
+  try {
+    const config = await tools.read_file({ path: configPath });
+    if (config.includes('allowedHosts')) {
+      return false;
+    }
+
+    const updated = config.replace(
+      /port:\s*5173,?/,
+      'port: 5173,\n    allowedHosts: true,',
+    );
+
+    if (updated === config) {
+      await tools.write_file({ path: configPath, content: SANDBOX_VITE_CONFIG });
+    } else {
+      await tools.write_file({ path: configPath, content: updated });
+    }
+
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 async function scaffoldReactApp(tools: SandboxTools) {
   await tools.write_file({
     path: `${APP_DIR}/package.json`,
@@ -36,17 +75,7 @@ async function scaffoldReactApp(tools: SandboxTools) {
 
   await tools.write_file({
     path: `${APP_DIR}/vite.config.js`,
-    content: `import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-
-export default defineConfig({
-  plugins: [react()],
-  server: {
-    host: '0.0.0.0',
-    port: 5173,
-  },
-});
-`,
+    content: SANDBOX_VITE_CONFIG,
   });
 
   await tools.write_file({

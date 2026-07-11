@@ -33,7 +33,6 @@ export const getProjects = asyncHandler(async (req: Request, res: Response) => {
     orderBy: { createdAt: "desc" },
     include: {
       sandbox: { select: { status: true, previewUrl: true } },
-      _count: { select: { files: true } },
     },
   });
 
@@ -74,7 +73,6 @@ export const getProjectById = asyncHandler(async (req: Request, res: Response) =
           timestamp: true,
         },
       },
-      _count: { select: { files: true } },
     },
   });
 

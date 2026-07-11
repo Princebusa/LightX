@@ -5,6 +5,10 @@ import {
   updateProject,
   deleteProject,
 } from "../controllers/project.controller";
+import {
+  getProjectFiles,
+  getProjectFileContent,
+} from "../controllers/files.controller";
 import { chat, getMessages } from "../controllers/chat.controller";
 import {
   startPreview,
@@ -23,6 +27,8 @@ router.patch("/:id", authMiddleware, updateProject);
 router.delete("/:id", authMiddleware, deleteProject);
 
 router.get("/:id/messages", authMiddleware, getMessages);
+router.get("/:id/files/content", authMiddleware, getProjectFileContent);
+router.get("/:id/files", authMiddleware, getProjectFiles);
 router.post("/:id/chat", authMiddleware, chat);
 router.post("/:id/preview", authMiddleware, startPreview);
 router.get("/:id/preview", authMiddleware, getPreview);

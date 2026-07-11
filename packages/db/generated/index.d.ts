@@ -24,11 +24,6 @@ export type User = $Result.DefaultSelection<Prisma.$UserPayload>
  */
 export type Project = $Result.DefaultSelection<Prisma.$ProjectPayload>
 /**
- * Model File
- * 
- */
-export type File = $Result.DefaultSelection<Prisma.$FilePayload>
-/**
  * Model Sandbox
  * 
  */
@@ -47,6 +42,7 @@ export namespace $Enums {
   CREATED: 'CREATED',
   RUNNING: 'RUNNING',
   STOPPED: 'STOPPED',
+  ARCHIVED: 'ARCHIVED',
   DESTROYED: 'DESTROYED'
 };
 
@@ -211,16 +207,6 @@ export class PrismaClient<
     * ```
     */
   get project(): Prisma.ProjectDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.file`: Exposes CRUD operations for the **File** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Files
-    * const files = await prisma.file.findMany()
-    * ```
-    */
-  get file(): Prisma.FileDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.sandbox`: Exposes CRUD operations for the **Sandbox** model.
@@ -677,7 +663,6 @@ export namespace Prisma {
   export const ModelName: {
     User: 'User',
     Project: 'Project',
-    File: 'File',
     Sandbox: 'Sandbox',
     Log: 'Log'
   };
@@ -695,7 +680,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "project" | "file" | "sandbox" | "log"
+      modelProps: "user" | "project" | "sandbox" | "log"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -844,80 +829,6 @@ export namespace Prisma {
           count: {
             args: Prisma.ProjectCountArgs<ExtArgs>
             result: $Utils.Optional<ProjectCountAggregateOutputType> | number
-          }
-        }
-      }
-      File: {
-        payload: Prisma.$FilePayload<ExtArgs>
-        fields: Prisma.FileFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.FileFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$FilePayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.FileFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$FilePayload>
-          }
-          findFirst: {
-            args: Prisma.FileFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$FilePayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.FileFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$FilePayload>
-          }
-          findMany: {
-            args: Prisma.FileFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$FilePayload>[]
-          }
-          create: {
-            args: Prisma.FileCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$FilePayload>
-          }
-          createMany: {
-            args: Prisma.FileCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.FileCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$FilePayload>[]
-          }
-          delete: {
-            args: Prisma.FileDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$FilePayload>
-          }
-          update: {
-            args: Prisma.FileUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$FilePayload>
-          }
-          deleteMany: {
-            args: Prisma.FileDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.FileUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.FileUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$FilePayload>[]
-          }
-          upsert: {
-            args: Prisma.FileUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$FilePayload>
-          }
-          aggregate: {
-            args: Prisma.FileAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateFile>
-          }
-          groupBy: {
-            args: Prisma.FileGroupByArgs<ExtArgs>
-            result: $Utils.Optional<FileGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.FileCountArgs<ExtArgs>
-            result: $Utils.Optional<FileCountAggregateOutputType> | number
           }
         }
       }
@@ -1179,7 +1090,6 @@ export namespace Prisma {
   export type GlobalOmitConfig = {
     user?: UserOmit
     project?: ProjectOmit
-    file?: FileOmit
     sandbox?: SandboxOmit
     log?: LogOmit
   }
@@ -1293,12 +1203,10 @@ export namespace Prisma {
    */
 
   export type ProjectCountOutputType = {
-    files: number
     logs: number
   }
 
   export type ProjectCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    files?: boolean | ProjectCountOutputTypeCountFilesArgs
     logs?: boolean | ProjectCountOutputTypeCountLogsArgs
   }
 
@@ -1311,13 +1219,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the ProjectCountOutputType
      */
     select?: ProjectCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * ProjectCountOutputType without action
-   */
-  export type ProjectCountOutputTypeCountFilesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: FileWhereInput
   }
 
   /**
@@ -2580,7 +2481,6 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     user?: boolean | Project$userArgs<ExtArgs>
-    files?: boolean | Project$filesArgs<ExtArgs>
     sandbox?: boolean | Project$sandboxArgs<ExtArgs>
     logs?: boolean | Project$logsArgs<ExtArgs>
     _count?: boolean | ProjectCountOutputTypeDefaultArgs<ExtArgs>
@@ -2618,7 +2518,6 @@ export namespace Prisma {
   export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["project"]>
   export type ProjectInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | Project$userArgs<ExtArgs>
-    files?: boolean | Project$filesArgs<ExtArgs>
     sandbox?: boolean | Project$sandboxArgs<ExtArgs>
     logs?: boolean | Project$logsArgs<ExtArgs>
     _count?: boolean | ProjectCountOutputTypeDefaultArgs<ExtArgs>
@@ -2634,7 +2533,6 @@ export namespace Prisma {
     name: "Project"
     objects: {
       user: Prisma.$UserPayload<ExtArgs> | null
-      files: Prisma.$FilePayload<ExtArgs>[]
       sandbox: Prisma.$SandboxPayload<ExtArgs> | null
       logs: Prisma.$LogPayload<ExtArgs>[]
     }
@@ -3040,7 +2938,6 @@ export namespace Prisma {
   export interface Prisma__ProjectClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends Project$userArgs<ExtArgs> = {}>(args?: Subset<T, Project$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    files<T extends Project$filesArgs<ExtArgs> = {}>(args?: Subset<T, Project$filesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sandbox<T extends Project$sandboxArgs<ExtArgs> = {}>(args?: Subset<T, Project$sandboxArgs<ExtArgs>>): Prisma__SandboxClient<$Result.GetResult<Prisma.$SandboxPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     logs<T extends Project$logsArgs<ExtArgs> = {}>(args?: Subset<T, Project$logsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -3498,30 +3395,6 @@ export namespace Prisma {
   }
 
   /**
-   * Project.files
-   */
-  export type Project$filesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the File
-     */
-    select?: FileSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the File
-     */
-    omit?: FileOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: FileInclude<ExtArgs> | null
-    where?: FileWhereInput
-    orderBy?: FileOrderByWithRelationInput | FileOrderByWithRelationInput[]
-    cursor?: FileWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: FileScalarFieldEnum | FileScalarFieldEnum[]
-  }
-
-  /**
    * Project.sandbox
    */
   export type Project$sandboxArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3584,1108 +3457,6 @@ export namespace Prisma {
 
 
   /**
-   * Model File
-   */
-
-  export type AggregateFile = {
-    _count: FileCountAggregateOutputType | null
-    _min: FileMinAggregateOutputType | null
-    _max: FileMaxAggregateOutputType | null
-  }
-
-  export type FileMinAggregateOutputType = {
-    id: string | null
-    name: string | null
-    path: string | null
-    content: string | null
-    language: string | null
-    projectId: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type FileMaxAggregateOutputType = {
-    id: string | null
-    name: string | null
-    path: string | null
-    content: string | null
-    language: string | null
-    projectId: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type FileCountAggregateOutputType = {
-    id: number
-    name: number
-    path: number
-    content: number
-    language: number
-    projectId: number
-    createdAt: number
-    updatedAt: number
-    _all: number
-  }
-
-
-  export type FileMinAggregateInputType = {
-    id?: true
-    name?: true
-    path?: true
-    content?: true
-    language?: true
-    projectId?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type FileMaxAggregateInputType = {
-    id?: true
-    name?: true
-    path?: true
-    content?: true
-    language?: true
-    projectId?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type FileCountAggregateInputType = {
-    id?: true
-    name?: true
-    path?: true
-    content?: true
-    language?: true
-    projectId?: true
-    createdAt?: true
-    updatedAt?: true
-    _all?: true
-  }
-
-  export type FileAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which File to aggregate.
-     */
-    where?: FileWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Files to fetch.
-     */
-    orderBy?: FileOrderByWithRelationInput | FileOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: FileWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Files from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Files.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned Files
-    **/
-    _count?: true | FileCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: FileMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: FileMaxAggregateInputType
-  }
-
-  export type GetFileAggregateType<T extends FileAggregateArgs> = {
-        [P in keyof T & keyof AggregateFile]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateFile[P]>
-      : GetScalarType<T[P], AggregateFile[P]>
-  }
-
-
-
-
-  export type FileGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: FileWhereInput
-    orderBy?: FileOrderByWithAggregationInput | FileOrderByWithAggregationInput[]
-    by: FileScalarFieldEnum[] | FileScalarFieldEnum
-    having?: FileScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: FileCountAggregateInputType | true
-    _min?: FileMinAggregateInputType
-    _max?: FileMaxAggregateInputType
-  }
-
-  export type FileGroupByOutputType = {
-    id: string
-    name: string
-    path: string
-    content: string
-    language: string | null
-    projectId: string
-    createdAt: Date
-    updatedAt: Date
-    _count: FileCountAggregateOutputType | null
-    _min: FileMinAggregateOutputType | null
-    _max: FileMaxAggregateOutputType | null
-  }
-
-  type GetFileGroupByPayload<T extends FileGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<FileGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof FileGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], FileGroupByOutputType[P]>
-            : GetScalarType<T[P], FileGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type FileSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-    path?: boolean
-    content?: boolean
-    language?: boolean
-    projectId?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    project?: boolean | ProjectDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["file"]>
-
-  export type FileSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-    path?: boolean
-    content?: boolean
-    language?: boolean
-    projectId?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    project?: boolean | ProjectDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["file"]>
-
-  export type FileSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-    path?: boolean
-    content?: boolean
-    language?: boolean
-    projectId?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    project?: boolean | ProjectDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["file"]>
-
-  export type FileSelectScalar = {
-    id?: boolean
-    name?: boolean
-    path?: boolean
-    content?: boolean
-    language?: boolean
-    projectId?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }
-
-  export type FileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "path" | "content" | "language" | "projectId" | "createdAt" | "updatedAt", ExtArgs["result"]["file"]>
-  export type FileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    project?: boolean | ProjectDefaultArgs<ExtArgs>
-  }
-  export type FileIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    project?: boolean | ProjectDefaultArgs<ExtArgs>
-  }
-  export type FileIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    project?: boolean | ProjectDefaultArgs<ExtArgs>
-  }
-
-  export type $FilePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "File"
-    objects: {
-      project: Prisma.$ProjectPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      name: string
-      path: string
-      content: string
-      language: string | null
-      projectId: string
-      createdAt: Date
-      updatedAt: Date
-    }, ExtArgs["result"]["file"]>
-    composites: {}
-  }
-
-  type FileGetPayload<S extends boolean | null | undefined | FileDefaultArgs> = $Result.GetResult<Prisma.$FilePayload, S>
-
-  type FileCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<FileFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: FileCountAggregateInputType | true
-    }
-
-  export interface FileDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['File'], meta: { name: 'File' } }
-    /**
-     * Find zero or one File that matches the filter.
-     * @param {FileFindUniqueArgs} args - Arguments to find a File
-     * @example
-     * // Get one File
-     * const file = await prisma.file.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends FileFindUniqueArgs>(args: SelectSubset<T, FileFindUniqueArgs<ExtArgs>>): Prisma__FileClient<$Result.GetResult<Prisma.$FilePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one File that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {FileFindUniqueOrThrowArgs} args - Arguments to find a File
-     * @example
-     * // Get one File
-     * const file = await prisma.file.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends FileFindUniqueOrThrowArgs>(args: SelectSubset<T, FileFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FileClient<$Result.GetResult<Prisma.$FilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first File that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {FileFindFirstArgs} args - Arguments to find a File
-     * @example
-     * // Get one File
-     * const file = await prisma.file.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends FileFindFirstArgs>(args?: SelectSubset<T, FileFindFirstArgs<ExtArgs>>): Prisma__FileClient<$Result.GetResult<Prisma.$FilePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first File that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {FileFindFirstOrThrowArgs} args - Arguments to find a File
-     * @example
-     * // Get one File
-     * const file = await prisma.file.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends FileFindFirstOrThrowArgs>(args?: SelectSubset<T, FileFindFirstOrThrowArgs<ExtArgs>>): Prisma__FileClient<$Result.GetResult<Prisma.$FilePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Files that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {FileFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Files
-     * const files = await prisma.file.findMany()
-     * 
-     * // Get first 10 Files
-     * const files = await prisma.file.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const fileWithIdOnly = await prisma.file.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends FileFindManyArgs>(args?: SelectSubset<T, FileFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a File.
-     * @param {FileCreateArgs} args - Arguments to create a File.
-     * @example
-     * // Create one File
-     * const File = await prisma.file.create({
-     *   data: {
-     *     // ... data to create a File
-     *   }
-     * })
-     * 
-     */
-    create<T extends FileCreateArgs>(args: SelectSubset<T, FileCreateArgs<ExtArgs>>): Prisma__FileClient<$Result.GetResult<Prisma.$FilePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Files.
-     * @param {FileCreateManyArgs} args - Arguments to create many Files.
-     * @example
-     * // Create many Files
-     * const file = await prisma.file.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends FileCreateManyArgs>(args?: SelectSubset<T, FileCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many Files and returns the data saved in the database.
-     * @param {FileCreateManyAndReturnArgs} args - Arguments to create many Files.
-     * @example
-     * // Create many Files
-     * const file = await prisma.file.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many Files and only return the `id`
-     * const fileWithIdOnly = await prisma.file.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends FileCreateManyAndReturnArgs>(args?: SelectSubset<T, FileCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FilePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a File.
-     * @param {FileDeleteArgs} args - Arguments to delete one File.
-     * @example
-     * // Delete one File
-     * const File = await prisma.file.delete({
-     *   where: {
-     *     // ... filter to delete one File
-     *   }
-     * })
-     * 
-     */
-    delete<T extends FileDeleteArgs>(args: SelectSubset<T, FileDeleteArgs<ExtArgs>>): Prisma__FileClient<$Result.GetResult<Prisma.$FilePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one File.
-     * @param {FileUpdateArgs} args - Arguments to update one File.
-     * @example
-     * // Update one File
-     * const file = await prisma.file.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends FileUpdateArgs>(args: SelectSubset<T, FileUpdateArgs<ExtArgs>>): Prisma__FileClient<$Result.GetResult<Prisma.$FilePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Files.
-     * @param {FileDeleteManyArgs} args - Arguments to filter Files to delete.
-     * @example
-     * // Delete a few Files
-     * const { count } = await prisma.file.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends FileDeleteManyArgs>(args?: SelectSubset<T, FileDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Files.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {FileUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Files
-     * const file = await prisma.file.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends FileUpdateManyArgs>(args: SelectSubset<T, FileUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Files and returns the data updated in the database.
-     * @param {FileUpdateManyAndReturnArgs} args - Arguments to update many Files.
-     * @example
-     * // Update many Files
-     * const file = await prisma.file.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more Files and only return the `id`
-     * const fileWithIdOnly = await prisma.file.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends FileUpdateManyAndReturnArgs>(args: SelectSubset<T, FileUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FilePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one File.
-     * @param {FileUpsertArgs} args - Arguments to update or create a File.
-     * @example
-     * // Update or create a File
-     * const file = await prisma.file.upsert({
-     *   create: {
-     *     // ... data to create a File
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the File we want to update
-     *   }
-     * })
-     */
-    upsert<T extends FileUpsertArgs>(args: SelectSubset<T, FileUpsertArgs<ExtArgs>>): Prisma__FileClient<$Result.GetResult<Prisma.$FilePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Files.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {FileCountArgs} args - Arguments to filter Files to count.
-     * @example
-     * // Count the number of Files
-     * const count = await prisma.file.count({
-     *   where: {
-     *     // ... the filter for the Files we want to count
-     *   }
-     * })
-    **/
-    count<T extends FileCountArgs>(
-      args?: Subset<T, FileCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], FileCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a File.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {FileAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends FileAggregateArgs>(args: Subset<T, FileAggregateArgs>): Prisma.PrismaPromise<GetFileAggregateType<T>>
-
-    /**
-     * Group by File.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {FileGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends FileGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: FileGroupByArgs['orderBy'] }
-        : { orderBy?: FileGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, FileGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFileGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the File model
-   */
-  readonly fields: FileFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for File.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__FileClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    project<T extends ProjectDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProjectDefaultArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the File model
-   */
-  interface FileFieldRefs {
-    readonly id: FieldRef<"File", 'String'>
-    readonly name: FieldRef<"File", 'String'>
-    readonly path: FieldRef<"File", 'String'>
-    readonly content: FieldRef<"File", 'String'>
-    readonly language: FieldRef<"File", 'String'>
-    readonly projectId: FieldRef<"File", 'String'>
-    readonly createdAt: FieldRef<"File", 'DateTime'>
-    readonly updatedAt: FieldRef<"File", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * File findUnique
-   */
-  export type FileFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the File
-     */
-    select?: FileSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the File
-     */
-    omit?: FileOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: FileInclude<ExtArgs> | null
-    /**
-     * Filter, which File to fetch.
-     */
-    where: FileWhereUniqueInput
-  }
-
-  /**
-   * File findUniqueOrThrow
-   */
-  export type FileFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the File
-     */
-    select?: FileSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the File
-     */
-    omit?: FileOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: FileInclude<ExtArgs> | null
-    /**
-     * Filter, which File to fetch.
-     */
-    where: FileWhereUniqueInput
-  }
-
-  /**
-   * File findFirst
-   */
-  export type FileFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the File
-     */
-    select?: FileSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the File
-     */
-    omit?: FileOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: FileInclude<ExtArgs> | null
-    /**
-     * Filter, which File to fetch.
-     */
-    where?: FileWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Files to fetch.
-     */
-    orderBy?: FileOrderByWithRelationInput | FileOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Files.
-     */
-    cursor?: FileWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Files from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Files.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Files.
-     */
-    distinct?: FileScalarFieldEnum | FileScalarFieldEnum[]
-  }
-
-  /**
-   * File findFirstOrThrow
-   */
-  export type FileFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the File
-     */
-    select?: FileSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the File
-     */
-    omit?: FileOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: FileInclude<ExtArgs> | null
-    /**
-     * Filter, which File to fetch.
-     */
-    where?: FileWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Files to fetch.
-     */
-    orderBy?: FileOrderByWithRelationInput | FileOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Files.
-     */
-    cursor?: FileWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Files from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Files.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Files.
-     */
-    distinct?: FileScalarFieldEnum | FileScalarFieldEnum[]
-  }
-
-  /**
-   * File findMany
-   */
-  export type FileFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the File
-     */
-    select?: FileSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the File
-     */
-    omit?: FileOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: FileInclude<ExtArgs> | null
-    /**
-     * Filter, which Files to fetch.
-     */
-    where?: FileWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Files to fetch.
-     */
-    orderBy?: FileOrderByWithRelationInput | FileOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing Files.
-     */
-    cursor?: FileWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Files from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Files.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Files.
-     */
-    distinct?: FileScalarFieldEnum | FileScalarFieldEnum[]
-  }
-
-  /**
-   * File create
-   */
-  export type FileCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the File
-     */
-    select?: FileSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the File
-     */
-    omit?: FileOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: FileInclude<ExtArgs> | null
-    /**
-     * The data needed to create a File.
-     */
-    data: XOR<FileCreateInput, FileUncheckedCreateInput>
-  }
-
-  /**
-   * File createMany
-   */
-  export type FileCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many Files.
-     */
-    data: FileCreateManyInput | FileCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * File createManyAndReturn
-   */
-  export type FileCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the File
-     */
-    select?: FileSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the File
-     */
-    omit?: FileOmit<ExtArgs> | null
-    /**
-     * The data used to create many Files.
-     */
-    data: FileCreateManyInput | FileCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: FileIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * File update
-   */
-  export type FileUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the File
-     */
-    select?: FileSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the File
-     */
-    omit?: FileOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: FileInclude<ExtArgs> | null
-    /**
-     * The data needed to update a File.
-     */
-    data: XOR<FileUpdateInput, FileUncheckedUpdateInput>
-    /**
-     * Choose, which File to update.
-     */
-    where: FileWhereUniqueInput
-  }
-
-  /**
-   * File updateMany
-   */
-  export type FileUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update Files.
-     */
-    data: XOR<FileUpdateManyMutationInput, FileUncheckedUpdateManyInput>
-    /**
-     * Filter which Files to update
-     */
-    where?: FileWhereInput
-    /**
-     * Limit how many Files to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * File updateManyAndReturn
-   */
-  export type FileUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the File
-     */
-    select?: FileSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the File
-     */
-    omit?: FileOmit<ExtArgs> | null
-    /**
-     * The data used to update Files.
-     */
-    data: XOR<FileUpdateManyMutationInput, FileUncheckedUpdateManyInput>
-    /**
-     * Filter which Files to update
-     */
-    where?: FileWhereInput
-    /**
-     * Limit how many Files to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: FileIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * File upsert
-   */
-  export type FileUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the File
-     */
-    select?: FileSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the File
-     */
-    omit?: FileOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: FileInclude<ExtArgs> | null
-    /**
-     * The filter to search for the File to update in case it exists.
-     */
-    where: FileWhereUniqueInput
-    /**
-     * In case the File found by the `where` argument doesn't exist, create a new File with this data.
-     */
-    create: XOR<FileCreateInput, FileUncheckedCreateInput>
-    /**
-     * In case the File was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<FileUpdateInput, FileUncheckedUpdateInput>
-  }
-
-  /**
-   * File delete
-   */
-  export type FileDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the File
-     */
-    select?: FileSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the File
-     */
-    omit?: FileOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: FileInclude<ExtArgs> | null
-    /**
-     * Filter which File to delete.
-     */
-    where: FileWhereUniqueInput
-  }
-
-  /**
-   * File deleteMany
-   */
-  export type FileDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Files to delete
-     */
-    where?: FileWhereInput
-    /**
-     * Limit how many Files to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * File without action
-   */
-  export type FileDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the File
-     */
-    select?: FileSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the File
-     */
-    omit?: FileOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: FileInclude<ExtArgs> | null
-  }
-
-
-  /**
    * Model Sandbox
    */
 
@@ -4700,6 +3471,8 @@ export namespace Prisma {
     e2bId: string | null
     status: $Enums.SandboxStatus | null
     previewUrl: string | null
+    s3ArchiveKey: string | null
+    archivedAt: Date | null
     projectId: string | null
     createdAt: Date | null
     destroyedAt: Date | null
@@ -4710,6 +3483,8 @@ export namespace Prisma {
     e2bId: string | null
     status: $Enums.SandboxStatus | null
     previewUrl: string | null
+    s3ArchiveKey: string | null
+    archivedAt: Date | null
     projectId: string | null
     createdAt: Date | null
     destroyedAt: Date | null
@@ -4720,6 +3495,8 @@ export namespace Prisma {
     e2bId: number
     status: number
     previewUrl: number
+    s3ArchiveKey: number
+    archivedAt: number
     projectId: number
     createdAt: number
     destroyedAt: number
@@ -4732,6 +3509,8 @@ export namespace Prisma {
     e2bId?: true
     status?: true
     previewUrl?: true
+    s3ArchiveKey?: true
+    archivedAt?: true
     projectId?: true
     createdAt?: true
     destroyedAt?: true
@@ -4742,6 +3521,8 @@ export namespace Prisma {
     e2bId?: true
     status?: true
     previewUrl?: true
+    s3ArchiveKey?: true
+    archivedAt?: true
     projectId?: true
     createdAt?: true
     destroyedAt?: true
@@ -4752,6 +3533,8 @@ export namespace Prisma {
     e2bId?: true
     status?: true
     previewUrl?: true
+    s3ArchiveKey?: true
+    archivedAt?: true
     projectId?: true
     createdAt?: true
     destroyedAt?: true
@@ -4835,6 +3618,8 @@ export namespace Prisma {
     e2bId: string
     status: $Enums.SandboxStatus
     previewUrl: string | null
+    s3ArchiveKey: string | null
+    archivedAt: Date | null
     projectId: string
     createdAt: Date
     destroyedAt: Date | null
@@ -4862,6 +3647,8 @@ export namespace Prisma {
     e2bId?: boolean
     status?: boolean
     previewUrl?: boolean
+    s3ArchiveKey?: boolean
+    archivedAt?: boolean
     projectId?: boolean
     createdAt?: boolean
     destroyedAt?: boolean
@@ -4873,6 +3660,8 @@ export namespace Prisma {
     e2bId?: boolean
     status?: boolean
     previewUrl?: boolean
+    s3ArchiveKey?: boolean
+    archivedAt?: boolean
     projectId?: boolean
     createdAt?: boolean
     destroyedAt?: boolean
@@ -4884,6 +3673,8 @@ export namespace Prisma {
     e2bId?: boolean
     status?: boolean
     previewUrl?: boolean
+    s3ArchiveKey?: boolean
+    archivedAt?: boolean
     projectId?: boolean
     createdAt?: boolean
     destroyedAt?: boolean
@@ -4895,12 +3686,14 @@ export namespace Prisma {
     e2bId?: boolean
     status?: boolean
     previewUrl?: boolean
+    s3ArchiveKey?: boolean
+    archivedAt?: boolean
     projectId?: boolean
     createdAt?: boolean
     destroyedAt?: boolean
   }
 
-  export type SandboxOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "e2bId" | "status" | "previewUrl" | "projectId" | "createdAt" | "destroyedAt", ExtArgs["result"]["sandbox"]>
+  export type SandboxOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "e2bId" | "status" | "previewUrl" | "s3ArchiveKey" | "archivedAt" | "projectId" | "createdAt" | "destroyedAt", ExtArgs["result"]["sandbox"]>
   export type SandboxInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     project?: boolean | ProjectDefaultArgs<ExtArgs>
   }
@@ -4921,6 +3714,8 @@ export namespace Prisma {
       e2bId: string
       status: $Enums.SandboxStatus
       previewUrl: string | null
+      s3ArchiveKey: string | null
+      archivedAt: Date | null
       projectId: string
       createdAt: Date
       destroyedAt: Date | null
@@ -5352,6 +4147,8 @@ export namespace Prisma {
     readonly e2bId: FieldRef<"Sandbox", 'String'>
     readonly status: FieldRef<"Sandbox", 'SandboxStatus'>
     readonly previewUrl: FieldRef<"Sandbox", 'String'>
+    readonly s3ArchiveKey: FieldRef<"Sandbox", 'String'>
+    readonly archivedAt: FieldRef<"Sandbox", 'DateTime'>
     readonly projectId: FieldRef<"Sandbox", 'String'>
     readonly createdAt: FieldRef<"Sandbox", 'DateTime'>
     readonly destroyedAt: FieldRef<"Sandbox", 'DateTime'>
@@ -6874,25 +5671,13 @@ export namespace Prisma {
   export type ProjectScalarFieldEnum = (typeof ProjectScalarFieldEnum)[keyof typeof ProjectScalarFieldEnum]
 
 
-  export const FileScalarFieldEnum: {
-    id: 'id',
-    name: 'name',
-    path: 'path',
-    content: 'content',
-    language: 'language',
-    projectId: 'projectId',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-  };
-
-  export type FileScalarFieldEnum = (typeof FileScalarFieldEnum)[keyof typeof FileScalarFieldEnum]
-
-
   export const SandboxScalarFieldEnum: {
     id: 'id',
     e2bId: 'e2bId',
     status: 'status',
     previewUrl: 'previewUrl',
+    s3ArchiveKey: 's3ArchiveKey',
+    archivedAt: 'archivedAt',
     projectId: 'projectId',
     createdAt: 'createdAt',
     destroyedAt: 'destroyedAt'
@@ -7080,7 +5865,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Project"> | Date | string
     userId?: StringNullableFilter<"Project"> | string | null
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-    files?: FileListRelationFilter
     sandbox?: XOR<SandboxNullableScalarRelationFilter, SandboxWhereInput> | null
     logs?: LogListRelationFilter
   }
@@ -7093,7 +5877,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
-    files?: FileOrderByRelationAggregateInput
     sandbox?: SandboxOrderByWithRelationInput
     logs?: LogOrderByRelationAggregateInput
   }
@@ -7109,7 +5892,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Project"> | Date | string
     userId?: StringNullableFilter<"Project"> | string | null
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-    files?: FileListRelationFilter
     sandbox?: XOR<SandboxNullableScalarRelationFilter, SandboxWhereInput> | null
     logs?: LogListRelationFilter
   }, "id">
@@ -7138,77 +5920,6 @@ export namespace Prisma {
     userId?: StringNullableWithAggregatesFilter<"Project"> | string | null
   }
 
-  export type FileWhereInput = {
-    AND?: FileWhereInput | FileWhereInput[]
-    OR?: FileWhereInput[]
-    NOT?: FileWhereInput | FileWhereInput[]
-    id?: StringFilter<"File"> | string
-    name?: StringFilter<"File"> | string
-    path?: StringFilter<"File"> | string
-    content?: StringFilter<"File"> | string
-    language?: StringNullableFilter<"File"> | string | null
-    projectId?: StringFilter<"File"> | string
-    createdAt?: DateTimeFilter<"File"> | Date | string
-    updatedAt?: DateTimeFilter<"File"> | Date | string
-    project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
-  }
-
-  export type FileOrderByWithRelationInput = {
-    id?: SortOrder
-    name?: SortOrder
-    path?: SortOrder
-    content?: SortOrder
-    language?: SortOrderInput | SortOrder
-    projectId?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    project?: ProjectOrderByWithRelationInput
-  }
-
-  export type FileWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    projectId_path?: FileProjectIdPathCompoundUniqueInput
-    AND?: FileWhereInput | FileWhereInput[]
-    OR?: FileWhereInput[]
-    NOT?: FileWhereInput | FileWhereInput[]
-    name?: StringFilter<"File"> | string
-    path?: StringFilter<"File"> | string
-    content?: StringFilter<"File"> | string
-    language?: StringNullableFilter<"File"> | string | null
-    projectId?: StringFilter<"File"> | string
-    createdAt?: DateTimeFilter<"File"> | Date | string
-    updatedAt?: DateTimeFilter<"File"> | Date | string
-    project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
-  }, "id" | "projectId_path">
-
-  export type FileOrderByWithAggregationInput = {
-    id?: SortOrder
-    name?: SortOrder
-    path?: SortOrder
-    content?: SortOrder
-    language?: SortOrderInput | SortOrder
-    projectId?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _count?: FileCountOrderByAggregateInput
-    _max?: FileMaxOrderByAggregateInput
-    _min?: FileMinOrderByAggregateInput
-  }
-
-  export type FileScalarWhereWithAggregatesInput = {
-    AND?: FileScalarWhereWithAggregatesInput | FileScalarWhereWithAggregatesInput[]
-    OR?: FileScalarWhereWithAggregatesInput[]
-    NOT?: FileScalarWhereWithAggregatesInput | FileScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"File"> | string
-    name?: StringWithAggregatesFilter<"File"> | string
-    path?: StringWithAggregatesFilter<"File"> | string
-    content?: StringWithAggregatesFilter<"File"> | string
-    language?: StringNullableWithAggregatesFilter<"File"> | string | null
-    projectId?: StringWithAggregatesFilter<"File"> | string
-    createdAt?: DateTimeWithAggregatesFilter<"File"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"File"> | Date | string
-  }
-
   export type SandboxWhereInput = {
     AND?: SandboxWhereInput | SandboxWhereInput[]
     OR?: SandboxWhereInput[]
@@ -7217,6 +5928,8 @@ export namespace Prisma {
     e2bId?: StringFilter<"Sandbox"> | string
     status?: EnumSandboxStatusFilter<"Sandbox"> | $Enums.SandboxStatus
     previewUrl?: StringNullableFilter<"Sandbox"> | string | null
+    s3ArchiveKey?: StringNullableFilter<"Sandbox"> | string | null
+    archivedAt?: DateTimeNullableFilter<"Sandbox"> | Date | string | null
     projectId?: StringFilter<"Sandbox"> | string
     createdAt?: DateTimeFilter<"Sandbox"> | Date | string
     destroyedAt?: DateTimeNullableFilter<"Sandbox"> | Date | string | null
@@ -7228,6 +5941,8 @@ export namespace Prisma {
     e2bId?: SortOrder
     status?: SortOrder
     previewUrl?: SortOrderInput | SortOrder
+    s3ArchiveKey?: SortOrderInput | SortOrder
+    archivedAt?: SortOrderInput | SortOrder
     projectId?: SortOrder
     createdAt?: SortOrder
     destroyedAt?: SortOrderInput | SortOrder
@@ -7243,6 +5958,8 @@ export namespace Prisma {
     e2bId?: StringFilter<"Sandbox"> | string
     status?: EnumSandboxStatusFilter<"Sandbox"> | $Enums.SandboxStatus
     previewUrl?: StringNullableFilter<"Sandbox"> | string | null
+    s3ArchiveKey?: StringNullableFilter<"Sandbox"> | string | null
+    archivedAt?: DateTimeNullableFilter<"Sandbox"> | Date | string | null
     createdAt?: DateTimeFilter<"Sandbox"> | Date | string
     destroyedAt?: DateTimeNullableFilter<"Sandbox"> | Date | string | null
     project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
@@ -7253,6 +5970,8 @@ export namespace Prisma {
     e2bId?: SortOrder
     status?: SortOrder
     previewUrl?: SortOrderInput | SortOrder
+    s3ArchiveKey?: SortOrderInput | SortOrder
+    archivedAt?: SortOrderInput | SortOrder
     projectId?: SortOrder
     createdAt?: SortOrder
     destroyedAt?: SortOrderInput | SortOrder
@@ -7269,6 +5988,8 @@ export namespace Prisma {
     e2bId?: StringWithAggregatesFilter<"Sandbox"> | string
     status?: EnumSandboxStatusWithAggregatesFilter<"Sandbox"> | $Enums.SandboxStatus
     previewUrl?: StringNullableWithAggregatesFilter<"Sandbox"> | string | null
+    s3ArchiveKey?: StringNullableWithAggregatesFilter<"Sandbox"> | string | null
+    archivedAt?: DateTimeNullableWithAggregatesFilter<"Sandbox"> | Date | string | null
     projectId?: StringWithAggregatesFilter<"Sandbox"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Sandbox"> | Date | string
     destroyedAt?: DateTimeNullableWithAggregatesFilter<"Sandbox"> | Date | string | null
@@ -7396,7 +6117,6 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutProjectsInput
-    files?: FileCreateNestedManyWithoutProjectInput
     sandbox?: SandboxCreateNestedOneWithoutProjectInput
     logs?: LogCreateNestedManyWithoutProjectInput
   }
@@ -7408,7 +6128,6 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId?: string | null
-    files?: FileUncheckedCreateNestedManyWithoutProjectInput
     sandbox?: SandboxUncheckedCreateNestedOneWithoutProjectInput
     logs?: LogUncheckedCreateNestedManyWithoutProjectInput
   }
@@ -7420,7 +6139,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutProjectsNestedInput
-    files?: FileUpdateManyWithoutProjectNestedInput
     sandbox?: SandboxUpdateOneWithoutProjectNestedInput
     logs?: LogUpdateManyWithoutProjectNestedInput
   }
@@ -7432,7 +6150,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
-    files?: FileUncheckedUpdateManyWithoutProjectNestedInput
     sandbox?: SandboxUncheckedUpdateOneWithoutProjectNestedInput
     logs?: LogUncheckedUpdateManyWithoutProjectNestedInput
   }
@@ -7463,87 +6180,13 @@ export namespace Prisma {
     userId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type FileCreateInput = {
-    id?: string
-    name: string
-    path: string
-    content: string
-    language?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    project: ProjectCreateNestedOneWithoutFilesInput
-  }
-
-  export type FileUncheckedCreateInput = {
-    id?: string
-    name: string
-    path: string
-    content: string
-    language?: string | null
-    projectId: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type FileUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    path?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
-    language?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    project?: ProjectUpdateOneRequiredWithoutFilesNestedInput
-  }
-
-  export type FileUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    path?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
-    language?: NullableStringFieldUpdateOperationsInput | string | null
-    projectId?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type FileCreateManyInput = {
-    id?: string
-    name: string
-    path: string
-    content: string
-    language?: string | null
-    projectId: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type FileUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    path?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
-    language?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type FileUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    path?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
-    language?: NullableStringFieldUpdateOperationsInput | string | null
-    projectId?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type SandboxCreateInput = {
     id?: string
     e2bId: string
     status?: $Enums.SandboxStatus
     previewUrl?: string | null
+    s3ArchiveKey?: string | null
+    archivedAt?: Date | string | null
     createdAt?: Date | string
     destroyedAt?: Date | string | null
     project: ProjectCreateNestedOneWithoutSandboxInput
@@ -7554,6 +6197,8 @@ export namespace Prisma {
     e2bId: string
     status?: $Enums.SandboxStatus
     previewUrl?: string | null
+    s3ArchiveKey?: string | null
+    archivedAt?: Date | string | null
     projectId: string
     createdAt?: Date | string
     destroyedAt?: Date | string | null
@@ -7564,6 +6209,8 @@ export namespace Prisma {
     e2bId?: StringFieldUpdateOperationsInput | string
     status?: EnumSandboxStatusFieldUpdateOperationsInput | $Enums.SandboxStatus
     previewUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    s3ArchiveKey?: NullableStringFieldUpdateOperationsInput | string | null
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     destroyedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     project?: ProjectUpdateOneRequiredWithoutSandboxNestedInput
@@ -7574,6 +6221,8 @@ export namespace Prisma {
     e2bId?: StringFieldUpdateOperationsInput | string
     status?: EnumSandboxStatusFieldUpdateOperationsInput | $Enums.SandboxStatus
     previewUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    s3ArchiveKey?: NullableStringFieldUpdateOperationsInput | string | null
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     projectId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     destroyedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -7584,6 +6233,8 @@ export namespace Prisma {
     e2bId: string
     status?: $Enums.SandboxStatus
     previewUrl?: string | null
+    s3ArchiveKey?: string | null
+    archivedAt?: Date | string | null
     projectId: string
     createdAt?: Date | string
     destroyedAt?: Date | string | null
@@ -7594,6 +6245,8 @@ export namespace Prisma {
     e2bId?: StringFieldUpdateOperationsInput | string
     status?: EnumSandboxStatusFieldUpdateOperationsInput | $Enums.SandboxStatus
     previewUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    s3ArchiveKey?: NullableStringFieldUpdateOperationsInput | string | null
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     destroyedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
@@ -7603,6 +6256,8 @@ export namespace Prisma {
     e2bId?: StringFieldUpdateOperationsInput | string
     status?: EnumSandboxStatusFieldUpdateOperationsInput | $Enums.SandboxStatus
     previewUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    s3ArchiveKey?: NullableStringFieldUpdateOperationsInput | string | null
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     projectId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     destroyedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -7775,12 +6430,6 @@ export namespace Prisma {
     isNot?: UserWhereInput | null
   }
 
-  export type FileListRelationFilter = {
-    every?: FileWhereInput
-    some?: FileWhereInput
-    none?: FileWhereInput
-  }
-
   export type SandboxNullableScalarRelationFilter = {
     is?: SandboxWhereInput | null
     isNot?: SandboxWhereInput | null
@@ -7795,10 +6444,6 @@ export namespace Prisma {
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
-  }
-
-  export type FileOrderByRelationAggregateInput = {
-    _count?: SortOrder
   }
 
   export type LogOrderByRelationAggregateInput = {
@@ -7850,49 +6495,6 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
-  export type ProjectScalarRelationFilter = {
-    is?: ProjectWhereInput
-    isNot?: ProjectWhereInput
-  }
-
-  export type FileProjectIdPathCompoundUniqueInput = {
-    projectId: string
-    path: string
-  }
-
-  export type FileCountOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    path?: SortOrder
-    content?: SortOrder
-    language?: SortOrder
-    projectId?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type FileMaxOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    path?: SortOrder
-    content?: SortOrder
-    language?: SortOrder
-    projectId?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type FileMinOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    path?: SortOrder
-    content?: SortOrder
-    language?: SortOrder
-    projectId?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
   export type EnumSandboxStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.SandboxStatus | EnumSandboxStatusFieldRefInput<$PrismaModel>
     in?: $Enums.SandboxStatus[] | ListEnumSandboxStatusFieldRefInput<$PrismaModel>
@@ -7911,11 +6513,18 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
+  export type ProjectScalarRelationFilter = {
+    is?: ProjectWhereInput
+    isNot?: ProjectWhereInput
+  }
+
   export type SandboxCountOrderByAggregateInput = {
     id?: SortOrder
     e2bId?: SortOrder
     status?: SortOrder
     previewUrl?: SortOrder
+    s3ArchiveKey?: SortOrder
+    archivedAt?: SortOrder
     projectId?: SortOrder
     createdAt?: SortOrder
     destroyedAt?: SortOrder
@@ -7926,6 +6535,8 @@ export namespace Prisma {
     e2bId?: SortOrder
     status?: SortOrder
     previewUrl?: SortOrder
+    s3ArchiveKey?: SortOrder
+    archivedAt?: SortOrder
     projectId?: SortOrder
     createdAt?: SortOrder
     destroyedAt?: SortOrder
@@ -7936,6 +6547,8 @@ export namespace Prisma {
     e2bId?: SortOrder
     status?: SortOrder
     previewUrl?: SortOrder
+    s3ArchiveKey?: SortOrder
+    archivedAt?: SortOrder
     projectId?: SortOrder
     createdAt?: SortOrder
     destroyedAt?: SortOrder
@@ -8062,13 +6675,6 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
-  export type FileCreateNestedManyWithoutProjectInput = {
-    create?: XOR<FileCreateWithoutProjectInput, FileUncheckedCreateWithoutProjectInput> | FileCreateWithoutProjectInput[] | FileUncheckedCreateWithoutProjectInput[]
-    connectOrCreate?: FileCreateOrConnectWithoutProjectInput | FileCreateOrConnectWithoutProjectInput[]
-    createMany?: FileCreateManyProjectInputEnvelope
-    connect?: FileWhereUniqueInput | FileWhereUniqueInput[]
-  }
-
   export type SandboxCreateNestedOneWithoutProjectInput = {
     create?: XOR<SandboxCreateWithoutProjectInput, SandboxUncheckedCreateWithoutProjectInput>
     connectOrCreate?: SandboxCreateOrConnectWithoutProjectInput
@@ -8080,13 +6686,6 @@ export namespace Prisma {
     connectOrCreate?: LogCreateOrConnectWithoutProjectInput | LogCreateOrConnectWithoutProjectInput[]
     createMany?: LogCreateManyProjectInputEnvelope
     connect?: LogWhereUniqueInput | LogWhereUniqueInput[]
-  }
-
-  export type FileUncheckedCreateNestedManyWithoutProjectInput = {
-    create?: XOR<FileCreateWithoutProjectInput, FileUncheckedCreateWithoutProjectInput> | FileCreateWithoutProjectInput[] | FileUncheckedCreateWithoutProjectInput[]
-    connectOrCreate?: FileCreateOrConnectWithoutProjectInput | FileCreateOrConnectWithoutProjectInput[]
-    createMany?: FileCreateManyProjectInputEnvelope
-    connect?: FileWhereUniqueInput | FileWhereUniqueInput[]
   }
 
   export type SandboxUncheckedCreateNestedOneWithoutProjectInput = {
@@ -8116,20 +6715,6 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutProjectsInput, UserUpdateWithoutProjectsInput>, UserUncheckedUpdateWithoutProjectsInput>
   }
 
-  export type FileUpdateManyWithoutProjectNestedInput = {
-    create?: XOR<FileCreateWithoutProjectInput, FileUncheckedCreateWithoutProjectInput> | FileCreateWithoutProjectInput[] | FileUncheckedCreateWithoutProjectInput[]
-    connectOrCreate?: FileCreateOrConnectWithoutProjectInput | FileCreateOrConnectWithoutProjectInput[]
-    upsert?: FileUpsertWithWhereUniqueWithoutProjectInput | FileUpsertWithWhereUniqueWithoutProjectInput[]
-    createMany?: FileCreateManyProjectInputEnvelope
-    set?: FileWhereUniqueInput | FileWhereUniqueInput[]
-    disconnect?: FileWhereUniqueInput | FileWhereUniqueInput[]
-    delete?: FileWhereUniqueInput | FileWhereUniqueInput[]
-    connect?: FileWhereUniqueInput | FileWhereUniqueInput[]
-    update?: FileUpdateWithWhereUniqueWithoutProjectInput | FileUpdateWithWhereUniqueWithoutProjectInput[]
-    updateMany?: FileUpdateManyWithWhereWithoutProjectInput | FileUpdateManyWithWhereWithoutProjectInput[]
-    deleteMany?: FileScalarWhereInput | FileScalarWhereInput[]
-  }
-
   export type SandboxUpdateOneWithoutProjectNestedInput = {
     create?: XOR<SandboxCreateWithoutProjectInput, SandboxUncheckedCreateWithoutProjectInput>
     connectOrCreate?: SandboxCreateOrConnectWithoutProjectInput
@@ -8154,20 +6739,6 @@ export namespace Prisma {
     deleteMany?: LogScalarWhereInput | LogScalarWhereInput[]
   }
 
-  export type FileUncheckedUpdateManyWithoutProjectNestedInput = {
-    create?: XOR<FileCreateWithoutProjectInput, FileUncheckedCreateWithoutProjectInput> | FileCreateWithoutProjectInput[] | FileUncheckedCreateWithoutProjectInput[]
-    connectOrCreate?: FileCreateOrConnectWithoutProjectInput | FileCreateOrConnectWithoutProjectInput[]
-    upsert?: FileUpsertWithWhereUniqueWithoutProjectInput | FileUpsertWithWhereUniqueWithoutProjectInput[]
-    createMany?: FileCreateManyProjectInputEnvelope
-    set?: FileWhereUniqueInput | FileWhereUniqueInput[]
-    disconnect?: FileWhereUniqueInput | FileWhereUniqueInput[]
-    delete?: FileWhereUniqueInput | FileWhereUniqueInput[]
-    connect?: FileWhereUniqueInput | FileWhereUniqueInput[]
-    update?: FileUpdateWithWhereUniqueWithoutProjectInput | FileUpdateWithWhereUniqueWithoutProjectInput[]
-    updateMany?: FileUpdateManyWithWhereWithoutProjectInput | FileUpdateManyWithWhereWithoutProjectInput[]
-    deleteMany?: FileScalarWhereInput | FileScalarWhereInput[]
-  }
-
   export type SandboxUncheckedUpdateOneWithoutProjectNestedInput = {
     create?: XOR<SandboxCreateWithoutProjectInput, SandboxUncheckedCreateWithoutProjectInput>
     connectOrCreate?: SandboxCreateOrConnectWithoutProjectInput
@@ -8190,20 +6761,6 @@ export namespace Prisma {
     update?: LogUpdateWithWhereUniqueWithoutProjectInput | LogUpdateWithWhereUniqueWithoutProjectInput[]
     updateMany?: LogUpdateManyWithWhereWithoutProjectInput | LogUpdateManyWithWhereWithoutProjectInput[]
     deleteMany?: LogScalarWhereInput | LogScalarWhereInput[]
-  }
-
-  export type ProjectCreateNestedOneWithoutFilesInput = {
-    create?: XOR<ProjectCreateWithoutFilesInput, ProjectUncheckedCreateWithoutFilesInput>
-    connectOrCreate?: ProjectCreateOrConnectWithoutFilesInput
-    connect?: ProjectWhereUniqueInput
-  }
-
-  export type ProjectUpdateOneRequiredWithoutFilesNestedInput = {
-    create?: XOR<ProjectCreateWithoutFilesInput, ProjectUncheckedCreateWithoutFilesInput>
-    connectOrCreate?: ProjectCreateOrConnectWithoutFilesInput
-    upsert?: ProjectUpsertWithoutFilesInput
-    connect?: ProjectWhereUniqueInput
-    update?: XOR<XOR<ProjectUpdateToOneWithWhereWithoutFilesInput, ProjectUpdateWithoutFilesInput>, ProjectUncheckedUpdateWithoutFilesInput>
   }
 
   export type ProjectCreateNestedOneWithoutSandboxInput = {
@@ -8420,7 +6977,6 @@ export namespace Prisma {
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    files?: FileCreateNestedManyWithoutProjectInput
     sandbox?: SandboxCreateNestedOneWithoutProjectInput
     logs?: LogCreateNestedManyWithoutProjectInput
   }
@@ -8431,7 +6987,6 @@ export namespace Prisma {
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    files?: FileUncheckedCreateNestedManyWithoutProjectInput
     sandbox?: SandboxUncheckedCreateNestedOneWithoutProjectInput
     logs?: LogUncheckedCreateNestedManyWithoutProjectInput
   }
@@ -8495,41 +7050,13 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutProjectsInput, UserUncheckedCreateWithoutProjectsInput>
   }
 
-  export type FileCreateWithoutProjectInput = {
-    id?: string
-    name: string
-    path: string
-    content: string
-    language?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type FileUncheckedCreateWithoutProjectInput = {
-    id?: string
-    name: string
-    path: string
-    content: string
-    language?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type FileCreateOrConnectWithoutProjectInput = {
-    where: FileWhereUniqueInput
-    create: XOR<FileCreateWithoutProjectInput, FileUncheckedCreateWithoutProjectInput>
-  }
-
-  export type FileCreateManyProjectInputEnvelope = {
-    data: FileCreateManyProjectInput | FileCreateManyProjectInput[]
-    skipDuplicates?: boolean
-  }
-
   export type SandboxCreateWithoutProjectInput = {
     id?: string
     e2bId: string
     status?: $Enums.SandboxStatus
     previewUrl?: string | null
+    s3ArchiveKey?: string | null
+    archivedAt?: Date | string | null
     createdAt?: Date | string
     destroyedAt?: Date | string | null
   }
@@ -8539,6 +7066,8 @@ export namespace Prisma {
     e2bId: string
     status?: $Enums.SandboxStatus
     previewUrl?: string | null
+    s3ArchiveKey?: string | null
+    archivedAt?: Date | string | null
     createdAt?: Date | string
     destroyedAt?: Date | string | null
   }
@@ -8599,36 +7128,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type FileUpsertWithWhereUniqueWithoutProjectInput = {
-    where: FileWhereUniqueInput
-    update: XOR<FileUpdateWithoutProjectInput, FileUncheckedUpdateWithoutProjectInput>
-    create: XOR<FileCreateWithoutProjectInput, FileUncheckedCreateWithoutProjectInput>
-  }
-
-  export type FileUpdateWithWhereUniqueWithoutProjectInput = {
-    where: FileWhereUniqueInput
-    data: XOR<FileUpdateWithoutProjectInput, FileUncheckedUpdateWithoutProjectInput>
-  }
-
-  export type FileUpdateManyWithWhereWithoutProjectInput = {
-    where: FileScalarWhereInput
-    data: XOR<FileUpdateManyMutationInput, FileUncheckedUpdateManyWithoutProjectInput>
-  }
-
-  export type FileScalarWhereInput = {
-    AND?: FileScalarWhereInput | FileScalarWhereInput[]
-    OR?: FileScalarWhereInput[]
-    NOT?: FileScalarWhereInput | FileScalarWhereInput[]
-    id?: StringFilter<"File"> | string
-    name?: StringFilter<"File"> | string
-    path?: StringFilter<"File"> | string
-    content?: StringFilter<"File"> | string
-    language?: StringNullableFilter<"File"> | string | null
-    projectId?: StringFilter<"File"> | string
-    createdAt?: DateTimeFilter<"File"> | Date | string
-    updatedAt?: DateTimeFilter<"File"> | Date | string
-  }
-
   export type SandboxUpsertWithoutProjectInput = {
     update: XOR<SandboxUpdateWithoutProjectInput, SandboxUncheckedUpdateWithoutProjectInput>
     create: XOR<SandboxCreateWithoutProjectInput, SandboxUncheckedCreateWithoutProjectInput>
@@ -8645,6 +7144,8 @@ export namespace Prisma {
     e2bId?: StringFieldUpdateOperationsInput | string
     status?: EnumSandboxStatusFieldUpdateOperationsInput | $Enums.SandboxStatus
     previewUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    s3ArchiveKey?: NullableStringFieldUpdateOperationsInput | string | null
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     destroyedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
@@ -8654,6 +7155,8 @@ export namespace Prisma {
     e2bId?: StringFieldUpdateOperationsInput | string
     status?: EnumSandboxStatusFieldUpdateOperationsInput | $Enums.SandboxStatus
     previewUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    s3ArchiveKey?: NullableStringFieldUpdateOperationsInput | string | null
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     destroyedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
@@ -8685,66 +7188,6 @@ export namespace Prisma {
     projectId?: StringFilter<"Log"> | string
   }
 
-  export type ProjectCreateWithoutFilesInput = {
-    id?: string
-    name: string
-    description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user?: UserCreateNestedOneWithoutProjectsInput
-    sandbox?: SandboxCreateNestedOneWithoutProjectInput
-    logs?: LogCreateNestedManyWithoutProjectInput
-  }
-
-  export type ProjectUncheckedCreateWithoutFilesInput = {
-    id?: string
-    name: string
-    description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    userId?: string | null
-    sandbox?: SandboxUncheckedCreateNestedOneWithoutProjectInput
-    logs?: LogUncheckedCreateNestedManyWithoutProjectInput
-  }
-
-  export type ProjectCreateOrConnectWithoutFilesInput = {
-    where: ProjectWhereUniqueInput
-    create: XOR<ProjectCreateWithoutFilesInput, ProjectUncheckedCreateWithoutFilesInput>
-  }
-
-  export type ProjectUpsertWithoutFilesInput = {
-    update: XOR<ProjectUpdateWithoutFilesInput, ProjectUncheckedUpdateWithoutFilesInput>
-    create: XOR<ProjectCreateWithoutFilesInput, ProjectUncheckedCreateWithoutFilesInput>
-    where?: ProjectWhereInput
-  }
-
-  export type ProjectUpdateToOneWithWhereWithoutFilesInput = {
-    where?: ProjectWhereInput
-    data: XOR<ProjectUpdateWithoutFilesInput, ProjectUncheckedUpdateWithoutFilesInput>
-  }
-
-  export type ProjectUpdateWithoutFilesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneWithoutProjectsNestedInput
-    sandbox?: SandboxUpdateOneWithoutProjectNestedInput
-    logs?: LogUpdateManyWithoutProjectNestedInput
-  }
-
-  export type ProjectUncheckedUpdateWithoutFilesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
-    sandbox?: SandboxUncheckedUpdateOneWithoutProjectNestedInput
-    logs?: LogUncheckedUpdateManyWithoutProjectNestedInput
-  }
-
   export type ProjectCreateWithoutSandboxInput = {
     id?: string
     name: string
@@ -8752,7 +7195,6 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutProjectsInput
-    files?: FileCreateNestedManyWithoutProjectInput
     logs?: LogCreateNestedManyWithoutProjectInput
   }
 
@@ -8763,7 +7205,6 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId?: string | null
-    files?: FileUncheckedCreateNestedManyWithoutProjectInput
     logs?: LogUncheckedCreateNestedManyWithoutProjectInput
   }
 
@@ -8790,7 +7231,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutProjectsNestedInput
-    files?: FileUpdateManyWithoutProjectNestedInput
     logs?: LogUpdateManyWithoutProjectNestedInput
   }
 
@@ -8801,7 +7241,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
-    files?: FileUncheckedUpdateManyWithoutProjectNestedInput
     logs?: LogUncheckedUpdateManyWithoutProjectNestedInput
   }
 
@@ -8812,7 +7251,6 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutProjectsInput
-    files?: FileCreateNestedManyWithoutProjectInput
     sandbox?: SandboxCreateNestedOneWithoutProjectInput
   }
 
@@ -8823,7 +7261,6 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId?: string | null
-    files?: FileUncheckedCreateNestedManyWithoutProjectInput
     sandbox?: SandboxUncheckedCreateNestedOneWithoutProjectInput
   }
 
@@ -8850,7 +7287,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutProjectsNestedInput
-    files?: FileUpdateManyWithoutProjectNestedInput
     sandbox?: SandboxUpdateOneWithoutProjectNestedInput
   }
 
@@ -8861,7 +7297,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
-    files?: FileUncheckedUpdateManyWithoutProjectNestedInput
     sandbox?: SandboxUncheckedUpdateOneWithoutProjectNestedInput
   }
 
@@ -8879,7 +7314,6 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    files?: FileUpdateManyWithoutProjectNestedInput
     sandbox?: SandboxUpdateOneWithoutProjectNestedInput
     logs?: LogUpdateManyWithoutProjectNestedInput
   }
@@ -8890,7 +7324,6 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    files?: FileUncheckedUpdateManyWithoutProjectNestedInput
     sandbox?: SandboxUncheckedUpdateOneWithoutProjectNestedInput
     logs?: LogUncheckedUpdateManyWithoutProjectNestedInput
   }
@@ -8903,51 +7336,11 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type FileCreateManyProjectInput = {
-    id?: string
-    name: string
-    path: string
-    content: string
-    language?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
   export type LogCreateManyProjectInput = {
     id?: string
     message: string
     type: $Enums.LogType
     timestamp?: Date | string
-  }
-
-  export type FileUpdateWithoutProjectInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    path?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
-    language?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type FileUncheckedUpdateWithoutProjectInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    path?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
-    language?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type FileUncheckedUpdateManyWithoutProjectInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    path?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
-    language?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type LogUpdateWithoutProjectInput = {

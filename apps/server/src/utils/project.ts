@@ -14,7 +14,6 @@ export async function getOwnedProjectWithSandbox(
     where: { id: projectId, userId },
     include: {
       sandbox: true,
-      files: { orderBy: { path: "asc" } },
     },
   });
 }

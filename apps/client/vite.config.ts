@@ -12,6 +12,9 @@ export default defineConfig({
     },
   },
   server: {
+    allowedHosts: [
+      "*.e2b.app"
+    ],
     proxy: {
       // Forward API calls to the Express backend in dev.
       "/auth": {
